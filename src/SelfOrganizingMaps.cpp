@@ -1,4 +1,4 @@
-#include "Classes.h"
+#include "../include/Classes.h"
 
 SelfOrganizingMaps::SelfOrganizingMaps(int size, int totalWeights,
 	int maxEpochs, double initialLearningRate, int totalSamples, bool initialize):

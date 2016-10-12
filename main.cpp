@@ -4,7 +4,7 @@
 #include <vector>
 #include <GL/glut.h>
 
-#include "Classes.h"
+#include "include/Classes.h"
 
 #define BASEWIDTH 400
 #define BASEHEIGHT 400

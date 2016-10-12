@@ -16,7 +16,7 @@
 #include <cfloat>
 #include <GL/glut.h>
 
-#include "matrix.h"
+#include "Matrix.h"
 
 //#define DEBUG
 

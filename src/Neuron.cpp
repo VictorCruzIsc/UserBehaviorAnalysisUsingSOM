@@ -1,4 +1,4 @@
-#include "neuron.h"
+#include "../include/Neuron.h"
 
 Neuron::Neuron(int x, int y, int totalWeights) : _x(x), _y(y),
 	_totalWeights(totalWeights){

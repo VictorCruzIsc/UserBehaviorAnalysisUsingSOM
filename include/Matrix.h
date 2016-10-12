@@ -7,7 +7,7 @@
 #include <vector>
 #include <time.h>
 
-#include "neuron.h"
+#include "Neuron.h"
 
 using namespace std;
 
