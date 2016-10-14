@@ -77,7 +77,7 @@ vector<DataPackage *> DataSet::createDataSetPackageFormat(string user,
 		file = "";
 	}
 
-#ifdef DEBUGS
+#ifdef DEBUG
 		cout << "No more files to read" << endl;
 		cout << packageDataSet.size() << endl;
 		for(int i=0; i<packageDataSet.size(); i++){
