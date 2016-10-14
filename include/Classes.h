@@ -15,8 +15,13 @@
 #include <math.h>
 #include <cfloat>
 #include <GL/glut.h>
+#include <algorithm>
+#include <stdio.h>
+#include <sys/types.h>
+#include <dirent.h>
 
 #include "Matrix.h"
+#include "DataPackage.h"
 
 //#define DEBUG
 
@@ -24,6 +29,7 @@ using namespace std;
 
 class Utils;
 class SelfOrganizingMaps;
+class DataSet;
 
 class Utils{
 	public:
@@ -141,6 +147,12 @@ class SelfOrganizingMaps{
 		double getInfluence(double distanceToBMU, double radius);
 		Neuron* getBMU(vector<double> inputVector);
 		void updateMatrixWeigths(Neuron *bmu, vector<double> inputVector);
+};
+
+class DataSet{
+	public:
+		static vector<DataPackage *> createDataSetPackageFormat(string user,
+			int type, int initial, int final);
 };
 
 #endif

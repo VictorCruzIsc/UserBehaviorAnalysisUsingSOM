@@ -48,6 +48,15 @@ void idle(void);
 void init();
 
 int main(int argc, char **argv){
+	vector<DataPackage *> buildDataSet = DataSet::createDataSetPackageFormat("user1", 0 , 0, 1);
+
+	cout << "B:" << buildDataSet.size() << endl;
+
+	vector<DataPackage *> trainDataSet = DataSet::createDataSetPackageFormat("user1", 1 , 0, 1);
+
+	cout << "T:" << trainDataSet.size() << endl;
+	
+/*	
 	if(argc < 3 ){
 		cout << "Se requieren 3 argumentos para iniciar el programa" << endl;
 		cout << "1: Programa" << endl;
@@ -118,7 +127,7 @@ int main(int argc, char **argv){
 
 	// Release memory
 	delete _som;
-
+*/
 	return 0;
 }
 
