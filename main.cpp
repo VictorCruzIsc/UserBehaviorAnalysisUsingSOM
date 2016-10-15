@@ -6,17 +6,38 @@
 
 #include "include/Classes.h"
 
-#define BASEWIDTH 400
-#define BASEHEIGHT 400
-#define BASEOPENGLFOVY 45.0
-#define TOTALWEIGHTS 3
-#define MAXEPOCHS 1000
-#define NORMALSIZE 100
-#define IMPORTSIZE 200
-#define INITIALLEARNINGRATE 0.1
-#define WINDOWTITLE "Self Organizing Maps"
+// Package Defines
+#define BASEWIDTH				400
+#define BASEHEIGHT 				400
+#define BASEOPENGLFOVY			45.0
+#define TOTALWEIGHTS 			3
+#define MAXEPOCHS 				1000
+#define NORMALSIZE 				100
+#define INITIALLEARNINGRATE 	0.1
+#define WINDOWTITLE 			"Self Organizing Maps"
+#define BUILD					0
+#define TRAIN					1
+#define EVALUATE				2
+#define DEBUG
 
 using namespace std;
+
+// Package Variables
+vector<DataPackage *>	_buildDataSet;
+vector<DataPackage *>	_trainDataSet;
+SelfOrganizingMaps		*_som;
+double					_openGLFovy;
+int						_dataSetSize;
+int 					_sigma;
+int 					_executionType;
+int 					_width;
+int 					_height;
+int 					_countingSampling;
+bool 					_training;
+
+// Package Methods
+void algorithmInitialization(int size, int totalWeigths, int maxEpochs,
+	double initialLearningRate, int dataSetType, int initial, int final);
 
 // Global variables
 vector<vector<double> > _trainingDataSet;
@@ -24,21 +45,8 @@ vector<vector<double> > _testDataset;
 vector<RGB* > _initializationDataSet;
 vector<RGB*> _rgbTrainingDataSet;
 vector<vector<RGB*> > _evaluationDataSet;
-SelfOrganizingMaps *_som;
 int _dataSetType;
-int _dataSetSize;
-int _width;
-int _height;
-int _executionType;
-int _sigma;
-double _openGLFovy;
 char *_fileName;
-bool _training;
-
-// main methods
-void createEvaluationDataSet();
-void algorithmInitialization(int dataSetType, int size, int totalWeigths,
-	int maxEpochs, double initialLearningRate);
 
 // OpenGl methods
 void display(void);
@@ -48,15 +56,14 @@ void idle(void);
 void init();
 
 int main(int argc, char **argv){
-	vector<DataPackage *> buildDataSet = DataSet::createDataSetPackageFormat("user1", 0 , 0, 1);
+/*
+	_buildDataSet = DataSet::createDataSetPackageFormat("user1", BUILD, 0, 1);
+	_trainDataSet = DataSet::createDataSetPackageFormat("user1", TRAIN, 0, 1);
 
-	cout << "B:" << buildDataSet.size() << endl;
-
-	vector<DataPackage *> trainDataSet = DataSet::createDataSetPackageFormat("user1", 1 , 0, 1);
-
-	cout << "T:" << trainDataSet.size() << endl;
+	cout << _buildDataSet.size() << endl;
+	cout << _trainDataSet.size() << endl;
+*/
 	
-/*	
 	if(argc < 3 ){
 		cout << "Se requieren 3 argumentos para iniciar el programa" << endl;
 		cout << "1: Programa" << endl;
@@ -71,18 +78,17 @@ int main(int argc, char **argv){
 	_executionType = atoi(argv[1]);
 	_dataSetType = atoi(argv[2]);
 	_sigma = 3;
-
-	createEvaluationDataSet();
+	_countingSampling = 0;
 
 	cout << "El dataset de prueba fue creado" << endl;
 
 	switch(_executionType){
 		case 0: // Get the matrix randomly from a dataset
-			algorithmInitialization(_dataSetType, NORMALSIZE, TOTALWEIGHTS,
-				MAXEPOCHS, INITIALLEARNINGRATE);
-			_width = BASEWIDTH;
-			_height = BASEHEIGHT;
-			_openGLFovy = BASEOPENGLFOVY;
+			algorithmInitialization(NORMALSIZE * 2, TOTALWEIGHTS,
+				MAXEPOCHS, INITIALLEARNINGRATE, _dataSetType, 0, 1);
+			_width = BASEWIDTH * 2;
+			_height = BASEHEIGHT * 2;
+			_openGLFovy = BASEOPENGLFOVY * 2;
 			break;
 		case 1: // Get the matrix from a previous training
 			vector<char *> fileNames;
@@ -127,60 +133,21 @@ int main(int argc, char **argv){
 
 	// Release memory
 	delete _som;
-*/
+
 	return 0;
 }
 
-void algorithmInitialization(int dataSetType, int size, int totalWeigths,
-	int maxEpochs, double initialLearningRate){
-	switch(dataSetType){
-		// Many colors dataset
-		case 1:
-			_trainingDataSet = Utils::createColorDataSet(48, totalWeigths);
-			_testDataset = Utils::createColorTestDataSet();
-			_dataSetSize = _trainingDataSet.size();
-			_som = new SelfOrganizingMaps(size, totalWeigths, maxEpochs, initialLearningRate, _dataSetSize, true);
-			break;
+void algorithmInitialization(int size, int totalWeigths, int maxEpochs,
+	double initialLearningRate, int dataSetType, int initial, int final){
 
-		// Blue colors dataset
-		case 2:
-			_initializationDataSet = Utils::createBlueColorBuildMatrixDataSet();
-			_rgbTrainingDataSet = Utils::createBlueColorTrainMatrixDataSet();
-			_dataSetSize = _rgbTrainingDataSet.size();
-			_som = new SelfOrganizingMaps(size, totalWeigths, maxEpochs, initialLearningRate, _initializationDataSet, _dataSetSize);
-			break;
-		case 3:
-			_initializationDataSet = Utils::createRedColorBuildMatrixDataSet();
-			_rgbTrainingDataSet = Utils::createRedColorTrainMatrixDataSet();
-			_dataSetSize = _rgbTrainingDataSet.size();
-			_som = new SelfOrganizingMaps(size, totalWeigths, maxEpochs, initialLearningRate, _initializationDataSet, _dataSetSize);
-			break;
-		case 4:
-			_initializationDataSet = Utils::createGreenColorBuildMatrixDataSet();
-			_rgbTrainingDataSet = Utils::createGreenColorTrainMatrixDataSet();
-			_dataSetSize = _rgbTrainingDataSet.size();
-			_som = new SelfOrganizingMaps(size, totalWeigths, maxEpochs, initialLearningRate, _initializationDataSet, _dataSetSize);
-			break;
-		case 5:
-			_initializationDataSet = Utils::createYellowColorBuildMatrixDataSet();
-			_rgbTrainingDataSet = Utils::createYellowColorTrainMatrixDataSet();
-			_dataSetSize = _rgbTrainingDataSet.size();
-			_som = new SelfOrganizingMaps(size, totalWeigths, maxEpochs, initialLearningRate, _initializationDataSet, _dataSetSize);
-			break;
-		default:
-			_initializationDataSet = Utils::createMultipleColorBuildMatrixDataSet();
-			_rgbTrainingDataSet = Utils::createMultipleColorTrainMatrixDataSet();
-			_dataSetSize = _rgbTrainingDataSet.size();
-			_som = new SelfOrganizingMaps(size, totalWeigths, maxEpochs, initialLearningRate, _initializationDataSet, _dataSetSize);
-			break;
-	}
-}
+	string user =  "user" + to_string(dataSetType);
 
-void createEvaluationDataSet(){
-	_evaluationDataSet.push_back(Utils::createBlueColorTestMatrixDataSet());
-	_evaluationDataSet.push_back(Utils::createGreenColorTestMatrixDataSet());
-	_evaluationDataSet.push_back(Utils::createYellowColorTestMatrixDataSet());
-	_evaluationDataSet.push_back(Utils::createRedColorTestMatrixDataSet());
+	_buildDataSet = DataSet::createDataSetPackageFormat(user, BUILD, initial, final);
+	_trainDataSet = DataSet::createDataSetPackageFormat(user, TRAIN, initial, final);
+
+	_dataSetSize = _trainDataSet.size();
+
+	_som = new SelfOrganizingMaps(size, totalWeigths, maxEpochs, initialLearningRate, _buildDataSet, _dataSetSize);
 }
 
 void display(){
@@ -207,6 +174,7 @@ void reshape(int width, int height){
 void keyboard(unsigned char key, int mouseX, int mouseY){ 
 	switch (key){
 		case 't':
+			cout << "Total samples: " << _dataSetSize << endl;
 			_training = !_training;
 			if(_training)
 				cout << "Training..." << endl;
@@ -214,74 +182,52 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 				cout << "Stopped training" << endl;
 			break;
 		case 'r':
-			_training = false;
-			_som->reset();
-			cout << "Map reset" << endl;
-			glutPostRedisplay();
+			/*
+				_training = false;
+				_som->reset();
+				cout << "Map reset" << endl;
+				glutPostRedisplay();
+			*/
+			cout << "No functionality implemented for reset until now" << endl;
 			break;
 		case '0':
-			cout << "0" << endl;
-			//0 0 255 Azul
-			_som->evaluateIndependentVector(_testDataset[0]);
-			glutPostRedisplay();
-			break;
-		case '1':
-			cout << "1" << endl;
-			// 255 0 0 Rojo
-			_som->evaluateIndependentVector(_testDataset[1]);
-			glutPostRedisplay();
-			break;
-		case '2':
-			// 204 0 204 Violeta
-			cout << "2" << endl;
-			_som->evaluateIndependentVector(_testDataset[2]);
-			glutPostRedisplay();
-			break;
-		case '3':
-			// 0 255 0 Verde 
-			cout << "3" << endl;
-			_som->evaluateIndependentVector(_testDataset[3]);
-			glutPostRedisplay();
+			cout << "Independent dataset not implemented" << endl;
+			/*
+				_som->evaluateIndependentVector(_testDataset[0]);
+				glutPostRedisplay();
+			*/
 			break;
 		case 's':
 			if(_training)
 				_training = !_training;
+			cout << "Entrenamiento detenido" << endl;
 			break;
 		case 'e':
-			Utils::exportMatrixToFile(_som->getMatrix(), _som->getEpochs(),
+			cout << "Export matrix not implemented yet" << endl;
+			/*
+				Utils::exportMatrixToFile(_som->getMatrix(), _som->getEpochs(),
 				MAXEPOCHS, INITIALLEARNINGRATE, _som->getCurrenLearningRate());
-			break;
-		case 'y':
-			cout << "Yellow dataset" << endl;
-			_som->evaluateIndependentRGBDataSet(_evaluationDataSet[2], _sigma);
-			glutPostRedisplay();
-			break;
-		case 'g':
-			cout << "Green dataset" << endl;
-			_som->evaluateIndependentRGBDataSet(_evaluationDataSet[1], _sigma);
-			glutPostRedisplay();
-			break;
-		case 'd':
-			cout << "Red dataset" << endl;
-			_som->evaluateIndependentRGBDataSet(_evaluationDataSet[3], _sigma);
-			glutPostRedisplay();
-			break;
+				break;
+			*/
 		case 'b':
-			cout << "Blue dataset" << endl;
-			_som->evaluateIndependentRGBDataSet(_evaluationDataSet[0], _sigma);
-			glutPostRedisplay();
+			cout << "Blue dataset evaluation not implemented" << endl;
+			/*
+				_som->evaluateIndependentRGBDataSet(_evaluationDataSet[0], _sigma);
+				glutPostRedisplay();
+			*/
 			break;
 	}
 }
 
 void idle(void){
 	if (_training && (_som->getEpochs() < MAXEPOCHS)){
+#ifdef DEBUG
+		_countingSampling++;
+		if(_countingSampling % 500 == 0)
+			cout << _countingSampling << endl;
+#endif
 		int randInput = rand() % _dataSetSize;
-		if(_dataSetType == 1){
-			_som->trainSegmentedFunctions(_trainingDataSet[randInput]);
-		}else{
-			_som->trainSegmentedFunctions(_rgbTrainingDataSet[randInput]->rgbToVector());
-		}
+		_som->trainSegmentedFunctions(_trainDataSet[randInput]->dataPackageToVector());
 		glutPostRedisplay();
  	}
 }

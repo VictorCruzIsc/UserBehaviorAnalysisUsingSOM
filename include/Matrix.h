@@ -8,6 +8,7 @@
 #include <time.h>
 
 #include "Neuron.h"
+#include "DataPackage.h"
 
 using namespace std;
 
@@ -15,6 +16,7 @@ class Matrix{
 	public:
 		Matrix(int size, int totalWeights, bool initialize);
 		Matrix(int size, int totalWeights, vector<RGB*> dataSet);
+		Matrix(int size, int totalWeights, vector<DataPackage*> dataSet);
 		~Matrix();
 		int getSize();
 		int getTotalNeurons();
@@ -36,5 +38,6 @@ class Matrix{
 		// Methods
 		void initializeMatrix();
 		void initializeMatrix(vector<RGB*> dataSet);
+		void initializeMatrix(vector<DataPackage*> dataSet);
 };
 #endif

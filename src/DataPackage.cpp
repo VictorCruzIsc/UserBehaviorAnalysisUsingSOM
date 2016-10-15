@@ -4,7 +4,7 @@ DataPackage::DataPackage(){
 	_way = false;
 	_localIp = 0;
 	_destinationIp = 0;
-	_protocol = "";
+	_protocol = 0;
 	_localPort = 0;
 	_remotePort = 0;
 	_transmitedBytes = 0;
@@ -14,7 +14,7 @@ DataPackage::DataPackage(){
 	_error = false;
 }
 
-DataPackage::DataPackage(bool way, int localIp, int destinationIp, string protocol,
+DataPackage::DataPackage(bool way, int localIp, int destinationIp, int protocol,
 			int localPort, int remotePort, int transmitedBytes,
 			long long int originTimeStamp, string deviceOSIp, string deviceMAC){
 	_way = way;
@@ -55,7 +55,7 @@ DataPackage::DataPackage(vector<string> packageElements){
 	_way = wayFromString(packageElements[2]);
 	_localIp = ipFromString(packageElements[3]);
 	_destinationIp = ipFromString(packageElements[4]);
-	_protocol = packageElements[5];
+	_protocol = encodeProtocolName(packageElements[5]);
 	_localPort = stoi(packageElements[6]);
 	_remotePort = stoi(packageElements[7]);
 	_transmitedBytes = stoi(packageElements[11]);
@@ -100,6 +100,18 @@ int DataPackage::ipFromString(string value){
 	return ip;
 }
 
+int DataPackage::encodeProtocolName(string value){
+	map<string,int> protocols;
+	protocols["TCP"] = 6;
+	protocols["UDP"] = 17;
+
+	auto search = protocols.find(value);
+	if(search != protocols.end()) {
+		return search->second;
+	}
+	return 0;
+}
+
 string DataPackage::info(){
 	string representation  = "";
 	if(_components.size() == 12)
@@ -107,4 +119,13 @@ string DataPackage::info(){
 			representation += _components[i] + " ";
 		}
 	return representation;
+}
+
+vector<double> DataPackage::dataPackageToVector(){
+	vector<double> dataPackageVector;
+	dataPackageVector.resize(3);
+	dataPackageVector[0] = _destinationIp;
+	dataPackageVector[1] = _protocol;
+	dataPackageVector[2] = _remotePort;
+	return dataPackageVector;
 }

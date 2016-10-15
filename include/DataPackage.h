@@ -1,3 +1,6 @@
+#ifndef DATAPACKAGE_H
+#define DATAPACKAGE_H
+
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
@@ -10,6 +13,7 @@
 #include <math.h>
 #include <cfloat>
 #include <algorithm>
+#include <map>
 
 using namespace std;
 
@@ -18,7 +22,7 @@ using namespace std;
 class DataPackage{
 	public:
 		DataPackage();
-		DataPackage(bool way, int localIp, int destinationIp, string protocol,
+		DataPackage(bool way, int localIp, int destinationIp, int protocol,
 			int localPort, int remotePort, int transmitedBytes,
 			long long int originTimeStamp, string deviceOSIp, string deviceMAC);
 		DataPackage(vector<string> packageElements);
@@ -28,7 +32,7 @@ class DataPackage{
 		bool getWay(){ return _way; }
 		int getLocalIp(){ return _localIp; }
 		int getDestinationIp(){ return _destinationIp; }
-		string getProtocol(){ return _protocol; }
+		int getProtocol(){ return _protocol; }
 		int getLocalPort(){ return _localPort; }
 		int getRemotePort(){ return _remotePort; }
 		int getTransmitedBytes(){ return _transmitedBytes; }
@@ -43,7 +47,7 @@ class DataPackage{
 		void setdestinationIp(int destinationIp){
 			_destinationIp = destinationIp;
 		}
-		void setProtocol(string protocol){ _protocol = protocol; }
+		void setProtocol(int protocol){ _protocol = protocol; }
 		void setLocalPort(int localPort){ _localPort = localPort; }
 		void setRemotePort(int remotePort){ _remotePort = remotePort; }
 		void setTransmitedBytes(int transmitedBytes){
@@ -54,11 +58,14 @@ class DataPackage{
 		}
 		void setDeviceOSIp(string deviceOSIp){ _deviceOSIp = deviceOSIp; }
 		void setDeviceMAC(string deviceMAC){ _deviceMAC = deviceMAC; }
+
+		vector<double> dataPackageToVector();
 		string info();
 
 	private:
 		bool wayFromString(string value);
 		int ipFromString(string value);
+		int encodeProtocolName(string value);
 
 		bool _way;
 		bool _error;
@@ -67,9 +74,10 @@ class DataPackage{
 		int _localPort;
 		int _remotePort;
 		int _transmitedBytes;
+		int _protocol;
 		long long int _originTimeStamp;
 		string _deviceOSIp;
 		string _deviceMAC;
-		string _protocol;
 		vector<string> _components;
 };
+#endif
