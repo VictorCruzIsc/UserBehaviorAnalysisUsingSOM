@@ -30,7 +30,7 @@ void Utils::exportMatrixToFile(Matrix *matrix, int completedEpochs,
 SelfOrganizingMaps* Utils::importSOMFromFiles(char *fileName){
     fstream infile;
     string line;
-    vector<double> neuronRGB;
+    vector<double> neuronWeights;
 
     infile.open(fileName);
 
@@ -47,7 +47,7 @@ SelfOrganizingMaps* Utils::importSOMFromFiles(char *fileName){
     getline(infile,line);
     int totalWeights = atoi(line.c_str());
     
-    neuronRGB.resize(totalWeights);
+    neuronWeights.resize(totalWeights);
     
     SelfOrganizingMaps *som = new SelfOrganizingMaps(size, totalWeights,
 		maxEpochs, initialLearningRate, 0, false);
@@ -58,10 +58,9 @@ SelfOrganizingMaps* Utils::importSOMFromFiles(char *fileName){
         for(int col=0; col<size; col++){ // for each column
 			// Get all the weights of the neuron in (row, col)
             for(int weigths=0; weigths<totalWeights; weigths++){
-				ssin >> neuronRGB[weigths];
+				ssin >> neuronWeights[weigths];
             }
-            RGB *rgb = new RGB(neuronRGB[0], neuronRGB[1], neuronRGB[2]);
-            som->setNeuron(new Neuron(row, col, totalWeights, rgb));
+            som->setNeuron(new Neuron(row, col, neuronWeights));
         }
     }
 

@@ -84,11 +84,11 @@ int main(int argc, char **argv){
 
 	switch(_executionType){
 		case 0: // Get the matrix randomly from a dataset
-			algorithmInitialization(NORMALSIZE * 2, TOTALWEIGHTS,
+			algorithmInitialization(NORMALSIZE, TOTALWEIGHTS,
 				MAXEPOCHS, INITIALLEARNINGRATE, _dataSetType, 0, 1);
-			_width = BASEWIDTH * 2;
-			_height = BASEHEIGHT * 2;
-			_openGLFovy = BASEOPENGLFOVY * 2;
+			_width = BASEWIDTH;
+			_height = BASEHEIGHT;
+			_openGLFovy = BASEOPENGLFOVY;
 			break;
 		case 1: // Get the matrix from a previous training
 			vector<char *> fileNames;
@@ -203,12 +203,10 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 			cout << "Entrenamiento detenido" << endl;
 			break;
 		case 'e':
-			cout << "Export matrix not implemented yet" << endl;
-			/*
-				Utils::exportMatrixToFile(_som->getMatrix(), _som->getEpochs(),
+			cout << "Export matrix..." << endl;
+			Utils::exportMatrixToFile(_som->getMatrix(), _som->getEpochs(),
 				MAXEPOCHS, INITIALLEARNINGRATE, _som->getCurrenLearningRate());
-				break;
-			*/
+			break;
 		case 'b':
 			cout << "Blue dataset evaluation not implemented" << endl;
 			/*
