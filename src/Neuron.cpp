@@ -48,9 +48,32 @@ Neuron::Neuron(int x, int y, int totalWeights, DataPackage* dataPackage) :
 	_neuronColor = rgb;
 
 	if(_totalWeights>=3){
-		_weights[0] = dataPackage->getDestinationIp()/(double)255;
-		_weights[1] = dataPackage->getProtocol()/(double)255;
-		_weights[2] = dataPackage->getRemotePort()/(double)255;
+		_weights[0] = destinationIp;
+		_weights[1] = protocol;
+		_weights[2] = remotePort;
+	}
+}
+
+Neuron::Neuron(int x, int y, int totalWeights, DataChunck* dataChunck) :
+	_x(x), _y(y), _totalWeights(totalWeights){
+	_weights.resize(_totalWeights);
+
+	double metricTCPUDP = dataChunck->getProportionTCPUDPMetric() / (double)255;
+	double metricInternalIP = dataChunck->getBytesToInternalIPMetric() / (double)255;
+	double metricWeb = dataChunck->getBytesThroughWebMetric() / (double)255;
+
+	double totalBytes = dataChunck->getTotalBytes();
+	double totalTCP = dataChunck-> getTotalBytesThroughTCP();
+	double totalUDP = dataChunck->getTotalBytesThroughUDP();
+
+	RGB* rgb = new RGB(totalBytes, totalTCP, totalUDP);
+
+	_neuronColor = rgb;
+
+	if(_totalWeights>=3){
+		_weights[0] = metricTCPUDP;
+		_weights[1] = metricInternalIP;
+		_weights[2] = metricWeb;
 	}
 }
 

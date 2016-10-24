@@ -9,6 +9,7 @@
 
 #include "Neuron.h"
 #include "DataPackage.h"
+#include "DataChunck.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ class Matrix{
 		Matrix(int size, int totalWeights, bool initialize);
 		Matrix(int size, int totalWeights, vector<RGB*> dataSet);
 		Matrix(int size, int totalWeights, vector<DataPackage*> dataSet);
+		Matrix(int size, int totalWeights, vector<DataChunck*> dataSet);
 		~Matrix();
 		int getSize();
 		int getTotalNeurons();
@@ -39,5 +41,6 @@ class Matrix{
 		void initializeMatrix();
 		void initializeMatrix(vector<RGB*> dataSet);
 		void initializeMatrix(vector<DataPackage*> dataSet);
+		void initializeMatrix(vector<DataChunck*> &dataSet);
 };
 #endif

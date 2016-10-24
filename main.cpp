@@ -25,6 +25,9 @@ using namespace std;
 // Package Variables
 vector<DataPackage *>	_buildDataSet;
 vector<DataPackage *>	_trainDataSet;
+vector<DataChunck *>	_buildDataChunckSet;
+vector<DataChunck *>	_trainDataChunckSet;
+vector<DataChunck *>	_evaluateDataChunckSet;
 SelfOrganizingMaps		*_som;
 double					_openGLFovy;
 int						_dataSetSize;
@@ -36,7 +39,10 @@ int 					_countingSampling;
 bool 					_training;
 
 // Package Methods
-void algorithmInitialization(int size, int totalWeigths, int maxEpochs,
+void algorithmInitializationDataChunck(int size, int totalWeigths, int maxEpochs,
+	double initialLearningRate, int dataSetType, int initial, int final,
+	int chunckTimeSize, int chunckTimeInterval);
+void algorithmInitializationDataPackage(int size, int totalWeigths, int maxEpochs,
 	double initialLearningRate, int dataSetType, int initial, int final);
 
 // Global variables
@@ -56,14 +62,21 @@ void idle(void);
 void init();
 
 int main(int argc, char **argv){
+
 /*
 	_buildDataSet = DataSet::createDataSetPackageFormat("user1", BUILD, 0, 1);
 	_trainDataSet = DataSet::createDataSetPackageFormat("user1", TRAIN, 0, 1);
 
 	cout << _buildDataSet.size() << endl;
 	cout << _trainDataSet.size() << endl;
+
+	_buildDataChunckSet = DataSet::createDataSetDataChunckFormat("user1", BUILD, 0, 1, 5, 10);
+	cout << "DataSetSize: " << _buildDataChunckSet.size() << endl;
+	_buildDataChunckSet[0]->info();
+	_buildDataChunckSet[_buildDataChunckSet.size() - 1]->info();
 */
-	
+
+
 	if(argc < 3 ){
 		cout << "Se requieren 3 argumentos para iniciar el programa" << endl;
 		cout << "1: Programa" << endl;
@@ -80,12 +93,10 @@ int main(int argc, char **argv){
 	_sigma = 3;
 	_countingSampling = 0;
 
-	cout << "El dataset de prueba fue creado" << endl;
-
 	switch(_executionType){
 		case 0: // Get the matrix randomly from a dataset
-			algorithmInitialization(NORMALSIZE, TOTALWEIGHTS,
-				MAXEPOCHS, INITIALLEARNINGRATE, _dataSetType, 0, 1);
+			algorithmInitializationDataChunck(NORMALSIZE, TOTALWEIGHTS,
+				MAXEPOCHS, INITIALLEARNINGRATE, _dataSetType, 0, 1, 5, 10);
 			_width = BASEWIDTH;
 			_height = BASEHEIGHT;
 			_openGLFovy = BASEOPENGLFOVY;
@@ -122,7 +133,7 @@ int main(int argc, char **argv){
 	// OpenGL register callback functions
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
-	glutKeyboardFunc(keyboard);
+	glutKeyboardFunc(keyboard); //TODO
 	glutIdleFunc(idle);
 
 	// OpenGL initalize parameters
@@ -137,7 +148,7 @@ int main(int argc, char **argv){
 	return 0;
 }
 
-void algorithmInitialization(int size, int totalWeigths, int maxEpochs,
+void algorithmInitializationDataPackage(int size, int totalWeigths, int maxEpochs,
 	double initialLearningRate, int dataSetType, int initial, int final){
 
 	string user =  "user" + to_string(dataSetType);
@@ -148,6 +159,21 @@ void algorithmInitialization(int size, int totalWeigths, int maxEpochs,
 	_dataSetSize = _trainDataSet.size();
 
 	_som = new SelfOrganizingMaps(size, totalWeigths, maxEpochs, initialLearningRate, _buildDataSet, _dataSetSize);
+}
+
+void algorithmInitializationDataChunck(int size, int totalWeigths, int maxEpochs,
+	double initialLearningRate, int dataSetType, int initial, int final,
+	int chunckTimeSize, int chunckTimeInterval){
+
+	string user =  "user" + to_string(dataSetType);
+
+	_buildDataChunckSet = DataSet::createDataSetDataChunckFormat(user, BUILD, initial, final, chunckTimeSize, chunckTimeInterval);
+	_trainDataChunckSet = DataSet::createDataSetDataChunckFormat(user, TRAIN, initial, final, chunckTimeSize, chunckTimeInterval);
+	_evaluateDataChunckSet = DataSet::createDataSetDataChunckFormat(user, EVALUATE, initial, final, chunckTimeSize, chunckTimeInterval);
+
+	_dataSetSize = _trainDataChunckSet.size();
+
+	_som = new SelfOrganizingMaps(size, totalWeigths, maxEpochs, initialLearningRate, _buildDataChunckSet, _dataSetSize);
 }
 
 void display(){
@@ -225,7 +251,7 @@ void idle(void){
 			cout << _countingSampling << endl;
 #endif
 		int randInput = rand() % _dataSetSize;
-		_som->trainSegmentedFunctions(_trainDataSet[randInput]->dataPackageToVector());
+		_som->trainSegmentedFunctions(_trainDataChunckSet[randInput]->dataChunckToVector());
 		glutPostRedisplay();
  	}
 }

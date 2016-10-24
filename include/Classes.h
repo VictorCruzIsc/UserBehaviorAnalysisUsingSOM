@@ -22,8 +22,10 @@
 
 #include "Matrix.h"
 #include "DataPackage.h"
+#include "DataChunck.h"
 
 //#define DEBUG
+//#define DEBUG_DATCHUNCK
 
 using namespace std;
 
@@ -94,6 +96,9 @@ class SelfOrganizingMaps{
 		SelfOrganizingMaps(int size, int totalWeights,
 			int maxEpochs, double initialLearningRate, vector<DataPackage* > dataSet,
 			int totalSamples);
+		SelfOrganizingMaps(int size, int totalWeights,
+			int maxEpochs, double initialLearningRate, vector<DataChunck* > dataSet,
+			int totalSamples);
 		~SelfOrganizingMaps();
 		int getIterations();
 		int getEpochs();
@@ -155,6 +160,8 @@ class DataSet{
 	public:
 		static vector<DataPackage *> createDataSetPackageFormat(string user,
 			int type, int initial, int final);
+		static vector<DataChunck *> createDataSetDataChunckFormat(string user,
+			int type, int initial, int final, int chunckTimeSize, int chunckTimeInterval);
 };
 
 #endif

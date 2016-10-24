@@ -14,17 +14,25 @@
 #include <cfloat>
 #include <algorithm>
 #include <map>
+#include <stdio.h>
+#include <time.h>
 
 using namespace std;
 
 //#define DEBUG
+#define FIRST_OCTET_MULTIPLIER		16777216
+#define SECOND_OCTET_MULTIPLIER		65536
+#define THIRD_OCTET_MULTIPLIER		256
+#define FOURTH_OCTET_MULTIPLIER		1
+#define INTERNAL_IP_VALUE			148 * FIRST_OCTET_MULTIPLIER + 201 * SECOND_OCTET_MULTIPLIER
 
 class DataPackage{
 	public:
 		DataPackage();
 		DataPackage(bool way, int localIp, int destinationIp, int protocol,
 			int localPort, int remotePort, int transmitedBytes,
-			long long int originTimeStamp, string deviceOSIp, string deviceMAC);
+			time_t originTimeStamp, string deviceOSIp, string deviceMAC,
+			bool internalIp);
 		DataPackage(vector<string> packageElements);
 		~DataPackage();
 		
@@ -36,10 +44,11 @@ class DataPackage{
 		int getLocalPort(){ return _localPort; }
 		int getRemotePort(){ return _remotePort; }
 		int getTransmitedBytes(){ return _transmitedBytes; }
-		long long int getOriginTimeStamp(){ return _originTimeStamp; }
+		time_t getOriginTimeStamp(){ return _originTimeStamp; }
 		string getDeviceOSIp(){ return _deviceOSIp; }
 		string getDeviceMAC(){ return _deviceMAC; }
-		bool getError(){return _error;}
+		bool hasError(){ return _error; }
+		bool isInternalIp(){ return _internalIp; }
 
 		// setters
 		void setWay(bool way){ _way = way; }
@@ -53,7 +62,7 @@ class DataPackage{
 		void setTransmitedBytes(int transmitedBytes){
 			_transmitedBytes = transmitedBytes;
 		}
-		void setOriginTimestamp(long long int originTimeStamp){
+		void setOriginTimestamp(time_t originTimeStamp){
 			_originTimeStamp = originTimeStamp;
 		}
 		void setDeviceOSIp(string deviceOSIp){ _deviceOSIp = deviceOSIp; }
@@ -69,13 +78,14 @@ class DataPackage{
 
 		bool _way;
 		bool _error;
+		bool _internalIp;
 		int _localIp;
 		int _destinationIp;
 		int _localPort;
 		int _remotePort;
 		int _transmitedBytes;
 		int _protocol;
-		long long int _originTimeStamp;
+		time_t _originTimeStamp;
 		string _deviceOSIp;
 		string _deviceMAC;
 		vector<string> _components;

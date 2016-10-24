@@ -10,6 +10,7 @@
 
 #include "RGB.h"
 #include "DataPackage.h"
+#include "DataChunck.h"
 
 using namespace std;
 
@@ -19,6 +20,7 @@ class Neuron{
 		Neuron(int x, int y, vector<double> weigths);
 		Neuron(int x, int y, int totalWeights, RGB* rgb);
 		Neuron(int x, int y, int totalWeights, DataPackage* dataPackage);
+		Neuron(int x, int y, int totalWeights, DataChunck* dataChunck);
 		~Neuron();
 
 		int getX();

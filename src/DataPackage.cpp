@@ -12,11 +12,12 @@ DataPackage::DataPackage(){
 	_deviceOSIp = "";
 	_deviceMAC = "";
 	_error = false;
+	_internalIp = false;
 }
 
 DataPackage::DataPackage(bool way, int localIp, int destinationIp, int protocol,
 			int localPort, int remotePort, int transmitedBytes,
-			long long int originTimeStamp, string deviceOSIp, string deviceMAC){
+			time_t originTimeStamp, string deviceOSIp, string deviceMAC, bool internalIp){
 	_way = way;
 	_localIp = localIp;
 	_destinationIp = destinationIp;
@@ -28,6 +29,7 @@ DataPackage::DataPackage(bool way, int localIp, int destinationIp, int protocol,
 	_deviceOSIp = deviceOSIp;
 	_deviceMAC = deviceMAC;
 	_error = false;
+	_internalIp = internalIp;
 }
 
 DataPackage::DataPackage(vector<string> packageElements){
@@ -64,6 +66,7 @@ DataPackage::DataPackage(vector<string> packageElements){
 	_deviceMAC = packageElements[10];
 	_components = packageElements;
 	_error =  false;
+	_internalIp = false;
 }
 
 bool DataPackage::wayFromString(string value){
@@ -92,11 +95,25 @@ int DataPackage::ipFromString(string value){
 	replace(value.begin(), value.end(), '.', ' ');
 
 	stringstream ssin(value);
-	
-	for(int i=0; i<4; i++){
-		ssin >> octet;
-		ip += stoi(octet) * multiplier[i];
+
+	ssin >> octet;
+	ip += stoi(octet) * multiplier[0];
+
+	ssin >> octet;
+	ip += stoi(octet) * multiplier[1];
+
+	if(ip == ( (148 * multiplier[0]) + (201 * multiplier[1]) )){
+		_internalIp = true;
+	}else{
+		_internalIp = false;
 	}
+
+	ssin >> octet;
+	ip += stoi(octet) * multiplier[2];
+
+	ssin >> octet;
+	ip += stoi(octet) * multiplier[3];
+
 	return ip;
 }
 
