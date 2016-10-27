@@ -38,8 +38,8 @@ class DataPackage{
 		
 		// getters
 		bool getWay(){ return _way; }
-		int getLocalIp(){ return _localIp; }
-		int getDestinationIp(){ return _destinationIp; }
+		long int getLocalIp(){ return _localIp; }
+		long int getDestinationIp(){ return _destinationIp; }
 		int getProtocol(){ return _protocol; }
 		int getLocalPort(){ return _localPort; }
 		int getRemotePort(){ return _remotePort; }
@@ -52,8 +52,8 @@ class DataPackage{
 
 		// setters
 		void setWay(bool way){ _way = way; }
-		void setLocalIp(int localIp){ _localIp = localIp; }
-		void setdestinationIp(int destinationIp){
+		void setLocalIp(long int localIp){ _localIp = localIp; }
+		void setdestinationIp(long int destinationIp){
 			_destinationIp = destinationIp;
 		}
 		void setProtocol(int protocol){ _protocol = protocol; }
@@ -73,14 +73,14 @@ class DataPackage{
 
 	private:
 		bool wayFromString(string value);
-		int ipFromString(string value);
+		long int ipFromString(string value);
 		int encodeProtocolName(string value);
 
 		bool _way;
 		bool _error;
 		bool _internalIp;
-		int _localIp;
-		int _destinationIp;
+		long int _localIp;
+		long int _destinationIp;
 		int _localPort;
 		int _remotePort;
 		int _transmitedBytes;
@@ -89,5 +89,13 @@ class DataPackage{
 		string _deviceOSIp;
 		string _deviceMAC;
 		vector<string> _components;
+
+		static const long int FIRSTOCTET;
+		static const long int SECONDOCTET;
+		static const long int THIRDOCTET;
+		static const long int FOURTHOCTET;
+		static const long int INTERNALIPFIRSTOCTET;
+		static const long int INTERNALIPSECONDOCTET;
+		static const long int INTERNALIPMASK;
 };
 #endif

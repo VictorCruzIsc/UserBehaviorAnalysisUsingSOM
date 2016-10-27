@@ -1,5 +1,15 @@
 #include "../include/DataPackage.h"
 
+const long int DataPackage::FIRSTOCTET	= 			16777216;
+const long int DataPackage::SECONDOCTET	= 			65536;
+const long int DataPackage::THIRDOCTET	= 			256;
+const long int DataPackage::FOURTHOCTET	= 			1;
+const long int DataPackage::INTERNALIPFIRSTOCTET =	148 * DataPackage::FIRSTOCTET;
+const long int DataPackage::INTERNALIPSECONDOCTET =	201 * DataPackage::SECONDOCTET;
+const long int DataPackage::INTERNALIPMASK =		DataPackage::INTERNALIPFIRSTOCTET + DataPackage::INTERNALIPSECONDOCTET;
+
+
+
 DataPackage::DataPackage(){
 	_way = false;
 	_localIp = 0;
@@ -76,43 +86,38 @@ bool DataPackage::wayFromString(string value){
 	return true;
 }
 
-int DataPackage::ipFromString(string value){
+long int DataPackage::ipFromString(string value){
 	// 189.230.4.163
 	// To calculate the decimal address from a dotted string, perform the following calculation.
 	// (first octet * 256³) + (second octet * 256²) + (third octet * 256) + (fourth octet)
 	// =	(first octet * 16777216) + (second octet * 65536) + (third octet * 256) + (fourth octet)
 	// =	(189 * 16777216) + (230 * 65536) + (4 * 256) + (163)
 	// = 3185968291
-	int ip = 0;
-	int multiplier[4];
-	string octet;
 
-	multiplier[0] = 16777216;
-	multiplier[1] = 65536;
-	multiplier[2] = 256;
-	multiplier[3] = 1;
+	long int ip = 0;
+	string octet;
 
 	replace(value.begin(), value.end(), '.', ' ');
 
 	stringstream ssin(value);
 
 	ssin >> octet;
-	ip += stoi(octet) * multiplier[0];
+	ip += stol(octet) * DataPackage::FIRSTOCTET;
 
 	ssin >> octet;
-	ip += stoi(octet) * multiplier[1];
+	ip += stol(octet) * DataPackage::SECONDOCTET;
 
-	if(ip == ( (148 * multiplier[0]) + (201 * multiplier[1]) )){
+	if(ip == DataPackage::INTERNALIPMASK){
 		_internalIp = true;
 	}else{
 		_internalIp = false;
 	}
 
 	ssin >> octet;
-	ip += stoi(octet) * multiplier[2];
+	ip += stol(octet) * DataPackage::THIRDOCTET;
 
 	ssin >> octet;
-	ip += stoi(octet) * multiplier[3];
+	ip += stol(octet) * DataPackage::FOURTHOCTET;
 
 	return ip;
 }
