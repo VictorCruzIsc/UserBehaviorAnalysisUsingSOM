@@ -73,7 +73,7 @@ class DataPackage{
 
 	private:
 		bool wayFromString(string value);
-		long int ipFromString(string value);
+		long int ipFromString(string value, bool isInternal);
 		int encodeProtocolName(string value);
 
 		bool _way;

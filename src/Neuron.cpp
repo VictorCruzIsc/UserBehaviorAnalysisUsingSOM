@@ -66,7 +66,7 @@ Neuron::Neuron(int x, int y, int totalWeights, DataChunck* dataChunck) :
 	double totalTCP = dataChunck-> getTotalBytesThroughTCP();
 	double totalUDP = dataChunck->getTotalBytesThroughUDP();
 
-	RGB* rgb = new RGB(totalBytes, totalTCP, totalUDP);
+	RGB* rgb = new RGB(metricTCPUDP, metricInternalIP, metricWeb);
 
 	_neuronColor = rgb;
 

@@ -18,7 +18,8 @@
 #define BUILD					0
 #define TRAIN					1
 #define EVALUATE				2
-#define DEBUG
+#define SIGMA 					3
+//#define DEBUG
 
 using namespace std;
 
@@ -36,6 +37,8 @@ int 					_executionType;
 int 					_width;
 int 					_height;
 int 					_countingSampling;
+int 					_initial;
+int 					_final;
 bool 					_training;
 
 // Package Methods
@@ -88,15 +91,27 @@ int main(int argc, char **argv){
 	cout << "Los argumentos para la ejecucion son validos" << endl;
 
 	_training = false;
+	_sigma = SIGMA;
 	_executionType = atoi(argv[1]);
-	_dataSetType = atoi(argv[2]);
-	_sigma = 3;
+
+	if(_executionType == 0){ // User is going to be analyzed
+		_dataSetType = atoi(argv[2]);
+		_initial = atoi(argv[3]);
+		_final = atoi(argv[4]);
+	}else{
+		_dataSetType = 0;
+		_initial = 0;
+		_final = 0;
+	}
+
+#ifdef DEBUG
 	_countingSampling = 0;
+#endif
 
 	switch(_executionType){
 		case 0: // Get the matrix randomly from a dataset
 			algorithmInitializationDataChunck(NORMALSIZE, TOTALWEIGHTS,
-				MAXEPOCHS, INITIALLEARNINGRATE, _dataSetType, 0, 1, 5, 10);
+				MAXEPOCHS, INITIALLEARNINGRATE, _dataSetType, _initial, _final, 5, 10);
 			_width = BASEWIDTH;
 			_height = BASEHEIGHT;
 			_openGLFovy = BASEOPENGLFOVY;

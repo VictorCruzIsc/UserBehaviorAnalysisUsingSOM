@@ -49,6 +49,9 @@ DataPackage::DataPackage(vector<string> packageElements){
 		return;
 	}
 
+	_error =  false;
+	_internalIp = false;
+
 #ifdef DEBUG
 	cout << "Values: " << endl;
 	for(int i=0; i<12; i++){
@@ -65,8 +68,8 @@ DataPackage::DataPackage(vector<string> packageElements){
 	}
 
 	_way = wayFromString(packageElements[2]);
-	_localIp = ipFromString(packageElements[3]);
-	_destinationIp = ipFromString(packageElements[4]);
+	_localIp = ipFromString(packageElements[3], true);
+	_destinationIp = ipFromString(packageElements[4], false);
 	_protocol = encodeProtocolName(packageElements[5]);
 	_localPort = stoi(packageElements[6]);
 	_remotePort = stoi(packageElements[7]);
@@ -75,8 +78,6 @@ DataPackage::DataPackage(vector<string> packageElements){
 	_deviceOSIp = packageElements[9];
 	_deviceMAC = packageElements[10];
 	_components = packageElements;
-	_error =  false;
-	_internalIp = false;
 }
 
 bool DataPackage::wayFromString(string value){
@@ -86,7 +87,7 @@ bool DataPackage::wayFromString(string value){
 	return true;
 }
 
-long int DataPackage::ipFromString(string value){
+long int DataPackage::ipFromString(string value, bool isInternal){
 	// 189.230.4.163
 	// To calculate the decimal address from a dotted string, perform the following calculation.
 	// (first octet * 256³) + (second octet * 256²) + (third octet * 256) + (fourth octet)
@@ -107,10 +108,10 @@ long int DataPackage::ipFromString(string value){
 	ssin >> octet;
 	ip += stol(octet) * DataPackage::SECONDOCTET;
 
-	if(ip == DataPackage::INTERNALIPMASK){
-		_internalIp = true;
-	}else{
-		_internalIp = false;
+	if(isInternal){
+		if(ip == DataPackage::INTERNALIPMASK){
+			_internalIp = true;
+		}
 	}
 
 	ssin >> octet;
