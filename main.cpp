@@ -48,8 +48,8 @@ void algorithmInitializationDataPackage(int size, int totalWeigths, int maxEpoch
 void algorithmInitializationDataChunck(int size, int totalWeigths, int maxEpochs,
 	double initialLearningRate, int dataSetType, int initial, int final,
 	int chunckTimeSize, int chunckTimeInterval);
-bool createTestingDataSetInitialization();
-bool testingDataSetInitialization(vector<int> dataSetTypes, vector<int> initials,
+bool createEvaluationDataSetInitialization();
+bool evaluationDataSetInitialization(vector<int> dataSetTypes, vector<int> initials,
 	vector<int> finals, int chunckTimeSize, int chunckTimeInterval);
 
 
@@ -136,7 +136,7 @@ int main(int argc, char **argv){
 			// Get one way to retrive all the parameters needed for creating
 			// a testing dataset
 			cout << "Se esta creando el dataset de evaluacion..." << endl;
-			_isTestingDataSetInitialized = createTestingDataSetInitialization();
+			_isTestingDataSetInitialized = createEvaluationDataSetInitialization();
 			if(!_isTestingDataSetInitialized)
 				cout << "No fue posible crear el dataSet para evaluacion" << endl;
 			else
@@ -209,7 +209,7 @@ void algorithmInitializationDataChunck(int size, int totalWeigths, int maxEpochs
 	_som = new SelfOrganizingMaps(size, totalWeigths, maxEpochs, initialLearningRate, _buildDataChunckSet, _dataSetSize);
 }
 
-bool createTestingDataSetInitialization(){
+bool createEvaluationDataSetInitialization(){
 	vector<int> dataSetTypes;
 	vector<int> initials;
 	vector<int> finals;
@@ -218,10 +218,10 @@ bool createTestingDataSetInitialization(){
 	initials.push_back(0);
 	finals.push_back(9);
 
-	return testingDataSetInitialization(dataSetTypes, initials, finals, CHUNCKTIMESIZE, CHUNCKTIMEINTERVAL);
+	return evaluationDataSetInitialization(dataSetTypes, initials, finals, CHUNCKTIMESIZE, CHUNCKTIMEINTERVAL);
 }
 
-bool testingDataSetInitialization(vector<int> dataSetTypes, vector<int> initials,
+bool evaluationDataSetInitialization(vector<int> dataSetTypes, vector<int> initials,
 	vector<int> finals, int chunckTimeSize, int chunckTimeInterval){
 	int totalDataSets = dataSetTypes.size();
 	int initial = 0;
@@ -286,13 +286,6 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 			*/
 			cout << "No functionality implemented for reset until now" << endl;
 			break;
-		case '0':
-			cout << "Independent dataset not implemented" << endl;
-			/*
-				_som->evaluateIndependentVector(_testDataset[0]);
-				glutPostRedisplay();
-			*/
-			break;
 		case 's':
 			if(_training)
 				_training = !_training;
@@ -303,12 +296,18 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 			Utils::exportMatrixToFile(_som->getMatrix(), _som->getEpochs(),
 				MAXEPOCHS, INITIALLEARNINGRATE, _som->getCurrenLearningRate());
 			break;
-		case 'b':
-			cout << "Blue dataset evaluation not implemented" << endl;
-			/*
-				_som->evaluateIndependentRGBDataSet(_evaluationDataSet[0], _sigma);
-				glutPostRedisplay();
-			*/
+		// Users evaluation
+		case '1': // User type 1
+			break;
+		case '2': // User type 2
+			break;
+		case '3': // User type 3
+			cout << "Evaluation dataset of user " << key << endl;
+			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[0],
+				_sigma, 5, 200);
+			glutPostRedisplay();
+			break;
+		case '4': //User type 4
 			break;
 	}
 }

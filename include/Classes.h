@@ -129,7 +129,10 @@ class SelfOrganizingMaps{
 
 		// Testing cases
 		void evaluateIndependentVector(vector<double> inputVector);
-		void evaluateIndependentRGBDataSet(vector<RGB *> inputDataset, int sigmaMultiplier);
+		void evaluateIndependentRGBDataSet(vector<RGB *> inputDataset,
+			int sigmaMultiplier);
+		void evaluateIndependentDataChuckDataSet(vector<DataChunck *> inputDataset,
+			int sigmaMultiplier, int iterations, int chunckSize);
 
 		// Import trained matrix
 		void setWeightVector(vector<double> weightVector, int x, int y);
