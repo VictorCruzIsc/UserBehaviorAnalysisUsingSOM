@@ -344,6 +344,94 @@ void SelfOrganizingMaps::evaluateIndependentRGBDataSet(vector<RGB *> inputDatase
 	cout << "/" << inputDataset.size() << endl;
 }
 
+void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(vector<DataChunck *> inputDataset, int sigmaMultiplier,
+	int iterations, int chunckSize){
+	vector<double> weights;
+	vector<double> distances;
+	vector<Neuron *> bmus;
+	double distance;
+	double totalDistance;
+	double average;
+	double variance;
+	double stdDeviation;
+	double sigma;
+	double lowerRange;
+	double upperRange;
+	int errors = 0;
+	int totalElements = inputDataset.size();
+	int initialIndex = 0;
+	int finalIndex =0;
+	int globalError = 0;
+
+	cout << "DataSet size:" << totalElements << endl;
+
+	weights.resize(3);
+
+	for(int j=0; j<iterations; j++){
+		cout << "Iteration: " << j << endl;
+
+		initialIndex = rand() / totalElements;
+		while((initialIndex + 100) >= totalElements){
+			initialIndex = rand() / totalElements;
+		}
+
+		finalIndex = initialIndex + chunckSize;
+
+		cout << "Getting the bmu's of elements from " << initialIndex;
+		cout << " to " << finalIndex << " in the dataset..." << endl;
+
+		for(int i=initialIndex; i<finalIndex; i++){
+			weights[0] = inputDataset[i]->getProportionTCPUDPMetric();
+			weights[1] = inputDataset[i]->getBytesToInternalIPMetric();
+			weights[2] = inputDataset[i]->getBytesThroughWebMetric();
+
+			Neuron *bmu = getBMU(weights);
+			distance = bmu->distanceToInputVector(weights);
+			distances.push_back(distance);
+			bmus.push_back(bmu);
+			totalDistance += distance;
+		}
+
+		cout << "Getting average, variance, stdDeviation, and ranges..." << endl;
+
+		average = totalDistance/inputDataset.size();
+		variance = Utils::getVariance(distances, average);
+		stdDeviation = sqrt(variance);
+		sigma = sigmaMultiplier*stdDeviation;
+		lowerRange = average - sigma;
+		upperRange = average + sigma;
+
+		cout << "Getting stadistical information about errors and matching neurons..." << endl;
+
+		for(int i=0; i<100;i++){
+			distance = distances[i];
+			Neuron *bmu = bmus[i];
+			if(distance < lowerRange || distance > upperRange){
+				_matrix->getNeuron(bmu->getX(), bmu->getY())->setNeuronColor(255,0,0);
+				errors++;
+				//cout << "Error out of " << sigmaMultiplier << " sigma" << endl;
+			}else{
+				_matrix->getNeuron(bmu->getX(), bmu->getY())->setNeuronColor(0,0,0);
+				//cout << "OK" << endl;
+			}
+		}
+
+		distances.clear();
+
+		cout << "SubDataset results with " << sigmaMultiplier << " sigma: " << errors;
+		cout << "/" << chunckSize << endl;
+
+		globalError += errors;
+		errors = 0;
+	}
+
+	cout << "Iterations summary:" << endl;
+	cout << "SubDataset results with " << sigmaMultiplier << " sigma " << globalError;
+	cout << "/" << chunckSize*iterations << endl;
+	cout << "Evaluated percetage of the complete dataSet (" << totalElements <<"): ";
+	cout << ((chunckSize*iterations*100)/double(totalElements)) << "%" << endl;
+}
+
 void SelfOrganizingMaps::setWeightVector(vector<double> weightVector, int x, int y){
 	_matrix->updateWeightVector(weightVector, x, y);
 }
