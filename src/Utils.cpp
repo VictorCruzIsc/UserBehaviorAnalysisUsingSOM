@@ -32,6 +32,8 @@ SelfOrganizingMaps* Utils::importSOMFromFiles(char *fileName){
     string line;
     vector<double> neuronWeights;
 
+    // TODO: Check if the file exists otherwise return
+
     infile.open(fileName);
 
     getline(infile,line);
@@ -51,6 +53,8 @@ SelfOrganizingMaps* Utils::importSOMFromFiles(char *fileName){
     
     SelfOrganizingMaps *som = new SelfOrganizingMaps(size, totalWeights,
 		maxEpochs, initialLearningRate, 0, false);
+
+    // TODO: Check if som was succesfully created, other wise return
 	
 	for(int row=0; row<size; row++){ // For every row
 		getline(infile,line);
