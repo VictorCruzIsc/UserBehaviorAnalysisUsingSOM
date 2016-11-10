@@ -61,20 +61,6 @@ void idle(void);
 void init();
 
 int main(int argc, char **argv){
-
-/*
-	_buildDataSet = DataSet::createDataSetPackageFormat("user1", BUILD, 0, 1);
-	_trainDataSet = DataSet::createDataSetPackageFormat("user1", TRAIN, 0, 1);
-
-	cout << _buildDataSet.size() << endl;
-	cout << _trainDataSet.size() << endl;
-
-	_buildDataChunckSet = DataSet::createDataSetDataChunckFormat("user1", BUILD, 0, 1, 5, 10);
-	cout << "DataSetSize: " << _buildDataChunckSet.size() << endl;
-	_buildDataChunckSet[0]->info();
-	_buildDataChunckSet[_buildDataChunckSet.size() - 1]->info();
-*/
-
 	if(argc < 3 ){
 		cout << "Se requieren 3 argumentos para iniciar el programa" << endl;
 		cout << "1: Programa" << endl;
@@ -214,9 +200,15 @@ bool createEvaluationDataSetInitialization(){
 	vector<int> initials;
 	vector<int> finals;
 
+	dataSetTypes.push_back(1);
+	dataSetTypes.push_back(2);
 	dataSetTypes.push_back(3);
 	initials.push_back(0);
+	initials.push_back(0);
+	initials.push_back(0);
+	finals.push_back(1);
 	finals.push_back(9);
+	finals.push_back(20);
 
 	return evaluationDataSetInitialization(dataSetTypes, initials, finals, CHUNCKTIMESIZE, CHUNCKTIMEINTERVAL);
 }
@@ -226,14 +218,18 @@ bool evaluationDataSetInitialization(vector<int> dataSetTypes, vector<int> initi
 	int totalDataSets = dataSetTypes.size();
 	int initial = 0;
 	int final = 0;
+	int dataSetType = BUILD;
 	string user =  "";
 
 	for(int i=0; i<totalDataSets; i++){
 		user =  "user" + to_string(dataSetTypes[i]);
 		initial = initials[i];
 		final = finals[i];
+		if(i == 2){
+			dataSetType = EVALUATE;
+		}
 		vector<DataChunck *> dataChunckSet =
-			DataSet::createDataSetDataChunckFormat(user, EVALUATE, initial, final, chunckTimeSize, chunckTimeInterval);
+			DataSet::createDataSetDataChunckFormat(user, dataSetType, initial, final, chunckTimeSize, chunckTimeInterval);
 		_evaluateDataChunckSetCollection.push_back(dataChunckSet);
 	}
 
@@ -298,13 +294,24 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 			break;
 		// Users evaluation
 		case '1': // User type 1
+			cout << "Evaluation dataset of user " << key << endl;
+			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[0],
+				//_sigma, 5, 200, 167, 88, 162);
+				_sigma, 5, 1000, 255, 0, 0);
+			glutPostRedisplay();
 			break;
 		case '2': // User type 2
+			cout << "Evaluation dataset of user " << key << endl;
+			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[1],
+				//_sigma, 5, 200, 8, 96, 188);
+				_sigma, 5, 1000, 0, 255, 0);
+			glutPostRedisplay();
 			break;
 		case '3': // User type 3
 			cout << "Evaluation dataset of user " << key << endl;
-			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[0],
-				_sigma, 5, 200);
+			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[2],
+				//_sigma, 5, 200, 0, 0, 0);
+				_sigma, 5, 1000, 0, 0, 255);
 			glutPostRedisplay();
 			break;
 		case '4': //User type 4

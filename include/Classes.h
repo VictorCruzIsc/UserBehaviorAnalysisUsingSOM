@@ -133,6 +133,9 @@ class SelfOrganizingMaps{
 			int sigmaMultiplier);
 		void evaluateIndependentDataChuckDataSet(vector<DataChunck *> inputDataset,
 			int sigmaMultiplier, int iterations, int chunckSize);
+		void evaluateIndependentDataChuckDataSet(vector<DataChunck *> inputDataset,
+			int sigmaMultiplier, int iterations, int chunckSize, double red,
+			double green, double blue);
 
 		// Import trained matrix
 		void setWeightVector(vector<double> weightVector, int x, int y);
