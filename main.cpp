@@ -6,53 +6,54 @@
 
 #include "include/Classes.h"
 
+// OpenGL constants
 #define BASEWIDTH				400
 #define BASEHEIGHT 				400
 #define BASEOPENGLFOVY			45.0
+#define WINDOWTITLE 			"Self Organizing Maps"
+
+// SOM constants
 #define TOTALWEIGHTS 			3
 #define MAXEPOCHS 				1000
 #define NORMALSIZE 				100
 #define INITIALLEARNINGRATE 	0.1
+#define SIGMA 					3
+
+// DataSet constants
 #define BUILD					0
 #define TRAIN					1
 #define EVALUATE				2
-#define SIGMA 					3
 #define CHUNCKTIMESIZE 			5	// Given in minutes
 #define CHUNCKTIMEINTERVAL 		10	// Given in seconds
-#define WINDOWTITLE 			"Self Organizing Maps"
+
+// Developing constants
 //#define DEBUG
 
 using namespace std;
 
-// Package Variables
-vector<DataPackage *>	_buildDataSet;
-vector<DataPackage *>	_trainDataSet;
-vector<DataChunck *>	_buildDataChunckSet;
-vector<DataChunck *>	_trainDataChunckSet;
-vector<DataChunck *>	_evaluateDataChunckSet;
-vector<vector<DataChunck *> > _evaluateDataChunckSetCollection;
-SelfOrganizingMaps		*_som;
-double					_openGLFovy;
-int						_dataSetSize;
-int 					_sigma;
-int 					_executionType;
-int 					_width;
-int 					_height;
-int 					_countingSampling;
-bool 					_training;
-bool					_isTestingDataSetInitialized;
+// Global variables
 
-// Local Methods
-void algorithmInitializationDataPackage(int size, int totalWeigths, int maxEpochs,
-	double initialLearningRate, int dataSetType, int initial, int final);
-void algorithmInitializationDataChunck(int size, int totalWeigths, int maxEpochs,
-	double initialLearningRate, int dataSetType, int initial, int final,
-	int chunckTimeSize, int chunckTimeInterval);
-bool createEvaluationDataSetInitialization();
-bool evaluationDataSetInitialization(vector<int> dataSetTypes, vector<int> initials,
-	vector<int> finals, int chunckTimeSize, int chunckTimeInterval);
+// OpenGL variables
+double							_openGLFovy;
 
+// SOM variables
+int								_trainDataSetSize;
+int 							_sigma;
+int 							_executionType;
+int 							_width;
+int 							_height;
+int 							_countingSampling;
+bool 							_training;
+bool							_isEvaluationDataSetInitialized;
+SelfOrganizingMaps				*_som;
 
+// DataSet variables
+vector<DataChunck *>			_buildDataChunckSet;
+vector<DataChunck *>			_trainDataChunckSet;
+vector<DataChunck *>			_evaluateDataChunckSet;
+vector<vector<DataChunck *> >	_evaluateDataChunckSetCollection;
+
+// ===================== Local Method Headers =====================
 // OpenGl methods
 void display(void);
 void reshape(int width, int height);
@@ -60,126 +61,121 @@ void keyboard(unsigned char key, int x, int y);
 void idle(void);
 void init();
 
-int main(int argc, char **argv){
-	if(argc < 3 ){
-		cout << "Se requieren 3 argumentos para iniciar el programa" << endl;
-		cout << "1: Programa" << endl;
-		cout << "2: tipo de ejecucion [0 - Dataset | 1 - Cargar matrix entrenada]";
-		cout << "3: Dataset deseado para crear y entrenar la matriz o archivos que comforman la matriz entrenada" << endl;
-		return 0;
-	}
+// Algorithm methods
+void initializeDataSetsForUser(int size, int totalWeigths, int maxEpochs,
+	double initialLearningRate, int dataSetType, int initial, int final,
+	int chunckTimeSize, int chunckTimeInterval);
+bool createEvaluationDataSets();
+bool evaluationDataSetInitialization(vector<int> dataSetTypes, vector<int> initials,
+	vector<int> finals, int chunckTimeSize, int chunckTimeInterval);
+// ===================== Local Method Headers =====================
 
-	cout << "El numero de argumentos es valido" << endl;
+// ===================== Method Declaration =======================
+void display(){
+	// Clear buffers
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	_training = false;
-	_sigma = SIGMA;
-	_executionType = atoi(argv[1]);
+	// Compute eye position
+	glLoadIdentity();
 
-#ifdef DEBUG
-	_countingSampling = 0;
-#endif
+	// TODO: check what does this function do
+	gluLookAt(50,50,200, 50,50,0, 0,1,0);
 
-	int dataSetType = 0;
-	int initial = 0;
-	int final = 0;
-	int chunckTimeSize = 0;
-	int chunckTimeInterval = 0;
-	int totalFiles = 0;
-	int matrixComposition = 0;
+	// Draw the current map
+	_som->displayUsingNeuronColor();
 
-	switch(_executionType){
-		case 0: // Analyze an user
-			dataSetType = atoi(argv[2]);
-			initial = atoi(argv[3]);
-			final = atoi(argv[4]);
-			chunckTimeSize = 5;
-			chunckTimeInterval = 10;
+	// Draw to screen
+	glutSwapBuffers();
+}
 
-			cout << "Se esta creando el dataset...";
+void reshape(int width, int height){
+	glViewport(0, 0, (GLsizei) width, (GLsizei) height);
+}
 
-			algorithmInitializationDataChunck(NORMALSIZE, TOTALWEIGHTS,
-				MAXEPOCHS, INITIALLEARNINGRATE, dataSetType, initial, final, CHUNCKTIMESIZE, CHUNCKTIMEINTERVAL);
-
-			cout << "El dataset fue creado correctamente";
-
-			_width = BASEWIDTH;
-			_height = BASEHEIGHT;
-			_openGLFovy = BASEOPENGLFOVY;
-			break;
-		case 1: // Get the matrix from a previous training
-			vector<char *> fileNames;
-			totalFiles = 0;
-			matrixComposition = 0;
-
-			for(int files = 2; files<argc; files++){
-				fileNames.push_back(argv[files]);
-			}
-
-			totalFiles = fileNames.size();
-			matrixComposition = sqrt(totalFiles);
-
-			// TODO:
-			// Get one way to retrive all the parameters needed for creating
-			// a testing dataset
-			cout << "Se esta creando el dataset de evaluacion..." << endl;
-			_isTestingDataSetInitialized = createEvaluationDataSetInitialization();
-			if(!_isTestingDataSetInitialized)
-				cout << "No fue posible crear el dataSet para evaluacion" << endl;
+void keyboard(unsigned char key, int mouseX, int mouseY){ 
+	switch (key){
+		case 't':
+			cout << "Total samples: " << _trainDataSetSize << endl;
+			_training = !_training;
+			if(_training)
+				cout << "Training..." << endl;
 			else
-				cout << "El dataset de evaluacion fue creado correctamente" << endl;
-			
-			_width = BASEWIDTH * matrixComposition;
-			_height = BASEHEIGHT * matrixComposition;
-			_openGLFovy = BASEOPENGLFOVY * matrixComposition;
-
-			cout << "Se estan exportando " << totalFiles << " archivos..." << endl;
-
-			_som = Utils::importSOMFromFiles(fileNames, matrixComposition,
-				totalFiles);
-
-			cout << "Los archivos fueron exportados correctamente" << endl;
+				cout << "Stopped training" << endl;
+			break;
+		case 'r':
+			/*
+				_training = false;
+				_som->reset();
+				cout << "Map reset" << endl;
+				glutPostRedisplay();
+			*/
+			cout << "No functionality implemented for reset until now" << endl;
+			break;
+		case 's':
+			if(_training)
+				_training = !_training;
+			cout << "Entrenamiento detenido" << endl;
+			break;
+		case 'e':
+			cout << "Export matrix..." << endl;
+			Utils::exportMatrixToFile(_som->getMatrix(), _som->getEpochs(),
+				MAXEPOCHS, INITIALLEARNINGRATE, _som->getCurrenLearningRate());
+			break;
+		// Users evaluation
+		case '1': // User type 1
+			cout << "Evaluation dataset of user " << key << endl;
+			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[0],
+				//_sigma, 5, 200, 167, 88, 162);
+				_sigma, 5, 200, 255, 0, 0);
+			glutPostRedisplay();
+			break;
+		case '2': // User type 2
+			cout << "Evaluation dataset of user " << key << endl;
+			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[1],
+				//_sigma, 5, 200, 8, 96, 188);
+				_sigma, 5, 200, 0, 255, 0);
+			glutPostRedisplay();
+			break;
+		case '3': // User type 3
+			cout << "Evaluation dataset of user " << key << endl;
+			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[2],
+				//_sigma, 5, 200, 0, 0, 0);
+				_sigma, 5, 200, 0, 0, 255);
+			glutPostRedisplay();
+			break;
+		case '4': //User type 4
 			break;
 	}
-
-	// OpenGL window configuration
-	glutInitWindowSize(_width, _height);
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glutCreateWindow(WINDOWTITLE);
-
-	// OpenGL register callback functions
-	glutDisplayFunc(display);
-	glutReshapeFunc(reshape);
-	glutKeyboardFunc(keyboard); //TODO
-	glutIdleFunc(idle);
-
-	// OpenGL initalize parameters
-	init();
-
-	// OpenGL loop
-	glutMainLoop();
-
-	// Release memory
-	delete _som;
-
-	return 0;
 }
 
-void algorithmInitializationDataPackage(int size, int totalWeigths, int maxEpochs,
-	double initialLearningRate, int dataSetType, int initial, int final){
-
-	string user =  "user" + to_string(dataSetType);
-
-	_buildDataSet = DataSet::createDataSetPackageFormat(user, BUILD, initial, final);
-	_trainDataSet = DataSet::createDataSetPackageFormat(user, TRAIN, initial, final);
-
-	_dataSetSize = _trainDataSet.size();
-	_isTestingDataSetInitialized = false;
-
-	_som = new SelfOrganizingMaps(size, totalWeigths, maxEpochs, initialLearningRate, _buildDataSet, _dataSetSize);
+void idle(void){
+	if (_training && (_som->getEpochs() < MAXEPOCHS)){
+#ifdef DEBUG
+		_countingSampling++;
+		if(_countingSampling % 500 == 0)
+			cout << _countingSampling << endl;
+#endif
+		int randInput = rand() % _trainDataSetSize;
+		_som->trainSegmentedFunctions(_trainDataChunckSet[randInput]->dataChunckToVector());
+		glutPostRedisplay();
+ 	}
 }
 
-void algorithmInitializationDataChunck(int size, int totalWeigths, int maxEpochs,
+void init(){
+	// Initialize viewing system
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(_openGLFovy, 1.0, 1.0, 1000.0);
+	glMatrixMode(GL_MODELVIEW);
+
+	// Initialize background color to black
+	glClearColor(0.0,0.0,0.0,0.0);
+
+	// Enable depth buffering
+	glEnable(GL_DEPTH_TEST);
+}
+
+void initializeDataSetsForUser(int size, int totalWeigths, int maxEpochs,
 	double initialLearningRate, int dataSetType, int initial, int final,
 	int chunckTimeSize, int chunckTimeInterval){
 
@@ -189,13 +185,12 @@ void algorithmInitializationDataChunck(int size, int totalWeigths, int maxEpochs
 	_trainDataChunckSet = DataSet::createDataSetDataChunckFormat(user, TRAIN, initial, final, chunckTimeSize, chunckTimeInterval);
 	_evaluateDataChunckSet = DataSet::createDataSetDataChunckFormat(user, EVALUATE, initial, final, chunckTimeSize, chunckTimeInterval);
 
-	_dataSetSize = _trainDataChunckSet.size();
-	_isTestingDataSetInitialized = true;
+	_trainDataSetSize = _trainDataChunckSet.size();
 
-	_som = new SelfOrganizingMaps(size, totalWeigths, maxEpochs, initialLearningRate, _buildDataChunckSet, _dataSetSize);
+	_isEvaluationDataSetInitialized = true;
 }
 
-bool createEvaluationDataSetInitialization(){
+bool createEvaluationDataSets(){
 	vector<int> dataSetTypes;
 	vector<int> initials;
 	vector<int> finals;
@@ -242,106 +237,111 @@ bool evaluationDataSetInitialization(vector<int> dataSetTypes, vector<int> initi
 	return true;
 }
 
-void display(){
-	// Clear buffers
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+// ===================== Method Declaration =======================
 
-	// Compute eye position
-	glLoadIdentity();
+// ===================== Main Declaration =========================
+int main(int argc, char **argv){
+	if(argc < 3 ){
+		cout << "Se requieren al menos 3 argumentos para iniciar el programa" << endl;
+		cout << "1: Programa" << endl;
+		cout << "2: tipo de ejecucion [0 - Dataset | 1 - Cargar matriz entrenada]" << endl;
+		cout << "3: Dataset deseado para crear y entrenar la matriz o [1..N] archivos que comforman la matriz entrenada" << endl;
+		return 1;
+	}
 
-	// TODO: check what does this function do
-	gluLookAt(50,50,200, 50,50,0, 0,1,0);
+	_training = false;
+	_sigma = SIGMA;
+	_executionType = atoi(argv[1]);
 
-	// Draw the current map
-	_som->displayUsingNeuronColor();
+#ifdef DEBUG
+	_countingSampling = 0;
+#endif
 
-	// Draw to screen
-	glutSwapBuffers();
-}
+	switch(_executionType){
+		case 0: // Analyze an user
+			cout << "Verificando argumentos validos para ejecucion por DataSet de usuario..." << endl;
+			if(argc < 5){ // 0: Program, 1: Execution type, 2: User to be analyzed, 3: Initial file, 4: Final File
+				cout << "Hacen falta argumentos para la ejecucion del por DataSet de usuario" << endl;
+				return 1;
+			}
+			cout << "Argumentos validos para la ejecucion por DataSet de usuario" << endl;
 
-void reshape(int width, int height){
-	glViewport(0, 0, (GLsizei) width, (GLsizei) height);
-}
+			cout << "Se esta creando el dataset desde los archivos..." << endl;
 
-void keyboard(unsigned char key, int mouseX, int mouseY){ 
-	switch (key){
-		case 't':
-			cout << "Total samples: " << _dataSetSize << endl;
-			_training = !_training;
-			if(_training)
-				cout << "Training..." << endl;
+			initializeDataSetsForUser(NORMALSIZE, TOTALWEIGHTS, MAXEPOCHS,
+				INITIALLEARNINGRATE, atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), CHUNCKTIMESIZE,
+				CHUNCKTIMEINTERVAL);
+
+			cout << "El dataset fue creado correctamente";
+
+			cout << "Inicializando el algoritmo de SOM..." << endl;
+			if(_trainDataSetSize > 0){
+				_som = new SelfOrganizingMaps(NORMALSIZE, TOTALWEIGHTS, MAXEPOCHS,
+					INITIALLEARNINGRATE, _buildDataChunckSet, _trainDataSetSize);
+				cout << "El algoritmo de SOM fue inicializado correctamente" << endl;
+			}else{
+				cout << "No fue posible inicial el algoritmo de SOM, el DataSet de entrenamiento esta vacio" << endl;
+				return 1;
+			}
+
+			_width = BASEWIDTH;
+			_height = BASEHEIGHT;
+			_openGLFovy = BASEOPENGLFOVY;
+			break;
+		case 1: // Get the matrix from a previous training
+			vector<char *> fileNames;
+
+			for(int files = 2; files<argc; files++){
+				fileNames.push_back(argv[files]);
+			}
+
+			int totalFiles = fileNames.size();
+			int matrixComposition = sqrt(totalFiles);
+
+			// TODO:
+			// Get one way to retrive all the parameters needed for creating
+			// a testing dataset
+			cout << "Se esta creando el dataset de evaluacion..." << endl;
+			_isEvaluationDataSetInitialized = createEvaluationDataSets();
+			if(!_isEvaluationDataSetInitialized)
+				cout << "No fue posible crear el dataSet para evaluacion" << endl;
 			else
-				cout << "Stopped training" << endl;
-			break;
-		case 'r':
-			/*
-				_training = false;
-				_som->reset();
-				cout << "Map reset" << endl;
-				glutPostRedisplay();
-			*/
-			cout << "No functionality implemented for reset until now" << endl;
-			break;
-		case 's':
-			if(_training)
-				_training = !_training;
-			cout << "Entrenamiento detenido" << endl;
-			break;
-		case 'e':
-			cout << "Export matrix..." << endl;
-			Utils::exportMatrixToFile(_som->getMatrix(), _som->getEpochs(),
-				MAXEPOCHS, INITIALLEARNINGRATE, _som->getCurrenLearningRate());
-			break;
-		// Users evaluation
-		case '1': // User type 1
-			cout << "Evaluation dataset of user " << key << endl;
-			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[0],
-				//_sigma, 5, 200, 167, 88, 162);
-				_sigma, 5, 1000, 255, 0, 0);
-			glutPostRedisplay();
-			break;
-		case '2': // User type 2
-			cout << "Evaluation dataset of user " << key << endl;
-			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[1],
-				//_sigma, 5, 200, 8, 96, 188);
-				_sigma, 5, 1000, 0, 255, 0);
-			glutPostRedisplay();
-			break;
-		case '3': // User type 3
-			cout << "Evaluation dataset of user " << key << endl;
-			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[2],
-				//_sigma, 5, 200, 0, 0, 0);
-				_sigma, 5, 1000, 0, 0, 255);
-			glutPostRedisplay();
-			break;
-		case '4': //User type 4
+				cout << "El dataset de evaluacion fue creado correctamente" << endl;
+
+			_width = BASEWIDTH * matrixComposition;
+			_height = BASEHEIGHT * matrixComposition;
+			_openGLFovy = BASEOPENGLFOVY * matrixComposition;
+
+			cout << "Se estan exportando " << totalFiles << " archivos..." << endl;
+
+			_som = Utils::importSOMFromFiles(fileNames, matrixComposition,
+				totalFiles);
+
+			cout << "Los archivos fueron exportados correctamente" << endl;
 			break;
 	}
+
+	// OpenGL window configuration
+	glutInitWindowSize(_width, _height);
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	glutCreateWindow(WINDOWTITLE);
+
+	// OpenGL register callback functions
+	glutDisplayFunc(display);
+	glutReshapeFunc(reshape);
+	glutKeyboardFunc(keyboard); //TODO
+	glutIdleFunc(idle);
+
+	// OpenGL initalize parameters
+	init();
+
+	// OpenGL loop
+	glutMainLoop();
+
+	// Release memory
+	delete _som;
+
+	return 0;
 }
-
-void idle(void){
-	if (_training && (_som->getEpochs() < MAXEPOCHS)){
-#ifdef DEBUG
-		_countingSampling++;
-		if(_countingSampling % 500 == 0)
-			cout << _countingSampling << endl;
-#endif
-		int randInput = rand() % _dataSetSize;
-		_som->trainSegmentedFunctions(_trainDataChunckSet[randInput]->dataChunckToVector());
-		glutPostRedisplay();
- 	}
-}
-
-void init(){
-	// Initialize viewing system
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(_openGLFovy, 1.0, 1.0, 1000.0);
-	glMatrixMode(GL_MODELVIEW);
-
-	// Initialize background color to black
-	glClearColor(0.0,0.0,0.0,0.0);
-
-	// Enable depth buffering
-	glEnable(GL_DEPTH_TEST);
-}
+// ===================== Main Declaration =========================
