@@ -210,3 +210,39 @@ void Neuron::initializeNeuron(){
 		_neuronColor->setRGB(_weights[0], _weights[1], _weights[2]);
 	}
 }
+
+int Neuron::getConstructedIdUser(){
+	return _constructedIdUser;
+}
+
+int Neuron::getEvaluatedIdUser(){
+	return _evaluatedIdUser;
+}
+
+bool Neuron::isEvaluated(){
+	return _evaluated;
+}
+
+bool Neuron::userMatches(){
+	return _matchingUser;
+}
+
+void Neuron::setNeuronStatics(int idUser){
+	_constructedIdUser = idUser;
+	_evaluatedIdUser = -1;
+	_evaluated = false;
+	_matchingUser = false;
+}
+
+void Neuron::setEvaluatedIdUser(int idUser){
+	_evaluatedIdUser = idUser;
+}
+
+void Neuron::processNeuronAfterEvaluation(){
+	_evaluated = true;
+	if(_constructedIdUser == _evaluatedIdUser){
+		_matchingUser = true;
+	}else{
+		_matchingUser = false;
+	}
+}

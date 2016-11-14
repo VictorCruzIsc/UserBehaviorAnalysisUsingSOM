@@ -28,6 +28,10 @@ class Neuron{
 		int getTotalWeights();
 		vector<double> getWeights();
 		RGB *getNeuronColor();
+		int getConstructedIdUser();
+		int getEvaluatedIdUser();
+		bool isEvaluated();
+		bool userMatches();
 
 		void setX(int x);
 		void setY(int y);
@@ -35,18 +39,25 @@ class Neuron{
 		void setNeuronColor(double red, double green, double blue);
 		void setNeuronColor(vector<double> rgb);
 		void setRGB(RGB *rgb);
+		void setNeuronStatics(int idUser);
+		void setEvaluatedIdUser(int idUser);
 
 		void info();
 		string exportNeuronWeights();
 		double distanceToNeuron(Neuron *neuron);
 		double distanceToInputVector(vector<double> inputVector);
+		void processNeuronAfterEvaluation();
 
 	private:
-		int _x;
-		int _y;
-		int _totalWeights;
-		vector<double> _weights;
-		RGB *_neuronColor;
+		int 			_x;
+		int				_y;
+		int				_totalWeights;
+		int 			_constructedIdUser;
+		int 			_evaluatedIdUser;
+		bool			_evaluated;
+		bool			_matchingUser;
+		vector<double> 	_weights;
+		RGB 			*_neuronColor;
 
 		// Methods
 		void initializeNeuron();

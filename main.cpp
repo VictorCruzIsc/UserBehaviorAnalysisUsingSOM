@@ -272,7 +272,7 @@ int main(int argc, char **argv){
 				INITIALLEARNINGRATE, atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), CHUNCKTIMESIZE,
 				CHUNCKTIMEINTERVAL);
 
-			cout << "El dataset fue creado correctamente";
+			cout << "El dataset fue creado correctamente" << endl;
 
 			cout << "Inicializando el algoritmo de SOM..." << endl;
 			if(_trainDataSetSize > 0){
