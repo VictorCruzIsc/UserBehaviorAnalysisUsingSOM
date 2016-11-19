@@ -20,9 +20,6 @@
 #define SIGMA 					3
 
 // DataSet constants
-#define BUILD					0
-#define TRAIN					1
-#define EVALUATE				2
 #define CHUNCKTIMESIZE 			5	// Given in minutes
 #define CHUNCKTIMEINTERVAL 		10	// Given in seconds
 
@@ -62,9 +59,7 @@ void idle(void);
 void init();
 
 // Algorithm methods
-void initializeDataSetsForUser(int size, int totalWeigths, int maxEpochs,
-	double initialLearningRate, int dataSetType, int initial, int final,
-	int chunckTimeSize, int chunckTimeInterval);
+void initializeDataSetsForUser(int idUser, int chunckTimeSize, int chunckTimeInterval);
 bool createEvaluationDataSets();
 bool evaluationDataSetInitialization(vector<int> dataSetTypes, vector<int> initials,
 	vector<int> finals, int chunckTimeSize, int chunckTimeInterval);
@@ -175,15 +170,10 @@ void init(){
 	glEnable(GL_DEPTH_TEST);
 }
 
-void initializeDataSetsForUser(int size, int totalWeigths, int maxEpochs,
-	double initialLearningRate, int dataSetType, int initial, int final,
-	int chunckTimeSize, int chunckTimeInterval){
-
-	string user =  "user" + to_string(dataSetType);
-
-	_buildDataChunckSet = DataSet::createDataSetDataChunckFormat(user, BUILD, initial, final, chunckTimeSize, chunckTimeInterval);
-	_trainDataChunckSet = DataSet::createDataSetDataChunckFormat(user, TRAIN, initial, final, chunckTimeSize, chunckTimeInterval);
-	_evaluateDataChunckSet = DataSet::createDataSetDataChunckFormat(user, EVALUATE, initial, final, chunckTimeSize, chunckTimeInterval);
+void initializeDataSetsForUser(int idUser, int chunckTimeSize, int chunckTimeInterval){
+	_buildDataChunckSet = DataSet::createDataSetDataChunckFormat(idUser, Utils::BUILD, chunckTimeSize, chunckTimeInterval);
+	_trainDataChunckSet = DataSet::createDataSetDataChunckFormat(idUser, Utils::TRAIN, chunckTimeSize, chunckTimeInterval);
+	_evaluateDataChunckSet = DataSet::createDataSetDataChunckFormat(idUser, Utils::EVALUATE, chunckTimeSize, chunckTimeInterval);
 
 	_trainDataSetSize = _trainDataChunckSet.size();
 
@@ -213,7 +203,7 @@ bool evaluationDataSetInitialization(vector<int> dataSetTypes, vector<int> initi
 	int totalDataSets = dataSetTypes.size();
 	int initial = 0;
 	int final = 0;
-	int dataSetType = BUILD;
+	int dataSetType = Utils::BUILD;
 	string user =  "";
 
 	for(int i=0; i<totalDataSets; i++){
@@ -221,7 +211,7 @@ bool evaluationDataSetInitialization(vector<int> dataSetTypes, vector<int> initi
 		initial = initials[i];
 		final = finals[i];
 		if(i == 2){
-			dataSetType = EVALUATE;
+			dataSetType = Utils::EVALUATE;
 		}
 		vector<DataChunck *> dataChunckSet =
 			DataSet::createDataSetDataChunckFormat(user, dataSetType, initial, final, chunckTimeSize, chunckTimeInterval);
@@ -245,7 +235,7 @@ int main(int argc, char **argv){
 		cout << "Se requieren al menos 3 argumentos para iniciar el programa" << endl;
 		cout << "1: Programa" << endl;
 		cout << "2: tipo de ejecucion [0 - Dataset | 1 - Cargar matriz entrenada]" << endl;
-		cout << "3: Dataset deseado para crear y entrenar la matriz o [1..N] archivos que comforman la matriz entrenada" << endl;
+		cout << "3: Usuario requerido para crear y entrenar la matriz o [1..N] archivos que comforman la matriz entrenada" << endl;
 		return 1;
 	}
 
@@ -260,7 +250,7 @@ int main(int argc, char **argv){
 	switch(_executionType){
 		case 0: // Analyze an user
 			cout << "Verificando argumentos validos para ejecucion por DataSet de usuario..." << endl;
-			if(argc < 5){ // 0: Program, 1: Execution type, 2: User to be analyzed, 3: Initial file, 4: Final File
+			if(argc < 3){ // 0: Program, 1: Execution type, 2: User to be analyzed
 				cout << "Hacen falta argumentos para la ejecucion del por DataSet de usuario" << endl;
 				return 1;
 			}

@@ -1,5 +1,9 @@
 #include "../include/Classes.h"
 
+int Utils::BUILD = 0;
+int Utils::TRAIN = 1;
+int Utils::EVALUATE = 2;
+
 int Utils::getRandomDoubleNumber(){
     return (double)rand() / RAND_MAX;
 }

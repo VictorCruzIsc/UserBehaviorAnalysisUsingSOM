@@ -1,7 +1,7 @@
 #include "../include/Classes.h"
 
 vector<DataPackage *> DataSet::createDataSetPackageFormat(string user,
-			int type, int initial, int final){
+			int type){
 	fstream infile;
 	string fileNamePrefix = "flows-";
 	string filesPath = "networkTrafficCaptures";
@@ -10,88 +10,106 @@ vector<DataPackage *> DataSet::createDataSetPackageFormat(string user,
 	vector<string> packageElements;
 	vector<DataPackage *> packageDataSet;
 
-#ifdef DEBUG
+	// Get all names of files in the directory
+	string regexPattern = "(flows)(.*)(.csv)";
+	DIR *directory;
+	struct dirent *file;
+	regex validFile(regexPattern);
+
+	#ifdef DEBUG
 	int counter = 0;
-#endif
+	#endif
 
 	switch(type){
-		case 0: // Build
+		case Utils::BUILD: // Build
 			filesPath += "BuildDataSet/";
 			break;
-		case 1: // Train
+		case Utils::TRAIN: // Train
 			filesPath += "TrainDataSet/";
 			break;
-		case 2: // Evaluation
+		case Utils:EVALUATE: // Evaluation
 			filesPath += "EvaluationDataSet/";
 			break;
 	}
 
-	filesPath += user + "/";
+	filesPath += user;
 
-#ifdef DEBUG
+	#ifdef DEBUG
 	cout << "FilesPath: " << filesPath << endl;
-#endif
+	#endif
 
-	for(int i=initial; i<=final; i++){
-		file += filesPath + fileNamePrefix + to_string(i) + ".csv";
+	// Refactor:
+	// For each element under FilesPath get the data
+	if(directory = opendir(filesPath.c_str())){ // Opening Directory
+		while(file = readdir(directory)){ // There is  file
+			string fileName(file->d_name);
+			if(regex_match(fileName, validFile)){ // Means it has format flows.*.csv
 
-#ifdef DEBUG
-		cout << file << endl;
-#endif
+				#ifdef DEBUG
+					cout << fileName << endl;
+				#endif
 
-		infile.open(file);
+				infile.open(fileName);
 
-		//while(getline(infile, line) && counter < 100000){
-		while(getline(infile, line)){
-			replace(line.begin(), line.end(), ',', ' ');
+				while(getline(infile, line)){
+					replace(line.begin(), line.end(), ',', ' ');
 
-#ifdef DEBUG
-			cout << " DataSet: " << counter << " " << line << endl;
-#endif
+					#ifdef DEBUG
+						cout << " DataSet: " << counter << " " << line << endl;
+					#endif
 
-			stringstream ssin(line);
+					stringstream ssin(line);
 
-			packageElements.resize(12);
+					packageElements.resize(12);
         	
-        	for(int i=0; i<12; i++){
-				ssin >> packageElements[i];
-			}
+					for(int i=0; i<12; i++){
+						ssin >> packageElements[i];
+					}
 
-#ifdef DEBUG
-			for(int i=0; i<12; i++){
-				cout << packageElements[i] << endl;
-			}
-#endif
+					#ifdef DEBUG
+						for(int i=0; i<12; i++){
+							cout << packageElements[i] << endl;
+						}
+					#endif
 
-			DataPackage *dataPackage = new DataPackage(packageElements);
-			if(!dataPackage->hasError())
-				packageDataSet.push_back(dataPackage);
-			packageElements.clear();
-#ifdef DEBUG
-			counter++;
-#endif
-		}
+					DataPackage *dataPackage = new DataPackage(packageElements);
+					if(!dataPackage->hasError()){
+						packageDataSet.push_back(dataPackage);
+					}
 
-		infile.close();
+					packageElements.clear();
+
+					#ifdef DEBUG
+						counter++;
+					#endif
+				}
+
+				infile.close();
 		
-		file = "";
+				file = "";
+			}
+		}
 	}
 
-#ifdef DEBUG
+	#ifdef DEBUG
 		cout << "No more files to read" << endl;
 		cout << packageDataSet.size() << endl;
 		for(int i=0; i<packageDataSet.size(); i++){
 			cout << i << ". " << packageDataSet[i]->getDeviceMAC() << "- "<< endl;
 		}
-#endif
+	#endif
 
 	return packageDataSet;
 }
 
-vector<DataChunck *> DataSet::createDataSetDataChunckFormat(string user,
-			int type, int initial, int final, int chunckTimeSize, int chunckTimeInterval){
+//DataSet::createDataSetDataChunckFormat(userNetworkTraffic, BUILD, chunckTimeSize, chunckTimeInterval);
+vector<DataChunck *> DataSet::createDataSetDataChunckFormat(int idUser, int type,
+	int chunckTimeSize, int chunckTimeInterval){
+
+	string userNetworkTraffic =  "user" + to_string(idUser);
+
 	vector<DataPackage*> rawPackages = DataSet::createDataSetPackageFormat(user,
-		type, initial, final);
+		type);
 
 	//cout << "CH1 totalRawPackages: " << rawPackages.size() << endl;
 
