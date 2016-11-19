@@ -19,6 +19,8 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <iterator>
+#include <regex>
 
 #include "Matrix.h"
 #include "DataPackage.h"
@@ -35,6 +37,10 @@ class DataSet;
 
 class Utils{
 	public:
+		static const int BUILD = 1;
+		static const int TRAIN = 2;
+		static const int EVALUATE = 3;
+
 		static int getRandomDoubleNumber();
 		static void exportMatrixToFile(Matrix *matrix, int completedEpochs,
 			int maxEpochs, double initialLearningRate,
@@ -164,10 +170,9 @@ class SelfOrganizingMaps{
 
 class DataSet{
 	public:
-		static vector<DataPackage *> createDataSetPackageFormat(string user,
-			int type, int initial, int final);
-		static vector<DataChunck *> createDataSetDataChunckFormat(string user,
-			int type, int initial, int final, int chunckTimeSize, int chunckTimeInterval);
+		static vector<DataPackage *> createDataSetPackageFormat(string user, int type);
+		static vector<DataChunck *> createDataSetDataChunckFormat(int idUser, int type,
+			int chunckTimeSize, int chunckTimeInterval);
 };
 
 #endif
