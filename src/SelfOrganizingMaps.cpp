@@ -48,11 +48,11 @@ SelfOrganizingMaps::SelfOrganizingMaps(int size, int totalWeights,
 
 SelfOrganizingMaps::SelfOrganizingMaps(int size, int totalWeights,
 			int maxEpochs, double initialLearningRate,
-			vector<DataChunck* > dataSet, int totalSamples):
+			vector<DataChunck* > dataSet, int totalSamples, int idUser):
 	_iterations(0), _size(size), _totalWeigths(totalWeights),
 	_maxEpochs(maxEpochs), _epochs(0), _initialLearningRate(initialLearningRate),
 	_initialNeighbourhoodRadius(size/2), _totalSamples(totalSamples){
-	_matrix =  new Matrix(_size, _totalWeigths, dataSet);
+	_matrix =  new Matrix(_size, _totalWeigths, dataSet, idUser);
 	_radiusTimeConstant = _maxEpochs/log(_initialNeighbourhoodRadius);
 	_learningRateTimeConstant = _maxEpochs/log(_initialLearningRate);
 }

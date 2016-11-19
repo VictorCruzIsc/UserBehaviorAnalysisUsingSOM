@@ -218,7 +218,7 @@ int main(int argc, char **argv){
 #endif
 
 	switch(_executionType){
-		case 0: // Analyze an user
+		case 0:{ // Analyze an user
 			cout << "Verificando argumentos validos para ejecucion por DataSet de usuario..." << endl;
 			if(argc < 3){ // 0: Program, 1: Execution type, 2: User to be analyzed
 				cout << "Hacen falta argumentos para la ejecucion del por DataSet de usuario" << endl;
@@ -228,7 +228,9 @@ int main(int argc, char **argv){
 
 			cout << "Se esta creando el dataset desde los archivos..." << endl;
 
-			initializeDataSetsForUser(atoi(argv[2]), CHUNCKTIMESIZE,
+			int user = user = atoi(argv[2]);
+
+			initializeDataSetsForUser(user, CHUNCKTIMESIZE,
 				CHUNCKTIMEINTERVAL);
 
 			cout << "El dataset fue creado correctamente" << endl;
@@ -236,7 +238,7 @@ int main(int argc, char **argv){
 			cout << "Inicializando el algoritmo de SOM..." << endl;
 			if(_trainDataSetSize > 0){
 				_som = new SelfOrganizingMaps(NORMALSIZE, TOTALWEIGHTS, MAXEPOCHS,
-					INITIALLEARNINGRATE, _buildDataChunckSet, _trainDataSetSize);
+					INITIALLEARNINGRATE, _buildDataChunckSet, _trainDataSetSize, user);
 				cout << "El algoritmo de SOM fue inicializado correctamente" << endl;
 			}else{
 				cout << "No fue posible inicial el algoritmo de SOM, el DataSet de entrenamiento esta vacio" << endl;
@@ -246,6 +248,7 @@ int main(int argc, char **argv){
 			_width = BASEWIDTH;
 			_height = BASEHEIGHT;
 			_openGLFovy = BASEOPENGLFOVY;
+		}
 			break;
 		case 1: // Get the matrix from a previous training
 			vector<char *> fileNames;

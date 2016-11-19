@@ -8,17 +8,22 @@ void Utils::exportMatrixToFile(Matrix *matrix, int completedEpochs,
 			int maxEpochs, double initialLearningRate,
 			double finalLearningRate){
 	string fileName = Utils::buildFileName();
+
 	ofstream file;
+
 	file.open (fileName);
+
 	int matrixSize = matrix->getSize();
+
 	int totalWeigths =  matrix->getTotalWeights();
+
 	file << matrixSize << "\n" << completedEpochs << "\n" << maxEpochs << "\n";
 	file << initialLearningRate << "\n" << finalLearningRate << "\n";
 	file << totalWeigths << "\n";
 	for(int row=0; row<matrixSize; row++){
-		string line = matrix->getNeuron(row, 0)->exportNeuronWeights();
+		string line = matrix->getNeuron(row, 0)->exportNeuron();
 		for(int col=1; col<matrixSize; col++){
-			line += " " + matrix->getNeuron(row, col)->exportNeuronWeights();
+			line += " " + matrix->getNeuron(row, col)->exportNeuron();
 		}
 		line += "\n";
 		file << line;

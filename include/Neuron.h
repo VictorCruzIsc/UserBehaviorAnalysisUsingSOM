@@ -43,7 +43,7 @@ class Neuron{
 		void setEvaluatedIdUser(int idUser);
 
 		void info();
-		string exportNeuronWeights();
+		string exportNeuron();
 		double distanceToNeuron(Neuron *neuron);
 		double distanceToInputVector(vector<double> inputVector);
 		void processNeuronAfterEvaluation();

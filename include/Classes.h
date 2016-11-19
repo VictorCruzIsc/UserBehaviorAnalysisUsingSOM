@@ -104,7 +104,7 @@ class SelfOrganizingMaps{
 			int totalSamples);
 		SelfOrganizingMaps(int size, int totalWeights,
 			int maxEpochs, double initialLearningRate, vector<DataChunck* > dataSet,
-			int totalSamples);
+			int totalSamples, int idUser);
 		~SelfOrganizingMaps();
 		int getIterations();
 		int getEpochs();

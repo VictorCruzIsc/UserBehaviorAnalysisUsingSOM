@@ -31,13 +31,13 @@ Matrix::Matrix(int size, int totalWeights, vector<DataPackage*> dataSet) :
 	initializeMatrix(dataSet);
 }
 
-Matrix::Matrix(int size, int totalWeights, vector<DataChunck*> dataSet) :
+Matrix::Matrix(int size, int totalWeights, vector<DataChunck*> dataSet, int idUser) :
 	_size(size), _totalWeights(totalWeights), _totalNeurons(size * size){
 	_matrix.resize(_size);
 	for(int i=0; i<_size; i++){
 		_matrix[i].resize(_size);
 	}
-	initializeMatrix(dataSet);
+	initializeMatrix(dataSet, idUser);
 }
 
 Matrix::~Matrix(){
@@ -156,7 +156,7 @@ void Matrix::initializeMatrix(vector<DataPackage*> dataSet){
 
 // Initializa the matrix from a dataSet, selecting randomly the index
 // of the dataSet to be uploaded to the matrix
-void Matrix::initializeMatrix(vector<DataChunck*> &dataSet){
+void Matrix::initializeMatrix(vector<DataChunck*> &dataSet, int idUser){
 	int dataSetSize = dataSet.size();
 	int dataSetIndex = 0;
 
@@ -167,6 +167,7 @@ void Matrix::initializeMatrix(vector<DataChunck*> &dataSet){
 		for(int col=0; col < _size; col++){
 			dataSetIndex = rand() % dataSetSize;
 			Neuron *neuron = new Neuron(row, col, _totalWeights, dataSet[dataSetIndex]);
+			neuron -> setNeuronStatics(idUser);
 			_matrix[row][col] = neuron;
 		}
 	}

@@ -136,13 +136,24 @@ string Neuron::exportNeuronWeights(){
 }
 */
 
-string Neuron::exportNeuronWeights(){
-	string weigths = "" + to_string(_weights[0]);
-	for(int i=1; i<_totalWeights; i++){
-		weigths += " " + to_string(_weights[i]);
+string Neuron::exportNeuron(){
+	string neuronAttributes = to_string(_weights[0]);
+	for(int i=0; i<_totalWeights; i++){
+		neuronAttributes += " " + to_string(_weights[i]);
 	}
-	weigths += "";
-	return weigths;
+	neuronAttributes += " " + to_string(_constructedIdUser);
+	neuronAttributes += " " + to_string(_evaluatedIdUser);
+	if(_evaluated){
+		neuronAttributes += " " + to_string(1);
+	}else{
+		neuronAttributes += " " + to_string(0);
+	}
+	if(_matchingUser){
+		neuronAttributes += " " + to_string(1);
+	}else{
+		neuronAttributes += " " + to_string(0);
+	}
+	return neuronAttributes;
 }
 
 /*
