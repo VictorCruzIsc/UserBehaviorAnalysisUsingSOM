@@ -82,6 +82,12 @@ Matrix* Utils::importMatrixFromFile(char *fileName){
     fstream infile;
     string line;
     vector<double> neuronRGB;
+    int constructedIdUser = 0;
+    int evaluatedIdUser = 0;
+    int intEvaluated = 0;
+    int intMatchingUser = 0;
+    bool evaluated = false;
+    bool matchingUser = false;
 
     infile.open(fileName);
 
@@ -110,8 +116,33 @@ Matrix* Utils::importMatrixFromFile(char *fileName){
             for(int weigths=0; weigths<totalWeights; weigths++){
 				ssin >> neuronRGB[weigths];
             }
+
+
+
+			ssin >> constructedIdUser;
+			ssin >> evaluatedIdUser;
+			ssin >> intEvaluated;
+			ssin >> intMatchingUser;
+
+			if(intEvaluated == 1){
+				evaluated = true;
+			}
+
+			if(intMatchingUser == 1){
+				matchingUser = true;
+			}
+
+#ifdef DEBUG_STATICS
+			cout << constructedIdUser << " " << evaluatedIdUser << " ";
+			cout << to_string(intEvaluated) <<  " ";
+			cout << to_string(intMatchingUser) << endl;
+#endif
+
             RGB *rgb = new RGB(neuronRGB[0], neuronRGB[1], neuronRGB[2]);
-            matrix->setNeuron(new Neuron(row, col, totalWeights, rgb));
+            Neuron * currentNeuron = new Neuron(row, col, totalWeights, rgb);
+            currentNeuron -> setNeuronStatics(constructedIdUser, evaluatedIdUser, evaluated,
+				matchingUser);
+            matrix->setNeuron(currentNeuron);
         }
     }
 

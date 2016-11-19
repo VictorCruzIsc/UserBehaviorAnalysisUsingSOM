@@ -28,6 +28,7 @@
 
 //#define DEBUG
 //#define DEBUG_DATCHUNCK
+//#define DEBUG_STATICS
 
 using namespace std;
 

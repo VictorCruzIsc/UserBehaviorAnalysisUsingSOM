@@ -138,7 +138,7 @@ string Neuron::exportNeuronWeights(){
 
 string Neuron::exportNeuron(){
 	string neuronAttributes = to_string(_weights[0]);
-	for(int i=0; i<_totalWeights; i++){
+	for(int i=1; i<_totalWeights; i++){
 		neuronAttributes += " " + to_string(_weights[i]);
 	}
 	neuronAttributes += " " + to_string(_constructedIdUser);
@@ -153,6 +153,7 @@ string Neuron::exportNeuron(){
 	}else{
 		neuronAttributes += " " + to_string(0);
 	}
+	neuronAttributes += "";
 	return neuronAttributes;
 }
 
@@ -240,9 +241,17 @@ bool Neuron::userMatches(){
 
 void Neuron::setNeuronStatics(int idUser){
 	_constructedIdUser = idUser;
-	_evaluatedIdUser = -1;
+	_evaluatedIdUser = 0;
 	_evaluated = false;
 	_matchingUser = false;
+}
+
+void Neuron::setNeuronStatics(int idUser, int evaluatedIdUser, bool evaluated,
+			bool matchingUser){
+	_constructedIdUser = idUser;
+	_evaluatedIdUser = evaluatedIdUser;
+	_evaluated = evaluated;
+	_matchingUser = matchingUser;
 }
 
 void Neuron::setEvaluatedIdUser(int idUser){
