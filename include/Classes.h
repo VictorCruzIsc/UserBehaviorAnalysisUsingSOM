@@ -25,6 +25,7 @@
 #include "Matrix.h"
 #include "DataPackage.h"
 #include "DataChunck.h"
+#include "StadisticsResults.h"
 
 //#define DEBUG
 //#define DEBUG_DATCHUNCK
@@ -142,10 +143,13 @@ class SelfOrganizingMaps{
 			int sigmaMultiplier, int iterations, int chunckSize);
 		void evaluateIndependentDataChuckDataSet(vector<DataChunck *> inputDataset,
 			int sigmaMultiplier, int iterations, int chunckSize, double red,
-			double green, double blue);
+			double green, double blue, int evaluatedIdUser);
 
 		// Import trained matrix
 		void setWeightVector(vector<double> weightVector, int x, int y);
+
+		// Stadistics
+		void getMatrixStadistics();
 
 	private:
 		int _iterations;
@@ -160,6 +164,7 @@ class SelfOrganizingMaps{
 		double _learningRateTimeConstant;
 		Matrix *_matrix;
 		map<Neuron *, Neuron *> _bmuTestCases;
+		map<int, StadisticsResults *> _stadisticsResults;
 
 		// Methods
 		// Main functionality util  methods
@@ -167,6 +172,7 @@ class SelfOrganizingMaps{
 		double getInfluence(double distanceToBMU, double radius);
 		Neuron* getBMU(vector<double> inputVector);
 		void updateMatrixWeigths(Neuron *bmu, vector<double> inputVector);
+		void addUpdateStadisticsResults(int initial, int final);
 };
 
 class DataSet{

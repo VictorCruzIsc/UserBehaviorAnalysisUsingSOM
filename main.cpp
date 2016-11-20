@@ -114,26 +114,27 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 			Utils::exportMatrixToFile(_som->getMatrix(), _som->getEpochs(),
 				MAXEPOCHS, INITIALLEARNINGRATE, _som->getCurrenLearningRate());
 			break;
+		case 'q': // Starts stadistics
+			cout << "Starting stadistics" << endl;
+			_som -> getMatrixStadistics();
+			break;
 		// Users evaluation
 		case '1': // User type 1
 			cout << "Evaluation dataset of user " << key << endl;
 			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[0],
-				//_sigma, 5, 200, 167, 88, 162);
-				_sigma, 5, 200, 255, 0, 0);
+				_sigma, 5, 200, 255, 0, 0, 1);
 			glutPostRedisplay();
 			break;
 		case '2': // User type 2
 			cout << "Evaluation dataset of user " << key << endl;
 			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[1],
-				//_sigma, 5, 200, 8, 96, 188);
-				_sigma, 5, 200, 0, 255, 0);
+				_sigma, 5, 200, 0, 255, 0, 2);
 			glutPostRedisplay();
 			break;
 		case '3': // User type 3
 			cout << "Evaluation dataset of user " << key << endl;
 			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[2],
-				//_sigma, 5, 200, 0, 0, 0);
-				_sigma, 5, 200, 0, 0, 255);
+				_sigma, 5, 200, 0, 0, 255, 3);
 			glutPostRedisplay();
 			break;
 		case '4': //User type 4

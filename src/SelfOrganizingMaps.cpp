@@ -433,7 +433,7 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(vector<DataChunck *
 }
 
 void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(vector<DataChunck *> inputDataset, int sigmaMultiplier,
-	int iterations, int chunckSize, double red, double green, double blue){
+	int iterations, int chunckSize, double red, double green, double blue, int evaluatedIdUser){
 	vector<double> weights;
 	vector<double> distances;
 	vector<Neuron *> bmus;
@@ -460,7 +460,7 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(vector<DataChunck *
 		cout << "Iteration: " << j << endl;
 
 		initialIndex = rand() / totalElements;
-		while((initialIndex + 100) >= totalElements){
+		while((initialIndex + chunckSize) >= totalElements){
 			initialIndex = rand() / totalElements;
 		}
 
@@ -503,6 +503,10 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(vector<DataChunck *
 				_matrix->getNeuron(bmu->getX(), bmu->getY())->setNeuronColor(red, green, blue);
 				//cout << "OK" << endl;
 			}
+
+			// Applying bmu neuron stadistics
+			bmu -> setEvaluatedIdUser(evaluatedIdUser);
+			bmu -> processNeuronAfterEvaluation();
 		}
 
 		distances.clear();
@@ -649,5 +653,33 @@ void SelfOrganizingMaps::updateMatrixWeigths(Neuron *bmu, vector<double> inputVe
 			_matrix->updateWeightVector(influence, currenLearningRate,
 				inputVector, row, col);
 		}
+	}
+}
+
+void SelfOrganizingMaps::addUpdateStadisticsResults(int initial, int final){
+	int key = initial + final;
+	if(_stadisticsResults.find(key) == _stadisticsResults.end()){
+		StadisticsResults *stadisticalResult = new StadisticsResults(initial, final);
+		_stadisticsResults[key] = stadisticalResult;
+	}else{
+		_stadisticsResults[key]->addToValue(1);
+	}
+}
+
+void SelfOrganizingMaps::getMatrixStadistics(){
+	Neuron *neuron;
+	for(int row=0; row<_size; row++){
+		for(int col=0; col<_size; col++){
+			neuron = _matrix->getNeuron(row, col);
+			if(neuron->isEvaluated()){
+				addUpdateStadisticsResults(neuron->getConstructedIdUser(), neuron->getEvaluatedIdUser());
+			}
+		}
+	}
+
+	// Print Results
+	map<int, StadisticsResults *>::iterator it;
+	for(it = _stadisticsResults.begin(); it != _stadisticsResults.end(); it++){
+		cout << it->first << ":" << it->second->info() << endl;
 	}
 }
