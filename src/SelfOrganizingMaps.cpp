@@ -656,30 +656,57 @@ void SelfOrganizingMaps::updateMatrixWeigths(Neuron *bmu, vector<double> inputVe
 	}
 }
 
-void SelfOrganizingMaps::addUpdateStadisticsResults(int initial, int final){
+void SelfOrganizingMaps::errorStadisticsResults(int initial, int final){
 	int key = initial + final;
-	if(_stadisticsResults.find(key) == _stadisticsResults.end()){
+	if(_errorStadisticsResults.find(key) == _errorStadisticsResults.end()){
 		StadisticsResults *stadisticalResult = new StadisticsResults(initial, final);
-		_stadisticsResults[key] = stadisticalResult;
+		_errorStadisticsResults[key] = stadisticalResult;
 	}else{
-		_stadisticsResults[key]->addToValue(1);
+		_errorStadisticsResults[key]->addToValue(1);
+	}
+}
+
+void SelfOrganizingMaps::correctStadisticsResults(int initial, int final){
+	int key = initial + final;
+	if(_correctStadisticsResults.find(key) == _correctStadisticsResults.end()){
+		StadisticsResults *stadisticalResult = new StadisticsResults(initial, final);
+		_correctStadisticsResults[key] = stadisticalResult;
+	}else{
+		_correctStadisticsResults[key]->addToValue(1);
 	}
 }
 
 void SelfOrganizingMaps::getMatrixStadistics(){
 	Neuron *neuron;
+	_errorStadisticsResults.clear();
+	map<int, int> totalBMU;
+	int correct = 0;
+	int incorrect = 0;
 	for(int row=0; row<_size; row++){
 		for(int col=0; col<_size; col++){
 			neuron = _matrix->getNeuron(row, col);
 			if(neuron->isEvaluated()){
-				addUpdateStadisticsResults(neuron->getConstructedIdUser(), neuron->getEvaluatedIdUser());
+				if(!neuron->userMatches()){
+					incorrect++;
+					errorStadisticsResults(neuron->getConstructedIdUser(), neuron->getEvaluatedIdUser());
+				}else{
+					correct++;
+					correctStadisticsResults(neuron->getConstructedIdUser(), neuron->getEvaluatedIdUser());
+				}
 			}
 		}
 	}
 
 	// Print Results
+	cout << "Correct:" << correct << endl;
+	map<int, StadisticsResults *>::iterator ite;
+	for(ite = _correctStadisticsResults.begin(); ite != _correctStadisticsResults.end(); ite++){
+		cout << ite->second->info() << endl;
+	}
+
+	cout << "Errors:" << incorrect << endl;
 	map<int, StadisticsResults *>::iterator it;
-	for(it = _stadisticsResults.begin(); it != _stadisticsResults.end(); it++){
-		cout << it->first << ":" << it->second->info() << endl;
+	for(it = _errorStadisticsResults.begin(); it != _errorStadisticsResults.end(); it++){
+		cout << it->second->info() << endl;
 	}
 }

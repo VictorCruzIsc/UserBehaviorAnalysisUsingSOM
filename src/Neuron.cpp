@@ -125,36 +125,25 @@ void Neuron::info(){
 	cout << "\n";
 }
 
-/*
-string Neuron::exportNeuronWeights(){
-	string weigths = "[" + to_string(_weights[0]);
-	for(int i=1; i<_totalWeights; i++){
-		weigths += "," + to_string(_weights[i]);
-	}
-	weigths += "]";
-	return weigths;
-}
-*/
-
 string Neuron::exportNeuron(){
-	string neuronAttributes = to_string(_weights[0]);
+	string weigths = "" + to_string(_weights[0]);
 	for(int i=1; i<_totalWeights; i++){
-		neuronAttributes += " " + to_string(_weights[i]);
+		weigths += " " + to_string(_weights[i]);
 	}
-	neuronAttributes += " " + to_string(_constructedIdUser);
-	neuronAttributes += " " + to_string(_evaluatedIdUser);
+	weigths += " " + to_string(_constructedIdUser);
+	weigths += " " + to_string(_evaluatedIdUser);
 	if(_evaluated){
-		neuronAttributes += " " + to_string(1);
+		weigths += " " + to_string(1);
 	}else{
-		neuronAttributes += " " + to_string(0);
+		weigths += " " + to_string(0);
 	}
 	if(_matchingUser){
-		neuronAttributes += " " + to_string(1);
+		weigths += " " + to_string(1);
 	}else{
-		neuronAttributes += " " + to_string(0);
+		weigths += " " + to_string(0);
 	}
-	neuronAttributes += "";
-	return neuronAttributes;
+	weigths += "";
+	return weigths;
 }
 
 /*

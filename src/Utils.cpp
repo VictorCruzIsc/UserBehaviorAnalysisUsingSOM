@@ -118,7 +118,7 @@ Matrix* Utils::importMatrixFromFile(char *fileName){
             }
 
 
-
+//#ifdef DEBUG_STATICS
 			ssin >> constructedIdUser;
 			ssin >> evaluatedIdUser;
 			ssin >> intEvaluated;

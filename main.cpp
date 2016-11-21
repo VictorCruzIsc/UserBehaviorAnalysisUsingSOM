@@ -40,6 +40,7 @@ int 							_executionType;
 int 							_width;
 int 							_height;
 int 							_countingSampling;
+int 							_evaluationSamples;
 bool 							_training;
 bool							_isEvaluationDataSetInitialized;
 SelfOrganizingMaps				*_som;
@@ -121,20 +122,23 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 		// Users evaluation
 		case '1': // User type 1
 			cout << "Evaluation dataset of user " << key << endl;
+			cout << "Total samples used: " << _evaluationSamples << endl;
 			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[0],
-				_sigma, 5, 200, 255, 0, 0, 1);
+				_sigma, 5, _evaluationSamples, 255, 0, 0, 1);
 			glutPostRedisplay();
 			break;
 		case '2': // User type 2
 			cout << "Evaluation dataset of user " << key << endl;
+			cout << "Total samples used: " << _evaluationSamples << endl;
 			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[1],
-				_sigma, 5, 200, 0, 255, 0, 2);
+				_sigma, 5, _evaluationSamples, 0, 255, 0, 2);
 			glutPostRedisplay();
 			break;
 		case '3': // User type 3
 			cout << "Evaluation dataset of user " << key << endl;
+			cout << "Total samples used: " << _evaluationSamples << endl;
 			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[2],
-				_sigma, 5, 200, 0, 0, 255, 3);
+				_sigma, 5, _evaluationSamples, 0, 0, 255, 3);
 			glutPostRedisplay();
 			break;
 		case '4': //User type 4
@@ -182,7 +186,7 @@ void initializeDataSetsForUser(int idUser, int chunckTimeSize, int chunckTimeInt
 bool createEvaluationDataSets(){
 	int dataSetType = Utils::BUILD;
 	for(int i=1; i<4; i++){
-		if(i == 2){
+		if(i == 3){
 			dataSetType = Utils::EVALUATE;
 		}
 		vector<DataChunck *> dataChunckSet =
@@ -205,8 +209,8 @@ int main(int argc, char **argv){
 	if(argc < 3 ){
 		cout << "Se requieren al menos 3 argumentos para iniciar el programa" << endl;
 		cout << "1: Programa" << endl;
-		cout << "2: tipo de ejecucion [0 - Dataset | 1 - Cargar matriz entrenada]" << endl;
-		cout << "3: Usuario requerido para crear y entrenar la matriz o [1..N] archivos que comforman la matriz entrenada" << endl;
+		cout << "2: Tipo de ejecucion [0 - Dataset | 1 - Cargar matriz entrenada]" << endl;
+		cout << "3 - 4...N Usuario requerido para crear y entrenar la matriz o Numero de elementos a probar y [1..N] archivos que comforman la matriz entrenada" << endl;
 		return 1;
 	}
 
@@ -229,7 +233,7 @@ int main(int argc, char **argv){
 
 			cout << "Se esta creando el dataset desde los archivos..." << endl;
 
-			int user = user = atoi(argv[2]);
+			int user = atoi(argv[2]);
 
 			initializeDataSetsForUser(user, CHUNCKTIMESIZE,
 				CHUNCKTIMEINTERVAL);
@@ -254,7 +258,9 @@ int main(int argc, char **argv){
 		case 1: // Get the matrix from a previous training
 			vector<char *> fileNames;
 
-			for(int files = 2; files<argc; files++){
+			_evaluationSamples = atoi(argv[2]);
+
+			for(int files = 3; files<argc; files++){
 				fileNames.push_back(argv[files]);
 			}
 

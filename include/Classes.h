@@ -164,7 +164,8 @@ class SelfOrganizingMaps{
 		double _learningRateTimeConstant;
 		Matrix *_matrix;
 		map<Neuron *, Neuron *> _bmuTestCases;
-		map<int, StadisticsResults *> _stadisticsResults;
+		map<int, StadisticsResults *> _errorStadisticsResults;
+		map<int, StadisticsResults *> _correctStadisticsResults;
 
 		// Methods
 		// Main functionality util  methods
@@ -172,7 +173,8 @@ class SelfOrganizingMaps{
 		double getInfluence(double distanceToBMU, double radius);
 		Neuron* getBMU(vector<double> inputVector);
 		void updateMatrixWeigths(Neuron *bmu, vector<double> inputVector);
-		void addUpdateStadisticsResults(int initial, int final);
+		void errorStadisticsResults(int initial, int final);
+		void correctStadisticsResults(int initial, int final);
 };
 
 class DataSet{
