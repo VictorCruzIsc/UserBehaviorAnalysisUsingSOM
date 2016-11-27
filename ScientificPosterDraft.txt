@@ -1,0 +1,30 @@
+=== Title ===
+
+Use of Automatic Learning Algorithms for Computer Security in Campus Area Networks
+
+User Characterization in Campus Area Networks through Kohonen Self Organising Feature Maps
+
+User Behavior Analysis in Campus Area Networks through Kohonen Self Organising Feature Maps
+
+===  Universities & Collaborators ===
+Intel
+Av. del Bosque 1001, Col. El Bajío, 45019 Zapopan, JAL
+
+ITESO
+Álvaro Iván Parres Peredo
+Departament of Electronics, Systems and Informatics,
+ITESO - The Jesuit University of Guadalajara
+Tlaquepaque, Jalisco, 45604, Mexico.
+
+=== Abstract ===
+Abstract - This works presents a novel implementation for Kohonen Self
+Organizing Feature Maps (SOM) suitable for user behavior analysis in Campus Area
+Networks (CAN). SOM algorithm works under competitive and unsupervised learning
+approach, making it perfect for clustering and feature selection tasks. SOM is
+used to create behavior clusters through the analysis of user network traffic,
+in fixed time intervals. To demostrate the feasibility of SOM, resulting users
+clusters are merged and evaluated against new complex network traffic dataset.
+Experimental results, show that an user can be identified based in it's network
+traffic since it generates a match in a previous created cluster.
+
+=== Introducion ===
