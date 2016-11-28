@@ -22,9 +22,20 @@ Organizing Feature Maps (SOM) suitable for user behavior analysis in Campus Area
 Networks (CAN). SOM algorithm works under competitive and unsupervised learning
 approach, making it perfect for clustering and feature selection tasks. SOM is
 used to create behavior clusters through the analysis of user network traffic,
-in fixed time intervals. To demostrate the feasibility of SOM, resulting users
+in fixed time intervals. To demonstrate the feasibility of SOM, resulting users
 clusters are merged and evaluated against new complex network traffic dataset.
 Experimental results, show that an user can be identified based in it's network
 traffic since it generates a match in a previous created cluster.
 
 === Introducion ===
+A network intrussion attack can be any use of the network that compromises its stability or the security of the
+information that is stored on devices connected to it [1]. The weakest element in network security is an user,
+that may act as an active or passive attacker. User behavior is a wide open studied topic using Machine Learning
+Classification and Clustering algorithms, focused on detecting popularity of applications, user session duration,
+and users distribution accross access points[2]. This work makes two assumptions: It is possible to identify an
+user through it's network traffic data and user normal network traffic differs from an attacker network traffic.
+Self Organizing Maps cluster algorithm is used to obtain a pattern of user behavior. Obtained patterns define
+specific user behavior and mark differences between normal and attacker users.
+
+[1] Intrusion Detetion with Unlabeled Data Using Clustering - http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.126.2131&rep=rep1&type=pdf
+[2] Characterizing User Behavior and Network Performance in a Public Wireless LAN - http://broadbandcity.gr/content/modules/downloads/Characterizing_User_Behavior_And_Network_Performance_In_A_Public_WLAN_(Balachandran).pdf
