@@ -172,6 +172,8 @@ SelfOrganizingMaps* Utils::importSOMFromFiles(vector<char *> fileNames,
 		matrices.push_back(Utils::importMatrixFromFile(fileNames[i]));
 	}
 
+	//cout << "1" << endl;
+
 	// TODO: get the minimum size of all the matrixes and with that
 	// set the single matrix size
 	singleMatrixSize = matrices[0]->getSize();
@@ -179,6 +181,8 @@ SelfOrganizingMaps* Utils::importSOMFromFiles(vector<char *> fileNames,
 	matrixTotalWeights = matrices[0]->getTotalWeights();
 
 	Matrix *matrix =  new Matrix(matrixSize, matrixTotalWeights, false);
+
+	//cout << "2" << endl;
 
 	for(int row=0; row< matrixSize; row++){
 		for(int col=0; col<matrixSize; col++){
@@ -212,6 +216,8 @@ SelfOrganizingMaps* Utils::importSOMFromFiles(vector<char *> fileNames,
 #endif
 		}
 	}
+
+	//cout << "3" << endl;
 
 	// TODO: get maxEpochs and initial learning rate
 	SelfOrganizingMaps *som = new SelfOrganizingMaps(matrixSize, matrixTotalWeights, 0, 0, matrix, 0);

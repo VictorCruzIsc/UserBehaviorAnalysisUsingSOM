@@ -228,9 +228,14 @@ bool Neuron::userMatches(){
 	return _matchingUser;
 }
 
+int Neuron::getColitions(){
+	return _colitions;
+}
+
 void Neuron::setNeuronStatics(int idUser){
 	_constructedIdUser = idUser;
 	_evaluatedIdUser = 0;
+	_colitions = 0;
 	_evaluated = false;
 	_matchingUser = false;
 }
@@ -241,10 +246,14 @@ void Neuron::setNeuronStatics(int idUser, int evaluatedIdUser, bool evaluated,
 	_evaluatedIdUser = evaluatedIdUser;
 	_evaluated = evaluated;
 	_matchingUser = matchingUser;
+	_colitions = 0;
 }
 
 void Neuron::setEvaluatedIdUser(int idUser){
 	_evaluatedIdUser = idUser;
+	if(_evaluated){
+		_colitions++;
+	}
 }
 
 void Neuron::processNeuronAfterEvaluation(){

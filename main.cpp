@@ -41,6 +41,7 @@ int 							_width;
 int 							_height;
 int 							_countingSampling;
 int 							_evaluationSamples;
+int 							_iterationsRequired;
 bool 							_training;
 bool							_isEvaluationDataSetInitialized;
 SelfOrganizingMaps				*_som;
@@ -124,21 +125,21 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 			cout << "Evaluation dataset of user " << key << endl;
 			cout << "Total samples used: " << _evaluationSamples << endl;
 			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[0],
-				_sigma, 5, _evaluationSamples, 255, 0, 0, 1);
+				_sigma, _iterationsRequired, _evaluationSamples, 255, 0, 0, 1);
 			glutPostRedisplay();
 			break;
 		case '2': // User type 2
 			cout << "Evaluation dataset of user " << key << endl;
 			cout << "Total samples used: " << _evaluationSamples << endl;
 			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[1],
-				_sigma, 5, _evaluationSamples, 0, 255, 0, 2);
+				_sigma, _iterationsRequired, _evaluationSamples, 0, 255, 0, 2);
 			glutPostRedisplay();
 			break;
 		case '3': // User type 3
 			cout << "Evaluation dataset of user " << key << endl;
 			cout << "Total samples used: " << _evaluationSamples << endl;
 			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[2],
-				_sigma, 5, _evaluationSamples, 0, 0, 255, 3);
+				_sigma, _iterationsRequired, _evaluationSamples, 0, 0, 255, 3);
 			glutPostRedisplay();
 			break;
 		case '4': //User type 4
@@ -210,7 +211,10 @@ int main(int argc, char **argv){
 		cout << "Se requieren al menos 3 argumentos para iniciar el programa" << endl;
 		cout << "1: Programa" << endl;
 		cout << "2: Tipo de ejecucion [0 - Dataset | 1 - Cargar matriz entrenada]" << endl;
-		cout << "3 - 4...N Usuario requerido para crear y entrenar la matriz o Numero de elementos a probar y [1..N] archivos que comforman la matriz entrenada" << endl;
+		cout << "Mod 0 - 3: Usuario requerido para crear y entrenar la matriz" << endl;
+		cout << "Mod 1 - 3: Numero de elementos que se van a usar en la evaluacion de el patron general" << endl;
+		cout << "Mod 1 - 4: Numero de iteracion para la evaluacion de datasets" << endl;
+		cout << "Mod 1 - 5: Archivos que comformaran el patron general" << endl;
 		return 1;
 	}
 
@@ -229,14 +233,14 @@ int main(int argc, char **argv){
 				cout << "Hacen falta argumentos para la ejecucion del por DataSet de usuario" << endl;
 				return 1;
 			}
+
+			int user = atoi(argv[2]);
+
 			cout << "Argumentos validos para la ejecucion por DataSet de usuario" << endl;
 
 			cout << "Se esta creando el dataset desde los archivos..." << endl;
 
-			int user = atoi(argv[2]);
-
-			initializeDataSetsForUser(user, CHUNCKTIMESIZE,
-				CHUNCKTIMEINTERVAL);
+			initializeDataSetsForUser(user, CHUNCKTIMESIZE, CHUNCKTIMEINTERVAL);
 
 			cout << "El dataset fue creado correctamente" << endl;
 
@@ -259,8 +263,10 @@ int main(int argc, char **argv){
 			vector<char *> fileNames;
 
 			_evaluationSamples = atoi(argv[2]);
+			_iterationsRequired = atoi(argv[3]);
 
-			for(int files = 3; files<argc; files++){
+
+			for(int files = 4; files<argc; files++){
 				fileNames.push_back(argv[files]);
 			}
 

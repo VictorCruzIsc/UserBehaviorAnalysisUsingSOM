@@ -32,6 +32,7 @@ class Neuron{
 		int getEvaluatedIdUser();
 		bool isEvaluated();
 		bool userMatches();
+		int getColitions();
 
 		void setX(int x);
 		void setY(int y);
@@ -56,6 +57,7 @@ class Neuron{
 		int				_totalWeights;
 		int 			_constructedIdUser;
 		int 			_evaluatedIdUser;
+		int 			_colitions;
 		bool			_evaluated;
 		bool			_matchingUser;
 		vector<double> 	_weights;

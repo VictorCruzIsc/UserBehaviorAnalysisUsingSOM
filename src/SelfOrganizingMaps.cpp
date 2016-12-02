@@ -479,6 +479,10 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(vector<DataChunck *
 			distances.push_back(distance);
 			bmus.push_back(bmu);
 			totalDistance += distance;
+
+			// Applying bmu neuron stadistics
+			bmu -> setEvaluatedIdUser(evaluatedIdUser);
+			bmu -> processNeuronAfterEvaluation();
 		}
 
 		cout << "Getting average, variance, stdDeviation, and ranges..." << endl;
@@ -492,7 +496,7 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(vector<DataChunck *
 
 		cout << "Getting stadistical information about errors and matching neurons..." << endl;
 
-		for(int i=0; i<100;i++){
+		for(int i=0; i<bmus.size();i++){
 			distance = distances[i];
 			Neuron *bmu = bmus[i];
 			if(distance < lowerRange || distance > upperRange){
@@ -503,10 +507,6 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(vector<DataChunck *
 				_matrix->getNeuron(bmu->getX(), bmu->getY())->setNeuronColor(red, green, blue);
 				//cout << "OK" << endl;
 			}
-
-			// Applying bmu neuron stadistics
-			bmu -> setEvaluatedIdUser(evaluatedIdUser);
-			bmu -> processNeuronAfterEvaluation();
 		}
 
 		distances.clear();
@@ -516,6 +516,8 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(vector<DataChunck *
 
 		globalError += errors;
 		errors = 0;
+
+		getMatrixStadistics();
 	}
 
 	cout << "Iterations summary:" << endl;
@@ -678,18 +680,22 @@ void SelfOrganizingMaps::correctStadisticsResults(int initial, int final){
 
 void SelfOrganizingMaps::getMatrixStadistics(){
 	Neuron *neuron;
-	_errorStadisticsResults.clear();
-	map<int, int> totalBMU;
+	int totalColitions=0;
 	int correct = 0;
 	int incorrect = 0;
+	map<int, int> totalBMU;
+
+	_errorStadisticsResults.clear();
+
 	for(int row=0; row<_size; row++){
 		for(int col=0; col<_size; col++){
 			neuron = _matrix->getNeuron(row, col);
 			if(neuron->isEvaluated()){
+				totalColitions += neuron->getColitions();
 				if(!neuron->userMatches()){
 					incorrect++;
 					errorStadisticsResults(neuron->getConstructedIdUser(), neuron->getEvaluatedIdUser());
-				}else{
+				}else if(neuron->userMatches()){
 					correct++;
 					correctStadisticsResults(neuron->getConstructedIdUser(), neuron->getEvaluatedIdUser());
 				}
@@ -698,6 +704,7 @@ void SelfOrganizingMaps::getMatrixStadistics(){
 	}
 
 	// Print Results
+	cout << "TotalColitions: " << totalColitions << endl;
 	cout << "Correct:" << correct << endl;
 	map<int, StadisticsResults *>::iterator ite;
 	for(ite = _correctStadisticsResults.begin(); ite != _correctStadisticsResults.end(); ite++){
