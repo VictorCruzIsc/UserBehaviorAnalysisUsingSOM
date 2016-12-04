@@ -459,72 +459,155 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(vector<DataChunck *
 	for(int j=0; j<iterations; j++){
 		cout << "Iteration: " << j << endl;
 
-		initialIndex = rand() / totalElements;
-		while((initialIndex + chunckSize) >= totalElements){
+		// Get initial and final index of the iteration
+		{
 			initialIndex = rand() / totalElements;
+			while((initialIndex + chunckSize) >= totalElements){
+				initialIndex = rand() / totalElements;
+			}
+			finalIndex = initialIndex + chunckSize;
+			cout << "Getting the bmu's of elements from " << initialIndex;
+			cout << " to " << finalIndex << " in the dataset..." << endl;
 		}
 
-		finalIndex = initialIndex + chunckSize;
+		/*
+		* Getting BMU of the dataset
+		* Applying changes to get neuron stadistics
+		*/
+		{
+			for(int i=initialIndex; i<finalIndex; i++){
+				weights[0] = inputDataset[i]->getProportionTCPUDPMetric();
+				weights[1] = inputDataset[i]->getBytesToInternalIPMetric();
+				weights[2] = inputDataset[i]->getBytesThroughWebMetric();
 
-		cout << "Getting the bmu's of elements from " << initialIndex;
-		cout << " to " << finalIndex << " in the dataset..." << endl;
+				Neuron *bmu = getBMU(weights);
+				distance = bmu->distanceToInputVector(weights);
+				distances.push_back(distance);
+				bmus.push_back(bmu);
+				totalDistance += distance;
 
-		for(int i=initialIndex; i<finalIndex; i++){
-			weights[0] = inputDataset[i]->getProportionTCPUDPMetric();
-			weights[1] = inputDataset[i]->getBytesToInternalIPMetric();
-			weights[2] = inputDataset[i]->getBytesThroughWebMetric();
-
-			Neuron *bmu = getBMU(weights);
-			distance = bmu->distanceToInputVector(weights);
-			distances.push_back(distance);
-			bmus.push_back(bmu);
-			totalDistance += distance;
-
-			// Applying bmu neuron stadistics
-			bmu -> setEvaluatedIdUser(evaluatedIdUser);
-			bmu -> processNeuronAfterEvaluation();
-		}
-
-		cout << "Getting average, variance, stdDeviation, and ranges..." << endl;
-
-		average = totalDistance/inputDataset.size();
-		variance = Utils::getVariance(distances, average);
-		stdDeviation = sqrt(variance);
-		sigma = sigmaMultiplier*stdDeviation;
-		lowerRange = average - sigma;
-		upperRange = average + sigma;
-
-		cout << "Getting stadistical information about errors and matching neurons..." << endl;
-
-		for(int i=0; i<bmus.size();i++){
-			distance = distances[i];
-			Neuron *bmu = bmus[i];
-			if(distance < lowerRange || distance > upperRange){
-				_matrix->getNeuron(bmu->getX(), bmu->getY())->setNeuronColor(0, 0, 0);
-				errors++;
-				//cout << "Error out of " << sigmaMultiplier << " sigma" << endl;
-			}else{
-				_matrix->getNeuron(bmu->getX(), bmu->getY())->setNeuronColor(red, green, blue);
-				//cout << "OK" << endl;
+				// Applying bmu neuron stadistics
+				bmu -> setEvaluatedIdUser(evaluatedIdUser);
+				bmu -> processNeuronAfterEvaluation();
 			}
 		}
 
-		distances.clear();
+		/*
+		* Retrieving stadistical information
+		*/
+		{
+			cout << "Getting average, variance, stdDeviation, and ranges..." << endl;
+			average = totalDistance/inputDataset.size();
+			variance = Utils::getVariance(distances, average);
+			stdDeviation = sqrt(variance);
+			sigma = sigmaMultiplier*stdDeviation;
+			lowerRange = average - sigma;
+			upperRange = average + sigma;
+		}
+
+		/*
+		* Setting on matrix an indicator of BMU's matching neurons
+		* if matrix are in the correct range, are marked as the color that was assigned if not
+		* marked on black
+		*/
+		{
+			cout << "Getting stadistical information about errors and matching neurons..." << endl;
+			for(int i=0; i<bmus.size();i++){
+				distance = distances[i];
+				Neuron *bmu = bmus[i];
+				if(distance < lowerRange || distance > upperRange){
+					_matrix->getNeuron(bmu->getX(), bmu->getY())->setNeuronColor(0, 0, 0);
+					errors++;
+					//cout << "Error out of " << sigmaMultiplier << " sigma" << endl;
+				}else{
+					_matrix->getNeuron(bmu->getX(), bmu->getY())->setNeuronColor(red, green, blue);
+					//cout << "OK" << endl;
+				}
+			}
+		}
 
 		cout << "SubDataset results with " << sigmaMultiplier << " sigma: " << errors;
 		cout << "/" << chunckSize << endl;
 
-		globalError += errors;
+		// Cleaning information for next iteration
 		errors = 0;
+		distances.clear();
+
+		// Managing information for global results
+		globalError += errors;
 
 		getMatrixStadistics();
 	}
 
-	cout << "Iterations summary:" << endl;
-	cout << "SubDataset results with " << sigmaMultiplier << " sigma " << globalError;
-	cout << "/" << chunckSize*iterations << endl;
-	cout << "Evaluated percetage of the complete dataSet (" << totalElements <<"): ";
-	cout << ((chunckSize*iterations*100)/double(totalElements)) << "%" << endl;
+	// Printing global results
+	{
+		cout << "Iterations summary:" << endl;
+		cout << "SubDataset results with " << sigmaMultiplier << " sigma " << globalError;
+		cout << "/" << chunckSize*iterations << endl;
+		cout << "Evaluated percetage of the complete dataSet (" << totalElements <<"): ";
+		cout << ((chunckSize*iterations*100)/double(totalElements)) << "%" << endl;
+	}
+}
+
+void SelfOrganizingMaps::getMatrixStadistics(){
+	int totalColitions=0;
+	int correct = 0;
+	int incorrect = 0;
+	map<int, int> totalBMU;
+	Neuron *neuron;
+
+	_errorStadisticsResults.clear();
+	_correctStadisticsResults.clear();
+
+	for(int row=0; row<_size; row++){
+		for(int col=0; col<_size; col++){
+			neuron = _matrix->getNeuron(row, col);
+			if(neuron->isEvaluated()){
+				totalColitions += neuron->getColitions();
+				if(!neuron->userMatches()){
+					incorrect++;
+					errorStadisticsResults(neuron->getConstructedIdUser(), neuron->getEvaluatedIdUser());
+				}else if(neuron->userMatches()){
+					correct++;
+					correctStadisticsResults(neuron->getConstructedIdUser(), neuron->getEvaluatedIdUser());
+				}
+			}
+		}
+	}
+
+	// Print Results
+	cout << "TotalColitions: " << totalColitions << endl;
+	cout << "Correct:" << correct << endl;
+	map<int, StadisticsResults *>::iterator ite;
+	for(ite = _correctStadisticsResults.begin(); ite != _correctStadisticsResults.end(); ite++){
+		cout << ite->second->info() << endl;
+	}
+
+	cout << "Errors:" << incorrect << endl;
+	map<int, StadisticsResults *>::iterator it;
+	for(it = _errorStadisticsResults.begin(); it != _errorStadisticsResults.end(); it++){
+		cout << it->second->info() << endl;
+	}
+}
+
+void SelfOrganizingMaps::errorStadisticsResults(int initial, int final){
+	int key = initial + final;
+	if(_errorStadisticsResults.find(key) == _errorStadisticsResults.end()){
+		StadisticsResults *stadisticalResult = new StadisticsResults(initial, final);
+		_errorStadisticsResults[key] = stadisticalResult;
+	}else{
+		_errorStadisticsResults[key]->addToValue(1);
+	}
+}
+
+void SelfOrganizingMaps::correctStadisticsResults(int initial, int final){
+	int key = initial + final;
+	if(_correctStadisticsResults.find(key) == _correctStadisticsResults.end()){
+		StadisticsResults *stadisticalResult = new StadisticsResults(initial, final);
+		_correctStadisticsResults[key] = stadisticalResult;
+	}else{
+		_correctStadisticsResults[key]->addToValue(1);
+	}
 }
 
 void SelfOrganizingMaps::setWeightVector(vector<double> weightVector, int x, int y){
@@ -655,65 +738,5 @@ void SelfOrganizingMaps::updateMatrixWeigths(Neuron *bmu, vector<double> inputVe
 			_matrix->updateWeightVector(influence, currenLearningRate,
 				inputVector, row, col);
 		}
-	}
-}
-
-void SelfOrganizingMaps::errorStadisticsResults(int initial, int final){
-	int key = initial + final;
-	if(_errorStadisticsResults.find(key) == _errorStadisticsResults.end()){
-		StadisticsResults *stadisticalResult = new StadisticsResults(initial, final);
-		_errorStadisticsResults[key] = stadisticalResult;
-	}else{
-		_errorStadisticsResults[key]->addToValue(1);
-	}
-}
-
-void SelfOrganizingMaps::correctStadisticsResults(int initial, int final){
-	int key = initial + final;
-	if(_correctStadisticsResults.find(key) == _correctStadisticsResults.end()){
-		StadisticsResults *stadisticalResult = new StadisticsResults(initial, final);
-		_correctStadisticsResults[key] = stadisticalResult;
-	}else{
-		_correctStadisticsResults[key]->addToValue(1);
-	}
-}
-
-void SelfOrganizingMaps::getMatrixStadistics(){
-	Neuron *neuron;
-	int totalColitions=0;
-	int correct = 0;
-	int incorrect = 0;
-	map<int, int> totalBMU;
-
-	_errorStadisticsResults.clear();
-
-	for(int row=0; row<_size; row++){
-		for(int col=0; col<_size; col++){
-			neuron = _matrix->getNeuron(row, col);
-			if(neuron->isEvaluated()){
-				totalColitions += neuron->getColitions();
-				if(!neuron->userMatches()){
-					incorrect++;
-					errorStadisticsResults(neuron->getConstructedIdUser(), neuron->getEvaluatedIdUser());
-				}else if(neuron->userMatches()){
-					correct++;
-					correctStadisticsResults(neuron->getConstructedIdUser(), neuron->getEvaluatedIdUser());
-				}
-			}
-		}
-	}
-
-	// Print Results
-	cout << "TotalColitions: " << totalColitions << endl;
-	cout << "Correct:" << correct << endl;
-	map<int, StadisticsResults *>::iterator ite;
-	for(ite = _correctStadisticsResults.begin(); ite != _correctStadisticsResults.end(); ite++){
-		cout << ite->second->info() << endl;
-	}
-
-	cout << "Errors:" << incorrect << endl;
-	map<int, StadisticsResults *>::iterator it;
-	for(it = _errorStadisticsResults.begin(); it != _errorStadisticsResults.end(); it++){
-		cout << it->second->info() << endl;
 	}
 }

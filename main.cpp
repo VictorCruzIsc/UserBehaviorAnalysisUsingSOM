@@ -17,7 +17,7 @@
 #define MAXEPOCHS 				1000
 #define NORMALSIZE 				100
 #define INITIALLEARNINGRATE 	0.1
-#define SIGMA 					3
+#define SIGMA 					1
 
 // DataSet constants
 #define CHUNCKTIMESIZE 			5	// Given in minutes
@@ -261,7 +261,6 @@ int main(int argc, char **argv){
 			break;
 		case 1: // Get the matrix from a previous training
 			vector<char *> fileNames;
-
 			_evaluationSamples = atoi(argv[2]);
 			_iterationsRequired = atoi(argv[3]);
 
