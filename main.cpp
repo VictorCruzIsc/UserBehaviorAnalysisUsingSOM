@@ -23,6 +23,12 @@
 #define CHUNCKTIMESIZE 			5	// Given in minutes
 #define CHUNCKTIMEINTERVAL 		10	// Given in seconds
 
+// Results constants
+#define MAX_SAMPLES 			2300
+#define EXPERIMET_REPETITION	1
+#define INCREMENT 				700
+#define TOTAL_USERS_EVALUATED 	3
+
 // Developing constants
 //#define DEBUG
 
@@ -63,6 +69,8 @@ void init();
 // Algorithm methods
 void initializeDataSetsForUser(int idUser, int chunckTimeSize, int chunckTimeInterval);
 bool createEvaluationDataSets();
+void sendAllUsersToEvaluate();
+void obtainResults(int increment, int samplesExperimentRepetiion);
 // ===================== Local Method Headers =====================
 
 // ===================== Method Declaration =======================
@@ -98,13 +106,7 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 				cout << "Stopped training" << endl;
 			break;
 		case 'r':
-			/*
-				_training = false;
-				_som->reset();
-				cout << "Map reset" << endl;
-				glutPostRedisplay();
-			*/
-			cout << "No functionality implemented for reset until now" << endl;
+			obtainResults(INCREMENT, EXPERIMET_REPETITION);
 			break;
 		case 's':
 			if(_training)
@@ -142,7 +144,10 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 				_sigma, _iterationsRequired, _evaluationSamples, 0, 0, 255, 3);
 			glutPostRedisplay();
 			break;
-		case '4': //User type 4
+		case 'a':
+			cout << "Start execution for all users" << endl;
+			sendAllUsersToEvaluate();
+			cout << "Finish execution for all users" << endl;
 			break;
 	}
 }
@@ -201,6 +206,58 @@ bool createEvaluationDataSets(){
 		return false;
 	}
 	return true;
+}
+
+void sendAllUsersToEvaluate(){
+	cout << "Running evaluation for user 1..." << endl;
+	_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[0],
+		_sigma, _iterationsRequired, _evaluationSamples, 255, 0, 0, 1);
+	cout << "Running evaluation for user 2..." << endl;
+	_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[1],
+		_sigma, _iterationsRequired, _evaluationSamples, 0, 255, 0, 2);
+	cout << "Running evaluation for user 3..." << endl;
+	_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[2],
+		_sigma, _iterationsRequired, _evaluationSamples, 0, 0, 255, 3);
+
+	cout << "Displaying results..." << endl;
+	// Display Results
+	glutPostRedisplay();
+
+	int totalNeurons = ((_iterationsRequired * _evaluationSamples) * TOTAL_USERS_EVALUATED);
+
+	cout << "Total expected users: " << TOTAL_USERS_EVALUATED << endl;
+	cout << "Iterations: " << _iterationsRequired << endl;
+	cout << "Evaluation Samples: " << _evaluationSamples << endl;
+	cout << "Total neurons evaluated per user: " << _iterationsRequired * _evaluationSamples << endl;
+	cout << "Expected neurons evaluated: " << totalNeurons << endl;
+	_som->getMatrixStadistics();
+	cout << "Unique matching neurons: " << _som->_incorrect + _som->_correct << endl;
+	if((_som->_incorrect + _som->_correct + _som->_totalColitions) == totalNeurons){
+		cout << "---> CORRECT <---" << endl;
+	}else{
+		cout << "---> INCORRECT <---" << endl;
+	}
+}
+
+void obtainResults(int increment, int samplesExperimentRepetiion){
+	cout << "=== Starting results obtention ===\n\n\n" << endl;
+	while(_evaluationSamples <= MAX_SAMPLES){
+		cout << "*** Starting results obtaining with " << _evaluationSamples << " samples ***" << endl;
+		for(int i=0; i<samplesExperimentRepetiion; i++){
+			cout << "# Start Experiment: " << i+1 << "/" << samplesExperimentRepetiion << " #" << endl;
+				sendAllUsersToEvaluate();
+				_som->resetMatrixStadistics();
+				_som->_incorrect = 0;
+				_som-> _correct = 0;
+				_som->_totalColitions = 0;
+				_som->_errorStadisticsResults.clear();
+				_som->_correctStadisticsResults.clear();
+			cout << "# Finish Experiment: " << i+1 << "/" << samplesExperimentRepetiion << " #" << endl;
+		}
+		cout << "*** Finish results obtaining with " << _evaluationSamples << " samples ***\n\n\n" << endl;
+		_evaluationSamples += increment;
+	}
+	cout << "=== Finish results obtention ===" << endl;
 }
 
 // ===================== Method Declaration =======================

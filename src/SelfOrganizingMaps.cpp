@@ -5,7 +5,8 @@ SelfOrganizingMaps::SelfOrganizingMaps(int size, int totalWeights,
 	_iterations(0), _size(size), _totalWeigths(totalWeights),
 	_maxEpochs(maxEpochs),
 	_epochs(0), _initialLearningRate(initialLearningRate),
-	_initialNeighbourhoodRadius(size/2), _totalSamples(totalSamples){
+	_initialNeighbourhoodRadius(size/2), _totalSamples(totalSamples),
+	_totalColitions(0), _correct(0), _incorrect(0){
 	_matrix =  new Matrix(_size, _totalWeigths, initialize);
 	_radiusTimeConstant = _maxEpochs/log(_initialNeighbourhoodRadius);
 	_learningRateTimeConstant = _maxEpochs/log(_initialLearningRate);
@@ -17,7 +18,8 @@ SelfOrganizingMaps::SelfOrganizingMaps(int size, int totalWeights,
 	_iterations(0), _size(size), _totalWeigths(totalWeights),
 	_maxEpochs(maxEpochs),
 	_epochs(0), _initialLearningRate(initialLearningRate),
-	_initialNeighbourhoodRadius(size/2), _totalSamples(totalSamples){
+	_initialNeighbourhoodRadius(size/2), _totalSamples(totalSamples),
+	_totalColitions(0), _correct(0), _incorrect(0){
 	_matrix =  new Matrix(_size, _totalWeigths, dataSet);
 	_radiusTimeConstant = _maxEpochs/log(_initialNeighbourhoodRadius);
 	_learningRateTimeConstant = _maxEpochs/log(_initialLearningRate);
@@ -29,7 +31,8 @@ SelfOrganizingMaps::SelfOrganizingMaps(int size, int totalWeights,
 	_iterations(0), _size(size), _totalWeigths(totalWeights),
 	_maxEpochs(maxEpochs),
 	_epochs(0), _initialLearningRate(initialLearningRate),
-	_initialNeighbourhoodRadius(size/2), _totalSamples(totalSamples){
+	_initialNeighbourhoodRadius(size/2), _totalSamples(totalSamples),
+	_totalColitions(0), _correct(0), _incorrect(0){
 	_matrix =  matrix;
 	_radiusTimeConstant = _maxEpochs/log(_initialNeighbourhoodRadius);
 	_learningRateTimeConstant = _maxEpochs/log(_initialLearningRate);
@@ -40,7 +43,8 @@ SelfOrganizingMaps::SelfOrganizingMaps(int size, int totalWeights,
 			vector<DataPackage* > dataSet, int totalSamples):
 	_iterations(0), _size(size), _totalWeigths(totalWeights),
 	_maxEpochs(maxEpochs), _epochs(0), _initialLearningRate(initialLearningRate),
-	_initialNeighbourhoodRadius(size/2), _totalSamples(totalSamples){
+	_initialNeighbourhoodRadius(size/2), _totalSamples(totalSamples),
+	_totalColitions(0), _correct(0), _incorrect(0){
 	_matrix =  new Matrix(_size, _totalWeigths, dataSet);
 	_radiusTimeConstant = _maxEpochs/log(_initialNeighbourhoodRadius);
 	_learningRateTimeConstant = _maxEpochs/log(_initialLearningRate);
@@ -51,7 +55,8 @@ SelfOrganizingMaps::SelfOrganizingMaps(int size, int totalWeights,
 			vector<DataChunck* > dataSet, int totalSamples, int idUser):
 	_iterations(0), _size(size), _totalWeigths(totalWeights),
 	_maxEpochs(maxEpochs), _epochs(0), _initialLearningRate(initialLearningRate),
-	_initialNeighbourhoodRadius(size/2), _totalSamples(totalSamples){
+	_initialNeighbourhoodRadius(size/2), _totalSamples(totalSamples),
+	_totalColitions(0), _correct(0), _incorrect(0){
 	_matrix =  new Matrix(_size, _totalWeigths, dataSet, idUser);
 	_radiusTimeConstant = _maxEpochs/log(_initialNeighbourhoodRadius);
 	_learningRateTimeConstant = _maxEpochs/log(_initialLearningRate);
@@ -450,14 +455,17 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(vector<DataChunck *
 	int initialIndex = 0;
 	int finalIndex =0;
 	int globalError = 0;
+	int totalNeuronsEvaluated = chunckSize*iterations;
+	double percentageDataSetEvaluated = ((totalNeuronsEvaluated*100)/double(totalElements));
+	double globalPercentileError = 0;
 
-	cout << "DataSet size:" << totalElements << endl;
-	cout << "Corresponding color " << red << " " << green << " " << blue << endl;
+	//cout << "DataSet size:" << totalElements << endl;
+	//cout << "Corresponding color " << red << " " << green << " " << blue << endl;
 
 	weights.resize(3);
 
 	for(int j=0; j<iterations; j++){
-		cout << "Iteration: " << j << endl;
+		//cout << "Iteration: " << j << endl;
 
 		// Get initial and final index of the iteration
 		{
@@ -466,8 +474,8 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(vector<DataChunck *
 				initialIndex = rand() / totalElements;
 			}
 			finalIndex = initialIndex + chunckSize;
-			cout << "Getting the bmu's of elements from " << initialIndex;
-			cout << " to " << finalIndex << " in the dataset..." << endl;
+			//cout << "Getting the bmu's of elements from " << initialIndex;
+			//cout << " to " << finalIndex << " in the dataset..." << endl;
 		}
 
 		/*
@@ -496,7 +504,7 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(vector<DataChunck *
 		* Retrieving stadistical information
 		*/
 		{
-			cout << "Getting average, variance, stdDeviation, and ranges..." << endl;
+			//cout << "Getting average, variance, stdDeviation, and ranges..." << endl;
 			average = totalDistance/inputDataset.size();
 			variance = Utils::getVariance(distances, average);
 			stdDeviation = sqrt(variance);
@@ -511,7 +519,7 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(vector<DataChunck *
 		* marked on black
 		*/
 		{
-			cout << "Getting stadistical information about errors and matching neurons..." << endl;
+			//cout << "Getting stadistical information about errors and matching neurons..." << endl;
 			for(int i=0; i<bmus.size();i++){
 				distance = distances[i];
 				Neuron *bmu = bmus[i];
@@ -526,27 +534,38 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(vector<DataChunck *
 			}
 		}
 
-		cout << "SubDataset results with " << sigmaMultiplier << " sigma: " << errors;
-		cout << "/" << chunckSize << endl;
+		//cout << "SubDataset results with " << sigmaMultiplier << " sigma: " << errors;
+		//cout << "/" << chunckSize << endl;
+
+
+		// Managing information for global results
+		globalError += errors;
 
 		// Cleaning information for next iteration
 		errors = 0;
 		distances.clear();
 
-		// Managing information for global results
-		globalError += errors;
-
-		getMatrixStadistics();
+		//cout << "Iteration " << j << " summary" << endl;
+		//getMatrixStadistics();
 	}
 
+	/*
 	// Printing global results
 	{
+		globalPercentileError = ((double)globalError/totalNeuronsEvaluated)*100;
+		cout << "================== GLOBAL RESULTS ==================" << endl;
+		cout << "---- Stadistics results ----" << endl;
+		cout << "Total iterations: " << iterations << endl;
+		cout << "Total neurons evaluated along iterations: " << totalNeuronsEvaluated << endl; 
 		cout << "Iterations summary:" << endl;
-		cout << "SubDataset results with " << sigmaMultiplier << " sigma " << globalError;
-		cout << "/" << chunckSize*iterations << endl;
-		cout << "Evaluated percetage of the complete dataSet (" << totalElements <<"): ";
-		cout << ((chunckSize*iterations*100)/double(totalElements)) << "%" << endl;
+		cout << "SubDataset errors results with " << sigmaMultiplier << " sigma ";
+		cout << globalError << "/" << totalNeuronsEvaluated << " = " << globalPercentileError << "%" << endl;
+		cout << "Evaluated percetage of the complete dataSet " << totalNeuronsEvaluated << "/" << totalElements << " = ";
+		cout << percentageDataSetEvaluated << "%" << endl;
+		cout << "---- Detailed results ----" << endl;
+		getMatrixStadistics();
 	}
+	*/
 }
 
 void SelfOrganizingMaps::getMatrixStadistics(){
@@ -563,12 +582,12 @@ void SelfOrganizingMaps::getMatrixStadistics(){
 		for(int col=0; col<_size; col++){
 			neuron = _matrix->getNeuron(row, col);
 			if(neuron->isEvaluated()){
-				totalColitions += neuron->getColitions();
+				_totalColitions += neuron->getColitions();
 				if(!neuron->userMatches()){
-					incorrect++;
+					_incorrect++;
 					errorStadisticsResults(neuron->getConstructedIdUser(), neuron->getEvaluatedIdUser());
 				}else if(neuron->userMatches()){
-					correct++;
+					_correct++;
 					correctStadisticsResults(neuron->getConstructedIdUser(), neuron->getEvaluatedIdUser());
 				}
 			}
@@ -576,17 +595,25 @@ void SelfOrganizingMaps::getMatrixStadistics(){
 	}
 
 	// Print Results
-	cout << "TotalColitions: " << totalColitions << endl;
-	cout << "Correct:" << correct << endl;
+	cout << "TotalColitions: " << _totalColitions << endl;
+	cout << "Correct:" << _correct << endl;
 	map<int, StadisticsResults *>::iterator ite;
 	for(ite = _correctStadisticsResults.begin(); ite != _correctStadisticsResults.end(); ite++){
 		cout << ite->second->info() << endl;
 	}
 
-	cout << "Errors:" << incorrect << endl;
+	cout << "Errors:" << _incorrect << endl;
 	map<int, StadisticsResults *>::iterator it;
 	for(it = _errorStadisticsResults.begin(); it != _errorStadisticsResults.end(); it++){
 		cout << it->second->info() << endl;
+	}
+}
+
+void SelfOrganizingMaps::resetMatrixStadistics(){
+	for(int row=0; row<_size; row++){
+		for(int col=0; col<_size; col++){
+			_matrix->getNeuron(row, col)->resetNeuronStatics();
+		}
 	}
 }
 

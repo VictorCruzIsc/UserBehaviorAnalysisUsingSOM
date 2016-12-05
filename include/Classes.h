@@ -150,6 +150,14 @@ class SelfOrganizingMaps{
 
 		// Stadistics
 		void getMatrixStadistics();
+		void resetMatrixStadistics();
+
+		// Variables
+		int _incorrect;
+		int _totalColitions;
+		int _correct;
+		map<int, StadisticsResults *> _errorStadisticsResults;
+		map<int, StadisticsResults *> _correctStadisticsResults;
 
 	private:
 		int _iterations;
@@ -164,8 +172,6 @@ class SelfOrganizingMaps{
 		double _learningRateTimeConstant;
 		Matrix *_matrix;
 		map<Neuron *, Neuron *> _bmuTestCases;
-		map<int, StadisticsResults *> _errorStadisticsResults;
-		map<int, StadisticsResults *> _correctStadisticsResults;
 
 		// Methods
 		// Main functionality util  methods

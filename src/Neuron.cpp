@@ -240,6 +240,13 @@ void Neuron::setNeuronStatics(int idUser){
 	_matchingUser = false;
 }
 
+void Neuron::resetNeuronStatics(){
+	_evaluatedIdUser = 0;
+	_colitions = 0;
+	_evaluated = false;
+	_matchingUser = false;
+}
+
 void Neuron::setNeuronStatics(int idUser, int evaluatedIdUser, bool evaluated,
 			bool matchingUser){
 	_constructedIdUser = idUser;

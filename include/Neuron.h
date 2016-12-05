@@ -41,6 +41,7 @@ class Neuron{
 		void setNeuronColor(vector<double> rgb);
 		void setRGB(RGB *rgb);
 		void setNeuronStatics(int idUser);
+		void resetNeuronStatics();
 		void setNeuronStatics(int idUser, int evaluatedIdUser, bool evaluated,
 			bool matchingUser);
 		void setEvaluatedIdUser(int idUser);
