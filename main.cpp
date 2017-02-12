@@ -98,62 +98,100 @@ void reshape(int width, int height){
 void keyboard(unsigned char key, int mouseX, int mouseY){ 
 	switch (key){
 		case 't':
-			cout << "Total samples: " << _trainDataSetSize << endl;
-			_training = !_training;
-			if(_training)
-				cout << "Training..." << endl;
-			else
-				cout << "Stopped training" << endl;
+			if(_executionType == 0){
+				cout << "Execution type is training" << endl;
+				cout << "Total samples: " << _trainDataSetSize << endl;
+				_training = !_training;
+				if(_training)
+					cout << "Training..." << endl;
+				else
+					cout << "Stopped training" << endl;
+			}else{
+				cout << "Train function is only valid for Train Matrix, current execution type is Load Matrix" << endl;
+			}
 			break;
 		case 'r':
-			obtainResults(INCREMENT, EXPERIMET_REPETITION);
+			if(_executionType == 0){
+				cout << "Obtain results function is only valid for Load Matrix execution type, current execution type is Train Matrix" << endl;
+			}else{
+				obtainResults(INCREMENT, EXPERIMET_REPETITION);
+			}
 			break;
 		case 's':
-			if(_training)
-				_training = !_training;
-			cout << "Entrenamiento detenido" << endl;
+			if(_executionType == 0){
+				if(_training){
+					_training = !_training;
+				}
+				cout << "Training has been stopped" << endl;
+			}else{
+				cout << "Stop training function is only valid for Train Matrix, current execution type is Load Matrix" << endl;
+			}
 			break;
 		case 'e':
-			cout << "Export matrix..." << endl;
+			cout << "Export matrix" << endl;
 			Utils::exportMatrixToFile(_som->getMatrix(), _som->getEpochs(),
 				MAXEPOCHS, INITIALLEARNINGRATE, _som->getCurrenLearningRate());
 			break;
 		case 'q': // Starts stadistics
-			cout << "Starting stadistics" << endl;
-			_som -> getMatrixStadistics();
+			if(_executionType == 0){
+				cout << "Start stadistics function is only valid for Load Matrix, current execution is Train Matrix" << endl;
+			}else{
+				cout << "Starting stadistics" << endl;
+				_som -> getMatrixStadistics();
+			}
 			break;
 		// Users evaluation
 		case '1': // User type 1
-			cout << "Evaluation dataset of user " << key << endl;
-			cout << "Total samples used: " << _evaluationSamples << endl;
-			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[0],
-				_sigma, _iterationsRequired, _evaluationSamples, 255, 0, 0, 1);
-			glutPostRedisplay();
+			if(_executionType == 0){
+				cout << "Evaluation of a particular dataset function is only valid for Load Matrix, ";
+				cout << "current execution is Train Matrix" << endl;
+			}else{
+				cout << "Evaluation dataset of user " << key << endl;
+				cout << "Total samples used: " << _evaluationSamples << endl;
+				_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[0],
+					_sigma, _iterationsRequired, _evaluationSamples, 255, 0, 0, 1);
+				glutPostRedisplay();
+			}
 			break;
 		case '2': // User type 2
-			cout << "Evaluation dataset of user " << key << endl;
-			cout << "Total samples used: " << _evaluationSamples << endl;
-			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[1],
-				_sigma, _iterationsRequired, _evaluationSamples, 0, 255, 0, 2);
-			glutPostRedisplay();
+			if(_executionType == 0){
+				cout << "Evaluation of a particular dataset function is only valid for Load Matrix, ";
+				cout << "current execution is Train Matrix" << endl;
+			}else{
+				cout << "Evaluation dataset of user " << key << endl;
+				cout << "Total samples used: " << _evaluationSamples << endl;
+				_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[1],
+					_sigma, _iterationsRequired, _evaluationSamples, 0, 255, 0, 2);
+				glutPostRedisplay();
+			}
 			break;
 		case '3': // User type 3
-			cout << "Evaluation dataset of user " << key << endl;
-			cout << "Total samples used: " << _evaluationSamples << endl;
-			_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[2],
-				_sigma, _iterationsRequired, _evaluationSamples, 0, 0, 255, 3);
-			glutPostRedisplay();
+			if(_executionType == 0){
+				cout << "Evaluation of a particular dataset function is only valid for Load Matrix, ";
+				cout << "current execution is Train Matrix" << endl;
+			}else{
+				cout << "Evaluation dataset of user " << key << endl;
+				cout << "Total samples used: " << _evaluationSamples << endl;
+				_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[2],
+					_sigma, _iterationsRequired, _evaluationSamples, 0, 0, 255, 3);
+				glutPostRedisplay();
+			}
 			break;
 		case 'a':
-			cout << "Start execution for all users" << endl;
-			sendAllUsersToEvaluate();
-			cout << "Finish execution for all users" << endl;
+			if(_executionType == 0){
+				cout << "Send all users to evaluate function is only valid for Load Matrix, ";
+				cout << "current execution is Train Matrix" << endl;
+			}else{
+				cout << "Start execution for all users" << endl;
+				sendAllUsersToEvaluate();
+				cout << "Finish execution for all users" << endl;
+			}
 			break;
 	}
 }
 
 void idle(void){
-	if (_training && (_som->getEpochs() < MAXEPOCHS)){
+	if ((_training) && (_som->getEpochs() < MAXEPOCHS)){
 #ifdef DEBUG
 		_countingSampling++;
 		if(_countingSampling % 500 == 0)
@@ -316,7 +354,7 @@ int main(int argc, char **argv){
 			_openGLFovy = BASEOPENGLFOVY;
 		}
 			break;
-		case 1: // Get the matrix from a previous training
+		case 1:{ // Get the matrix from a previous training
 			vector<char *> fileNames;
 			_evaluationSamples = atoi(argv[2]);
 			_iterationsRequired = atoi(argv[3]);
@@ -349,6 +387,7 @@ int main(int argc, char **argv){
 				totalFiles);
 
 			cout << "Los archivos fueron exportados correctamente" << endl;
+		}
 			break;
 	}
 

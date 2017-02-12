@@ -97,7 +97,6 @@ vector<DataPackage *> DataSet::createDataSetPackageFormat(string user,
 	return packageDataSet;
 }
 
-//DataSet::createDataSetDataChunckFormat(userNetworkTraffic, BUILD, chunckTimeSize, chunckTimeInterval);
 vector<DataChunck *> DataSet::createDataSetDataChunckFormat(int idUser, int type,
 	int chunckTimeSize, int chunckTimeInterval){
 
