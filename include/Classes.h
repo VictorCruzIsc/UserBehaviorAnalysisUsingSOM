@@ -142,19 +142,20 @@ class SelfOrganizingMaps{
 		void evaluateIndependentDataChuckDataSet(vector<DataChunck *> inputDataset,
 			int sigmaMultiplier, int iterations, int chunckSize);
 		void evaluateIndependentDataChuckDataSet(vector<DataChunck *> inputDataset,
-			int sigmaMultiplier, int iterations, int chunckSize, double red,
+			int sigmaMultiplier, int chunckSize, double red,
 			double green, double blue, int evaluatedIdUser);
 
 		// Import trained matrix
 		void setWeightVector(vector<double> weightVector, int x, int y);
 
 		// Stadistics
-		void getMatrixStadistics();
+		void getMatrixStadistics(int totalNeuronsToEvaluate);
 		void resetMatrixStadistics();
 
 		// Variables
 		int _incorrect;
-		int _totalColitions;
+		int _totalPositiveColitions;
+		int _totalNegativeColitions;
 		int _correct;
 		map<int, StadisticsResults *> _errorStadisticsResults;
 		map<int, StadisticsResults *> _correctStadisticsResults;

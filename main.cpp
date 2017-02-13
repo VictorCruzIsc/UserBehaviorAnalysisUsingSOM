@@ -24,8 +24,7 @@
 #define CHUNCKTIMEINTERVAL 		10	// Given in seconds
 
 // Results constants
-#define MAX_SAMPLES 			2300
-#define EXPERIMET_REPETITION	1
+#define MAX_SAMPLES 			1800
 #define INCREMENT 				700
 #define TOTAL_USERS_EVALUATED 	3
 
@@ -114,7 +113,7 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 			if(_executionType == 0){
 				cout << "Obtain results function is only valid for Load Matrix execution type, current execution type is Train Matrix" << endl;
 			}else{
-				obtainResults(INCREMENT, EXPERIMET_REPETITION);
+				obtainResults(INCREMENT, _iterationsRequired);
 			}
 			break;
 		case 's':
@@ -136,8 +135,8 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 			if(_executionType == 0){
 				cout << "Start stadistics function is only valid for Load Matrix, current execution is Train Matrix" << endl;
 			}else{
-				cout << "Starting stadistics" << endl;
-				_som -> getMatrixStadistics();
+				cout << "Starting stadistics, the method is commented, decomment it and recompile" << endl;
+				//_som -> getMatrixStadistics();
 			}
 			break;
 		// Users evaluation
@@ -149,7 +148,7 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 				cout << "Evaluation dataset of user " << key << endl;
 				cout << "Total samples used: " << _evaluationSamples << endl;
 				_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[0],
-					_sigma, _iterationsRequired, _evaluationSamples, 255, 0, 0, 1);
+					_sigma, _evaluationSamples, 255, 0, 0, 1);
 				glutPostRedisplay();
 			}
 			break;
@@ -161,7 +160,7 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 				cout << "Evaluation dataset of user " << key << endl;
 				cout << "Total samples used: " << _evaluationSamples << endl;
 				_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[1],
-					_sigma, _iterationsRequired, _evaluationSamples, 0, 255, 0, 2);
+					_sigma, _evaluationSamples, 0, 255, 0, 2);
 				glutPostRedisplay();
 			}
 			break;
@@ -173,7 +172,7 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 				cout << "Evaluation dataset of user " << key << endl;
 				cout << "Total samples used: " << _evaluationSamples << endl;
 				_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[2],
-					_sigma, _iterationsRequired, _evaluationSamples, 0, 0, 255, 3);
+					_sigma, _evaluationSamples, 0, 0, 255, 3);
 				glutPostRedisplay();
 			}
 			break;
@@ -249,53 +248,40 @@ bool createEvaluationDataSets(){
 void sendAllUsersToEvaluate(){
 	cout << "Running evaluation for user 1..." << endl;
 	_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[0],
-		_sigma, _iterationsRequired, _evaluationSamples, 255, 0, 0, 1);
+		_sigma, _evaluationSamples, 255, 0, 0, 1);
+
 	cout << "Running evaluation for user 2..." << endl;
 	_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[1],
-		_sigma, _iterationsRequired, _evaluationSamples, 0, 255, 0, 2);
+		_sigma, _evaluationSamples, 0, 255, 0, 2);
+
 	cout << "Running evaluation for user 3..." << endl;
 	_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[2],
-		_sigma, _iterationsRequired, _evaluationSamples, 0, 0, 255, 3);
+		_sigma, _evaluationSamples, 0, 0, 255, 3);
 
-	cout << "Displaying results..." << endl;
-	// Display Results
-	glutPostRedisplay();
+	int totalNeuronsEvaluated = (_evaluationSamples * TOTAL_USERS_EVALUATED);
 
-	int totalNeurons = ((_iterationsRequired * _evaluationSamples) * TOTAL_USERS_EVALUATED);
-
-	cout << "Total expected users: " << TOTAL_USERS_EVALUATED << endl;
-	cout << "Iterations: " << _iterationsRequired << endl;
+	cout << "Total users evaluated: " << TOTAL_USERS_EVALUATED << endl;
 	cout << "Evaluation Samples: " << _evaluationSamples << endl;
-	cout << "Total neurons evaluated per user: " << _iterationsRequired * _evaluationSamples << endl;
-	cout << "Expected neurons evaluated: " << totalNeurons << endl;
-	_som->getMatrixStadistics();
-	cout << "Unique matching neurons: " << _som->_incorrect + _som->_correct << endl;
-	if((_som->_incorrect + _som->_correct + _som->_totalColitions) == totalNeurons){
-		cout << "---> CORRECT <---" << endl;
-	}else{
-		cout << "---> INCORRECT <---" << endl;
-	}
+	cout << "Total neurons evaluated per user: " << _evaluationSamples << endl;
+	cout << "Expected neurons evaluated: " << totalNeuronsEvaluated << endl;
+
+	_som->getMatrixStadistics(totalNeuronsEvaluated);
 }
 
 void obtainResults(int increment, int samplesExperimentRepetiion){
-	cout << "=== Starting results obtention ===\n\n\n" << endl;
+	cout << "=== Starting results obtention ===" << endl;
 	while(_evaluationSamples <= MAX_SAMPLES){
 		cout << "*** Starting results obtaining with " << _evaluationSamples << " samples ***" << endl;
 		for(int i=0; i<samplesExperimentRepetiion; i++){
-			cout << "# Start Experiment: " << i+1 << "/" << samplesExperimentRepetiion << " #" << endl;
+			cout << "# Start Experiment: " << (i + 1) << "/" << samplesExperimentRepetiion << " #" << endl;
 				sendAllUsersToEvaluate();
 				_som->resetMatrixStadistics();
-				_som->_incorrect = 0;
-				_som-> _correct = 0;
-				_som->_totalColitions = 0;
-				_som->_errorStadisticsResults.clear();
-				_som->_correctStadisticsResults.clear();
-			cout << "# Finish Experiment: " << i+1 << "/" << samplesExperimentRepetiion << " #" << endl;
 		}
-		cout << "*** Finish results obtaining with " << _evaluationSamples << " samples ***\n\n\n" << endl;
 		_evaluationSamples += increment;
 	}
+
 	cout << "=== Finish results obtention ===" << endl;
+	glutPostRedisplay();
 }
 
 // ===================== Method Declaration =======================

@@ -228,21 +228,27 @@ bool Neuron::userMatches(){
 	return _matchingUser;
 }
 
-int Neuron::getColitions(){
-	return _colitions;
+int Neuron::getPositiveColitions(){
+	return _positiveColitions;
+}
+
+int Neuron::getNegativeColitions(){
+	return _negativeColitions;
 }
 
 void Neuron::setNeuronStatics(int idUser){
 	_constructedIdUser = idUser;
 	_evaluatedIdUser = 0;
-	_colitions = 0;
+	_positiveColitions = 0;
+	_negativeColitions = 0;
 	_evaluated = false;
 	_matchingUser = false;
 }
 
 void Neuron::resetNeuronStatics(){
 	_evaluatedIdUser = 0;
-	_colitions = 0;
+	_positiveColitions = 0;
+	_negativeColitions = 0;
 	_evaluated = false;
 	_matchingUser = false;
 }
@@ -253,21 +259,21 @@ void Neuron::setNeuronStatics(int idUser, int evaluatedIdUser, bool evaluated,
 	_evaluatedIdUser = evaluatedIdUser;
 	_evaluated = evaluated;
 	_matchingUser = matchingUser;
-	_colitions = 0;
+	_positiveColitions = 0;
+	_negativeColitions = 0;
 }
 
-void Neuron::setEvaluatedIdUser(int idUser){
+void Neuron::processNeuronAfterEvaluation(int idUser){
 	_evaluatedIdUser = idUser;
-	if(_evaluated){
-		_colitions++;
-	}
-}
+	_matchingUser = (_constructedIdUser == _evaluatedIdUser);
 
-void Neuron::processNeuronAfterEvaluation(){
-	_evaluated = true;
-	if(_constructedIdUser == _evaluatedIdUser){
-		_matchingUser = true;
+	if(_evaluated){
+		if(_matchingUser){
+			_positiveColitions++;
+		}else{
+			_negativeColitions++;
+		}
 	}else{
-		_matchingUser = false;
+		_evaluated = true;
 	}
 }

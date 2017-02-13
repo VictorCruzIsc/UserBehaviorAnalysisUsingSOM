@@ -32,7 +32,8 @@ class Neuron{
 		int getEvaluatedIdUser();
 		bool isEvaluated();
 		bool userMatches();
-		int getColitions();
+		int getPositiveColitions();
+		int getNegativeColitions();
 
 		void setX(int x);
 		void setY(int y);
@@ -44,13 +45,12 @@ class Neuron{
 		void resetNeuronStatics();
 		void setNeuronStatics(int idUser, int evaluatedIdUser, bool evaluated,
 			bool matchingUser);
-		void setEvaluatedIdUser(int idUser);
 
 		void info();
 		string exportNeuron();
 		double distanceToNeuron(Neuron *neuron);
 		double distanceToInputVector(vector<double> inputVector);
-		void processNeuronAfterEvaluation();
+		void processNeuronAfterEvaluation(int idUser);
 
 	private:
 		int 			_x;
@@ -58,7 +58,8 @@ class Neuron{
 		int				_totalWeights;
 		int 			_constructedIdUser;
 		int 			_evaluatedIdUser;
-		int 			_colitions;
+		int 			_positiveColitions;
+		int 			_negativeColitions;
 		bool			_evaluated;
 		bool			_matchingUser;
 		vector<double> 	_weights;
