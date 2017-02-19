@@ -1,4 +1,4 @@
-#include "../include/Classes.h"
+#include "../../include/functionality/Classes.h"
 
 int Utils::getRandomDoubleNumber(){
     return (double)rand() / RAND_MAX;

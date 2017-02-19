@@ -4,7 +4,7 @@
 #include <vector>
 #include <GL/glut.h>
 
-#include "include/Classes.h"
+#include "include/functionality/Classes.h"
 
 // OpenGL constants
 #define BASEWIDTH				400

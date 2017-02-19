@@ -1,4 +1,4 @@
-all: som2
+all: som
 
-som2: main.cpp src/Neuron.cpp src/Matrix.cpp src/Utils.cpp src/SelfOrganizingMaps.cpp src/RGB.cpp src/DataSet.cpp src/DataPackage.cpp src/DataChunck.cpp src/StadisticsResults.cpp
-	g++ -std=c++11 main.cpp src/Neuron.cpp src/Matrix.cpp src/Utils.cpp src/SelfOrganizingMaps.cpp src/RGB.cpp src/DataSet.cpp src/DataPackage.cpp src/DataChunck.cpp src/StadisticsResults.cpp -o som2 -lstdc++ -lglut -lGL -lGLU -lm
+som: main.cpp src/functionality/Neuron.cpp src/functionality/Matrix.cpp src/functionality/Utils.cpp src/functionality/SelfOrganizingMaps.cpp src/functionality/RGB.cpp src/functionality/DataSet.cpp src/functionality/DataPackage.cpp src/functionality/DataChunck.cpp src/functionality/StadisticsResults.cpp
+	g++ -std=c++11 main.cpp src/functionality/Neuron.cpp src/functionality/Matrix.cpp src/functionality/Utils.cpp src/functionality/SelfOrganizingMaps.cpp src/functionality/RGB.cpp src/functionality/DataSet.cpp src/functionality/DataPackage.cpp src/functionality/DataChunck.cpp src/functionality/StadisticsResults.cpp -o som -lstdc++ -lglut -lGL -lGLU -lm

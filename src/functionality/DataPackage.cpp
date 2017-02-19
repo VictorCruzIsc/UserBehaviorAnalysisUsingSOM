@@ -1,4 +1,4 @@
-#include "../include/DataPackage.h"
+#include "../../include/functionality/DataPackage.h"
 
 const long int DataPackage::FIRSTOCTET	= 			16777216;
 const long int DataPackage::SECONDOCTET	= 			65536;

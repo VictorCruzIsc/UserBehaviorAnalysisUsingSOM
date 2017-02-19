@@ -1,4 +1,4 @@
-#include "../include/StadisticsResults.h"
+#include "../../include/functionality/StadisticsResults.h"
 
 StadisticsResults::StadisticsResults(int initial, int final){
 	_initialUserAssigned = initial;

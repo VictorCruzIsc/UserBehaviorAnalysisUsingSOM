@@ -1,4 +1,4 @@
-#include "../include/DataChunck.h"
+#include "../../include/functionality/DataChunck.h"
 
 DataChunck::DataChunck(){
 	_proportionTCPUDPMetric = 0;

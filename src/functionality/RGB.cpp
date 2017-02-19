@@ -1,4 +1,4 @@
-#include "../include/RGB.h"
+#include "../../include/functionality/RGB.h"
 
 RGB::RGB(){
 	_red = 0;

@@ -1,4 +1,4 @@
-#include "../include/Matrix.h"
+#include "../../include/functionality/Matrix.h"
 
 Matrix::Matrix(int size, int totalWeights, bool initialize) : _size(size),
 	_totalWeights(totalWeights), _totalNeurons(size * size){
