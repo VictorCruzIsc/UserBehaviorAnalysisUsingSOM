@@ -437,11 +437,13 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(
 	}
 }
 
-void SelfOrganizingMaps::getMatrixStadistics(int totalNeuronsToEvaluate){
+SamplesResult* SelfOrganizingMaps::getMatrixStadistics(int totalNeuronsToEvaluate){
 	int totalPositiveColitions = 0;
 	int totalNegativeColitions = 0;
 	int correct = 0;
 	int incorrect = 0;
+	bool match = false;
+	bool correctStadisticResult = false;
 	map<int, int> totalBMU;
 	Neuron *neuron;
 
@@ -454,13 +456,9 @@ void SelfOrganizingMaps::getMatrixStadistics(int totalNeuronsToEvaluate){
 			if(neuron->isEvaluated()){
 				_totalPositiveColitions += neuron->getPositiveColitions();
 				_totalNegativeColitions += neuron->getNegativeColitions();
-				if(!neuron->userMatches()){
-					_incorrect++;
-					errorStadisticsResults(neuron->getConstructedIdUser(), neuron->getEvaluatedIdUser());
-				}else if(neuron->userMatches()){
-					_correct++;
-					correctStadisticsResults(neuron->getConstructedIdUser(), neuron->getEvaluatedIdUser());
-				}
+				match = neuron->userMatches();
+				match ? _correct++ : _incorrect++; 
+				setAnStadisticResult(neuron->getConstructedIdUser(), neuron->getEvaluatedIdUser(), match);
 			}
 		}
 	}
@@ -481,12 +479,20 @@ void SelfOrganizingMaps::getMatrixStadistics(int totalNeuronsToEvaluate){
 		cout << it->second->info() << endl;
 	}
 
-	if((_totalPositiveColitions + _totalNegativeColitions +
-		_incorrect + _correct) == totalNeuronsToEvaluate){
+	correctStadisticResult = ((_totalPositiveColitions + _totalNegativeColitions +
+		_incorrect + _correct) == totalNeuronsToEvaluate);
+
+	if(correctStadisticResult){
 		cout << "Correct stadistic result" << endl;
 	}else{
 		cout << "Incorrect stadistic result" << endl;
 	}
+
+	SamplesResult *samplesResult =  new SamplesResult(0, 0, 0, _totalPositiveColitions,
+		_totalNegativeColitions, _correct, _incorrect, _errorStadisticsResults,
+		_correctStadisticsResults, correctStadisticResult);
+
+	return samplesResult;
 }
 
 void SelfOrganizingMaps::resetMatrixStadistics(){
@@ -504,24 +510,18 @@ void SelfOrganizingMaps::resetMatrixStadistics(){
 	_correctStadisticsResults.clear();
 }
 
-void SelfOrganizingMaps::errorStadisticsResults(int initial, int final){
-	int key = initial + final;
-	if(_errorStadisticsResults.find(key) == _errorStadisticsResults.end()){
-		StadisticsResults *stadisticalResult = new StadisticsResults(initial, final);
-		_errorStadisticsResults[key] = stadisticalResult;
-	}else{
-		_errorStadisticsResults[key]->addToValue(1);
+void SelfOrganizingMaps::setAnStadisticResult(int initial, int final, bool correct){
+	map<int, StadisticsResults *> *stadisticsResults = &_correctStadisticsResults;
+	if(!correct){
+		stadisticsResults = &_errorStadisticsResults;
 	}
-}
-
-void SelfOrganizingMaps::correctStadisticsResults(int initial, int final){
 	int key = initial + final;
-	if(_correctStadisticsResults.find(key) == _correctStadisticsResults.end()){
+	if(stadisticsResults->find(key) == stadisticsResults->end()){
 		StadisticsResults *stadisticalResult = new StadisticsResults(initial, final);
-		_correctStadisticsResults[key] = stadisticalResult;
+		(*stadisticsResults)[key] = stadisticalResult;
 	}else{
-		_correctStadisticsResults[key]->addToValue(1);
-	}
+		(*stadisticsResults)[key]->addToValue(1);
+	}	
 }
 
 void SelfOrganizingMaps::setWeightVector(vector<double> weightVector, int x, int y){

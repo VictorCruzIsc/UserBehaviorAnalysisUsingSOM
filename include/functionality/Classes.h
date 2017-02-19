@@ -16,7 +16,6 @@
 #include <cfloat>
 #include <GL/glut.h>
 #include <algorithm>
-#include <stdio.h>
 #include <sys/types.h>
 #include <dirent.h>
 #include <iterator>
@@ -26,6 +25,7 @@
 #include "DataPackage.h"
 #include "DataChunck.h"
 #include "StadisticsResults.h"
+#include "../results/SamplesResult.h"
 
 //#define DEBUG
 //#define DEBUG_DATCHUNCK
@@ -149,7 +149,7 @@ class SelfOrganizingMaps{
 		void setWeightVector(vector<double> weightVector, int x, int y);
 
 		// Stadistics
-		void getMatrixStadistics(int totalNeuronsToEvaluate);
+		SamplesResult* getMatrixStadistics(int totalNeuronsToEvaluate);
 		void resetMatrixStadistics();
 
 		// Variables
@@ -180,8 +180,7 @@ class SelfOrganizingMaps{
 		double getInfluence(double distanceToBMU, double radius);
 		Neuron* getBMU(vector<double> inputVector);
 		void updateMatrixWeigths(Neuron *bmu, vector<double> inputVector);
-		void errorStadisticsResults(int initial, int final);
-		void correctStadisticsResults(int initial, int final);
+		void setAnStadisticResult(int initial, int final, bool correct);
 };
 
 class DataSet{

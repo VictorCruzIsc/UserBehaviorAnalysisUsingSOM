@@ -5,6 +5,7 @@
 #include <GL/glut.h>
 
 #include "include/functionality/Classes.h"
+#include "include/results/ResultsClasses.h"
 
 // OpenGL constants
 #define BASEWIDTH				400
@@ -24,16 +25,12 @@
 #define CHUNCKTIMEINTERVAL 		10	// Given in seconds
 
 // Results constants
-#define MAX_SAMPLES 			1800
-#define INCREMENT 				700
 #define TOTAL_USERS_EVALUATED 	3
 
 // Developing constants
 //#define DEBUG
 
 using namespace std;
-
-// Global variables
 
 // OpenGL variables
 double							_openGLFovy;
@@ -45,11 +42,15 @@ int 							_executionType;
 int 							_width;
 int 							_height;
 int 							_countingSampling;
-int 							_evaluationSamples;
-int 							_iterationsRequired;
 bool 							_training;
 bool							_isEvaluationDataSetInitialized;
 SelfOrganizingMaps				*_som;
+
+// Results variables
+int 							_maximumSamples;
+int 							_initialSamples;
+int 							_totalExperiments;
+int 							_samplesIncrement;
 
 // DataSet variables
 vector<DataChunck *>			_buildDataChunckSet;
@@ -68,8 +69,6 @@ void init();
 // Algorithm methods
 void initializeDataSetsForUser(int idUser, int chunckTimeSize, int chunckTimeInterval);
 bool createEvaluationDataSets();
-void sendAllUsersToEvaluate();
-void obtainResults(int increment, int samplesExperimentRepetiion);
 // ===================== Local Method Headers =====================
 
 // ===================== Method Declaration =======================
@@ -96,6 +95,7 @@ void reshape(int width, int height){
 
 void keyboard(unsigned char key, int mouseX, int mouseY){ 
 	switch (key){
+		// Training
 		case 't':
 			if(_executionType == 0){
 				cout << "Execution type is training" << endl;
@@ -109,13 +109,18 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 				cout << "Train function is only valid for Train Matrix, current execution type is Load Matrix" << endl;
 			}
 			break;
+		// Results obtention
 		case 'r':
 			if(_executionType == 0){
 				cout << "Obtain results function is only valid for Load Matrix execution type, current execution type is Train Matrix" << endl;
 			}else{
-				obtainResults(INCREMENT, _iterationsRequired);
+				Results::getResults(_initialSamples, _maximumSamples,
+					_samplesIncrement, _sigma, _totalExperiments,
+					TOTAL_USERS_EVALUATED, _som, _evaluateDataChunckSetCollection);
+				glutPostRedisplay();
 			}
 			break;
+		// Stop training
 		case 's':
 			if(_executionType == 0){
 				if(_training){
@@ -126,66 +131,13 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 				cout << "Stop training function is only valid for Train Matrix, current execution type is Load Matrix" << endl;
 			}
 			break;
+		// Export matrix
 		case 'e':
 			cout << "Export matrix" << endl;
 			Utils::exportMatrixToFile(_som->getMatrix(), _som->getEpochs(),
 				MAXEPOCHS, INITIALLEARNINGRATE, _som->getCurrenLearningRate());
 			break;
-		case 'q': // Starts stadistics
-			if(_executionType == 0){
-				cout << "Start stadistics function is only valid for Load Matrix, current execution is Train Matrix" << endl;
-			}else{
-				cout << "Starting stadistics, the method is commented, decomment it and recompile" << endl;
-				//_som -> getMatrixStadistics();
-			}
-			break;
-		// Users evaluation
-		case '1': // User type 1
-			if(_executionType == 0){
-				cout << "Evaluation of a particular dataset function is only valid for Load Matrix, ";
-				cout << "current execution is Train Matrix" << endl;
-			}else{
-				cout << "Evaluation dataset of user " << key << endl;
-				cout << "Total samples used: " << _evaluationSamples << endl;
-				_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[0],
-					_sigma, _evaluationSamples, 255, 0, 0, 1);
-				glutPostRedisplay();
-			}
-			break;
-		case '2': // User type 2
-			if(_executionType == 0){
-				cout << "Evaluation of a particular dataset function is only valid for Load Matrix, ";
-				cout << "current execution is Train Matrix" << endl;
-			}else{
-				cout << "Evaluation dataset of user " << key << endl;
-				cout << "Total samples used: " << _evaluationSamples << endl;
-				_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[1],
-					_sigma, _evaluationSamples, 0, 255, 0, 2);
-				glutPostRedisplay();
-			}
-			break;
-		case '3': // User type 3
-			if(_executionType == 0){
-				cout << "Evaluation of a particular dataset function is only valid for Load Matrix, ";
-				cout << "current execution is Train Matrix" << endl;
-			}else{
-				cout << "Evaluation dataset of user " << key << endl;
-				cout << "Total samples used: " << _evaluationSamples << endl;
-				_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[2],
-					_sigma, _evaluationSamples, 0, 0, 255, 3);
-				glutPostRedisplay();
-			}
-			break;
-		case 'a':
-			if(_executionType == 0){
-				cout << "Send all users to evaluate function is only valid for Load Matrix, ";
-				cout << "current execution is Train Matrix" << endl;
-			}else{
-				cout << "Start execution for all users" << endl;
-				sendAllUsersToEvaluate();
-				cout << "Finish execution for all users" << endl;
-			}
-			break;
+		// Starts stadistics
 	}
 }
 
@@ -216,7 +168,11 @@ void init(){
 	glEnable(GL_DEPTH_TEST);
 }
 
-void initializeDataSetsForUser(int idUser, int chunckTimeSize, int chunckTimeInterval){
+/*
+* Initialize build, train and evaluate dataSets for a specific user
+* enables isEvaluationDataSetInitialized flag
+*/
+void initUserDataSet(int idUser, int chunckTimeSize, int chunckTimeInterval){
 	_buildDataChunckSet = DataSet::createDataSetDataChunckFormat(idUser, Utils::BUILD, chunckTimeSize, chunckTimeInterval);
 	_trainDataChunckSet = DataSet::createDataSetDataChunckFormat(idUser, Utils::TRAIN, chunckTimeSize, chunckTimeInterval);
 	_evaluateDataChunckSet = DataSet::createDataSetDataChunckFormat(idUser, Utils::EVALUATE, chunckTimeSize, chunckTimeInterval);
@@ -226,6 +182,10 @@ void initializeDataSetsForUser(int idUser, int chunckTimeSize, int chunckTimeInt
 	_isEvaluationDataSetInitialized = true;
 }
 
+/*
+* Create evaluation datasets for the three users
+* if no data is available, Utils:BUILD data is used
+*/
 bool createEvaluationDataSets(){
 	int dataSetType = Utils::BUILD;
 	for(int i=1; i<4; i++){
@@ -238,50 +198,11 @@ bool createEvaluationDataSets(){
 	}
 
 	if(_evaluateDataChunckSetCollection.size() != 3){
-		cout << "Error en la construccion de la coleccion de dataSets";
+		cout << "Error initializing de evaluation datasets";
 		_evaluateDataChunckSetCollection.clear();;
 		return false;
 	}
 	return true;
-}
-
-void sendAllUsersToEvaluate(){
-	cout << "Running evaluation for user 1..." << endl;
-	_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[0],
-		_sigma, _evaluationSamples, 255, 0, 0, 1);
-
-	cout << "Running evaluation for user 2..." << endl;
-	_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[1],
-		_sigma, _evaluationSamples, 0, 255, 0, 2);
-
-	cout << "Running evaluation for user 3..." << endl;
-	_som->evaluateIndependentDataChuckDataSet(_evaluateDataChunckSetCollection[2],
-		_sigma, _evaluationSamples, 0, 0, 255, 3);
-
-	int totalNeuronsEvaluated = (_evaluationSamples * TOTAL_USERS_EVALUATED);
-
-	cout << "Total users evaluated: " << TOTAL_USERS_EVALUATED << endl;
-	cout << "Evaluation Samples: " << _evaluationSamples << endl;
-	cout << "Total neurons evaluated per user: " << _evaluationSamples << endl;
-	cout << "Expected neurons evaluated: " << totalNeuronsEvaluated << endl;
-
-	_som->getMatrixStadistics(totalNeuronsEvaluated);
-}
-
-void obtainResults(int increment, int samplesExperimentRepetiion){
-	cout << "=== Starting results obtention ===" << endl;
-	while(_evaluationSamples <= MAX_SAMPLES){
-		cout << "*** Starting results obtaining with " << _evaluationSamples << " samples ***" << endl;
-		for(int i=0; i<samplesExperimentRepetiion; i++){
-			cout << "# Start Experiment: " << (i + 1) << "/" << samplesExperimentRepetiion << " #" << endl;
-				sendAllUsersToEvaluate();
-				_som->resetMatrixStadistics();
-		}
-		_evaluationSamples += increment;
-	}
-
-	cout << "=== Finish results obtention ===" << endl;
-	glutPostRedisplay();
 }
 
 // ===================== Method Declaration =======================
@@ -289,16 +210,19 @@ void obtainResults(int increment, int samplesExperimentRepetiion){
 // ===================== Main Declaration =========================
 int main(int argc, char **argv){
 	if(argc < 3 ){
-		cout << "Se requieren al menos 3 argumentos para iniciar el programa" << endl;
-		cout << "1: Programa" << endl;
-		cout << "2: Tipo de ejecucion [0 - Dataset | 1 - Cargar matriz entrenada]" << endl;
-		cout << "Mod 0 - 3: Usuario requerido para crear y entrenar la matriz" << endl;
-		cout << "Mod 1 - 3: Numero de elementos que se van a usar en la evaluacion de el patron general" << endl;
-		cout << "Mod 1 - 4: Numero de iteracion para la evaluacion de datasets" << endl;
-		cout << "Mod 1 - 5: Archivos que comformaran el patron general" << endl;
+		cout << "At least 3 parameters are required to use the program" << endl;
+		cout << "1: Program name" << endl;
+		cout << "2: Execution type [0 - Train Matrix | 1 - Load Matrix]" << endl;
+		cout << "Mod 0 - 3: User required to train matrix" << endl;
+		cout << "Mod 1 - 3 Initial amount of samples to evaluate" << endl;
+		cout << "Mod 1 - 4 Maximun amount of samples to evaluate" << endl;
+		cout << "Mod 1 - 5 Increment of samples unit" << endl;
+		cout << "Mod 1 - 6 Total experiments required" << endl;
+		cout << "Mod 1 - 7... N Files that conform the matrix" << endl;
 		return 1;
 	}
 
+	// Variable initialization
 	_training = false;
 	_sigma = SIGMA;
 	_executionType = atoi(argv[1]);
@@ -321,7 +245,7 @@ int main(int argc, char **argv){
 
 			cout << "Se esta creando el dataset desde los archivos..." << endl;
 
-			initializeDataSetsForUser(user, CHUNCKTIMESIZE, CHUNCKTIMEINTERVAL);
+			initUserDataSet(user, CHUNCKTIMESIZE, CHUNCKTIMEINTERVAL);
 
 			cout << "El dataset fue creado correctamente" << endl;
 
@@ -341,38 +265,49 @@ int main(int argc, char **argv){
 		}
 			break;
 		case 1:{ // Get the matrix from a previous training
+			if(argc < 6){
+				cout << "For Load Matrix mode at least 7 parameters are required:" << endl;
+				cout << "0 Program name" << endl;
+				cout << "1 Execution type" << endl;
+				cout << "2 Initial amount of samples to evaluate" << endl;
+				cout << "3 Maximun amount of samples to evaluate" << endl;
+				cout << "4 Increment of samples unit" << endl;
+				cout << "5 Total experiments required" << endl;
+				cout << "6... N Files that conform the matrix" << endl;
+			}
+
 			vector<char *> fileNames;
-			_evaluationSamples = atoi(argv[2]);
-			_iterationsRequired = atoi(argv[3]);
 
+			_initialSamples = atoi(argv[2]);
+			_maximumSamples = atoi(argv[3]);
+			_samplesIncrement = atoi(argv[4]);
+			_totalExperiments = atoi(argv[5]);
 
-			for(int files = 4; files<argc; files++){
+			for(int files=6; files<argc; files++){
 				fileNames.push_back(argv[files]);
 			}
 
 			int totalFiles = fileNames.size();
 			int matrixComposition = sqrt(totalFiles);
 
-			// TODO:
-			// Get one way to retrive all the parameters needed for creating
-			// a testing dataset
-			cout << "Se esta creando el dataset de evaluacion..." << endl;
+			cout << "Creating evaluation dataset..." << endl;
 			_isEvaluationDataSetInitialized = createEvaluationDataSets();
-			if(!_isEvaluationDataSetInitialized)
-				cout << "No fue posible crear el dataSet para evaluacion" << endl;
-			else
-				cout << "El dataset de evaluacion fue creado correctamente" << endl;
+			if(!_isEvaluationDataSetInitialized){
+				cout << "It was not possible to create the evaluation dataset" << endl;
+			}else{
+				cout << "Evaluation dataset was created correctly" << endl;
+			}
 
 			_width = BASEWIDTH * matrixComposition;
 			_height = BASEHEIGHT * matrixComposition;
 			_openGLFovy = BASEOPENGLFOVY * matrixComposition;
 
-			cout << "Se estan exportando " << totalFiles << " archivos..." << endl;
+			cout << totalFiles << " Are about to be exported..." << endl;
 
 			_som = Utils::importSOMFromFiles(fileNames, matrixComposition,
 				totalFiles);
 
-			cout << "Los archivos fueron exportados correctamente" << endl;
+			cout << "Files were exported correctly" << endl;
 		}
 			break;
 	}
