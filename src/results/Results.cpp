@@ -4,7 +4,6 @@ SamplesResult* Results::evaluateUsers(int samples, int sigma, int totalUsersEval
 	SelfOrganizingMaps *som,
 	vector<vector<DataChunck *> > &evaluateDataChunckSetCollection){
 	for(int i=0; i<totalUsersEvaluated; i++){
-		cout << "Running evaluation for user " << i << " ..." << endl;
 		switch(i){
 			case 0:
 				// dataSet, sigma, # samples, r, g, b, user
@@ -26,11 +25,6 @@ SamplesResult* Results::evaluateUsers(int samples, int sigma, int totalUsersEval
 
 	int totalNeuronsEvaluated = (samples * totalUsersEvaluated);
 
-	cout << "Total users evaluated: " << totalUsersEvaluated << endl;
-	cout << "Total samples evaluated per user: " << samples << endl;
-	cout << "Expected neurons evaluated: " << totalNeuronsEvaluated << endl;
-	cout << "Used sigma: " << sigma << endl;
-
 	SamplesResult* samplesResult = som->getMatrixStadistics(totalNeuronsEvaluated);
 	samplesResult->setSamples(samples);
 	samplesResult->setTotalUsersEvaluated(totalUsersEvaluated);
@@ -40,24 +34,25 @@ SamplesResult* Results::evaluateUsers(int samples, int sigma, int totalUsersEval
 	return samplesResult;
 }
 
-void Results::getResults(int initialSamples, int finalSamples,
-	int increment, int sigma, int experiments, int totalUsersEvaluated,
+vector<Experiment*> Results::getResults(int initialSamples, int finalSamples,
+	int increment, int sigma, int requestedExperiments, int totalUsersEvaluated,
 	SelfOrganizingMaps *som,
 	vector<vector<DataChunck *> > &evaluateDataChunckSetCollection){
-	cout << "=== Starting results obtention ===" << endl;
-	cout << "\n\n" << endl;
-	for(int i=0; i<experiments; i++){
-		cout << "--------- Experiment (" << (i + 1) << "/" << experiments << ") ---------" << endl;
+	vector<Experiment *> experiments;
+	experiments.resize(requestedExperiments);
+
+	for(int i=0; i<requestedExperiments; i++){
+		Experiment *currentExperiment = new Experiment(i);
 		for(int samples = initialSamples;
 			samples < finalSamples;
 			samples += increment){
-			cout << "Samples: " << samples << endl;
-			Results::evaluateUsers(samples, sigma, totalUsersEvaluated, som,
-				evaluateDataChunckSetCollection);
+			currentExperiment->addResult(Results::evaluateUsers(samples, sigma, totalUsersEvaluated, som,
+				evaluateDataChunckSetCollection));
 			som->resetMatrixStadistics();
-			cout << "\n" << endl;
 		}
-		cout << "\n\n" << endl;
+		currentExperiment->experimentInfo();
+		experiments.push_back(currentExperiment);
 	}
-	cout << "=== Finish results obtention ===" << endl;
+
+	return experiments;
 }

@@ -8,6 +8,7 @@
 
 #include "../functionality/Classes.h"
 #include "SamplesResult.h"
+#include "Experiment.h"
 
 using namespace std;
 
@@ -18,7 +19,7 @@ class Results{
 		static SamplesResult* evaluateUsers(int samples, int sigma, int totalUsersEvaluated,
 			SelfOrganizingMaps *som,
 			vector<vector<DataChunck *> > &evaluateDataChunckSetCollection);
-		static void getResults(int initialSamples, int finalSamples,
+		static vector<Experiment*> getResults(int initialSamples, int finalSamples,
 			int increment, int sigma, int experiments, int totalUsersEvaluated,
 			SelfOrganizingMaps *som,
 			vector<vector<DataChunck *> > &evaluateDataChunckSetCollection);
