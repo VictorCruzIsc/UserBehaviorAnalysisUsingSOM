@@ -437,14 +437,14 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(
 	}
 }
 
-SamplesResult* SelfOrganizingMaps::getMatrixStadistics(int totalNeuronsToEvaluate){
+SamplesResult* SelfOrganizingMaps::getMatrixStadistics(int samples, int totalUsersEvaluated, int sigma){
 	int totalPositiveColitions = 0;
 	int totalNegativeColitions = 0;
 	int correct = 0;
 	int incorrect = 0;
+	int totalNeuronsToEvaluate = (samples * totalUsersEvaluated);
 	bool match = false;
 	bool correctStadisticResult = false;
-	map<int, int> totalBMU;
 	Neuron *neuron;
 
 	_errorStadisticsResults.clear();
@@ -463,32 +463,15 @@ SamplesResult* SelfOrganizingMaps::getMatrixStadistics(int totalNeuronsToEvaluat
 		}
 	}
 
-	// Print Results
-	cout << "Total Positive Colitions: " << _totalPositiveColitions << endl;
-	cout << "Total Negative Colitions: " << _totalNegativeColitions << endl;
-	
-	cout << "Correct:" << _correct << endl;
-	map<int, StadisticsResults *>::iterator ite;
-	for(ite = _correctStadisticsResults.begin(); ite != _correctStadisticsResults.end(); ite++){
-		cout << ite->second->info() << endl;
-	}
-
-	cout << "Errors:" << _incorrect << endl;
-	map<int, StadisticsResults *>::iterator it;
-	for(it = _errorStadisticsResults.begin(); it != _errorStadisticsResults.end(); it++){
-		cout << it->second->info() << endl;
-	}
-
 	correctStadisticResult = ((_totalPositiveColitions + _totalNegativeColitions +
 		_incorrect + _correct) == totalNeuronsToEvaluate);
 
-	if(correctStadisticResult){
-		cout << "Correct stadistic result" << endl;
-	}else{
-		cout << "Incorrect stadistic result" << endl;
+	if(!correctStadisticResult){
+		cout << "ERROR: Incorrect stadistic result" << endl;
+		return NULL;
 	}
 
-	SamplesResult *samplesResult =  new SamplesResult(0, 0, 0, _totalPositiveColitions,
+	SamplesResult *samplesResult =  new SamplesResult(samples, totalUsersEvaluated, sigma, _totalPositiveColitions,
 		_totalNegativeColitions, _correct, _incorrect, _errorStadisticsResults,
 		_correctStadisticsResults, correctStadisticResult);
 

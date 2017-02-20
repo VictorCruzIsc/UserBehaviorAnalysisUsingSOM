@@ -8,6 +8,10 @@
 #include <map>
 
 #include "../functionality/StadisticsResults.h"
+#include "NumericAnalysis.h"
+#include "PercentualAnalysis.h"
+
+//#define DEBUG_ANALYSIS
 
 using namespace std;
 
@@ -32,12 +36,12 @@ class SamplesResult{
 			_correctStadisticsResults;
 		}
 		bool isCorrect(){ return _correctResult; }
+		vector<NumericAnalysis *> getNumericAnalysis(){ return _numericAnalysis; }
 
-		void setSamples(int samples){ _samples = samples; }
-		void setTotalUsersEvaluated(int usersEvaluated){ _totalUsersEvaluated = usersEvaluated; }
-		void setExpectedNeuronsEvaluated(int expectedNeurons){ _expectedNeuronsEvaluated = expectedNeurons; };
-		void setSigma(int sigma){ _sigma = sigma; };
 	private:
+		void processNumericAnalysis();
+		void processPercentualAnalysis();
+
 		int _samples;
 		int _totalUsersEvaluated;
 		int _expectedNeuronsEvaluated;
@@ -49,5 +53,9 @@ class SamplesResult{
 		bool _correctResult;
 		map<int, StadisticsResults *> _errorStadisticsResults;
 		map<int, StadisticsResults *> _correctStadisticsResults;
+		vector<NumericAnalysis *> _numericAnalysis;
+		vector<PercentualAnalysis *> _percentualAnalysis;
+		bool _correctNumericalAnalysis;
+		bool _correctPercentualAnalysis;
 };
 #endif

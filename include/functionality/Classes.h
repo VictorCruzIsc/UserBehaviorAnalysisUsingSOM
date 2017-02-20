@@ -149,7 +149,7 @@ class SelfOrganizingMaps{
 		void setWeightVector(vector<double> weightVector, int x, int y);
 
 		// Stadistics
-		SamplesResult* getMatrixStadistics(int totalNeuronsToEvaluate);
+		SamplesResult* getMatrixStadistics(int samples, int totalUsersEvaluated, int sigma);
 		void resetMatrixStadistics();
 
 		// Variables

@@ -114,10 +114,12 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 			if(_executionType == 0){
 				cout << "Obtain results function is only valid for Load Matrix execution type, current execution type is Train Matrix" << endl;
 			}else{
+				cout << "Results obtention..." << endl;
 				Results::getResults(_initialSamples, _maximumSamples,
 					_samplesIncrement, _sigma, _totalExperiments,
 					TOTAL_USERS_EVALUATED, _som, _evaluateDataChunckSetCollection);
 				glutPostRedisplay();
+				cout << "Results obtention finished" << endl;
 			}
 			break;
 		// Stop training

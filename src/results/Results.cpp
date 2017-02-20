@@ -25,11 +25,7 @@ SamplesResult* Results::evaluateUsers(int samples, int sigma, int totalUsersEval
 
 	int totalNeuronsEvaluated = (samples * totalUsersEvaluated);
 
-	SamplesResult* samplesResult = som->getMatrixStadistics(totalNeuronsEvaluated);
-	samplesResult->setSamples(samples);
-	samplesResult->setTotalUsersEvaluated(totalUsersEvaluated);
-	samplesResult->setExpectedNeuronsEvaluated(samples * totalUsersEvaluated);
-	samplesResult->setSigma(sigma);
+	SamplesResult* samplesResult = som->getMatrixStadistics(samples, totalUsersEvaluated, sigma);
 
 	return samplesResult;
 }
@@ -40,18 +36,21 @@ vector<Experiment*> Results::getResults(int initialSamples, int finalSamples,
 	vector<vector<DataChunck *> > &evaluateDataChunckSetCollection){
 	vector<Experiment *> experiments;
 	experiments.resize(requestedExperiments);
-
+	cout << "Total experiments required: " << requestedExperiments << endl;
 	for(int i=0; i<requestedExperiments; i++){
+		cout << "Start experiment " << i << endl;
 		Experiment *currentExperiment = new Experiment(i);
 		for(int samples = initialSamples;
 			samples < finalSamples;
 			samples += increment){
+			cout << "Samples: " << samples << endl;
 			currentExperiment->addResult(Results::evaluateUsers(samples, sigma, totalUsersEvaluated, som,
 				evaluateDataChunckSetCollection));
 			som->resetMatrixStadistics();
 		}
 		currentExperiment->experimentInfo();
 		experiments.push_back(currentExperiment);
+		cout << "" << endl;
 	}
 
 	return experiments;
