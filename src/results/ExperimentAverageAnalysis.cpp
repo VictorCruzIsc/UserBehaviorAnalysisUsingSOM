@@ -6,3 +6,7 @@ ExperimentAverageAnalysis::ExperimentAverageAnalysis(int user, double correctPer
 void ExperimentAverageAnalysis::info(){
 	cout << _user << " " << _correctPercentage << " " << _incorrectPercentage << endl;
 }
+
+void ExperimentAverageAnalysis::infoToExport(){
+	cout << _correctPercentage << " " << _incorrectPercentage << endl;
+}

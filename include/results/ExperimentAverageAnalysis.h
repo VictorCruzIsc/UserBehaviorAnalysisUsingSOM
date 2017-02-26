@@ -14,6 +14,7 @@ public:
 	double getCorrectPercentage(){ return _correctPercentage; }
 	double getIncorrectPercentage(){ return _incorrectPercentage; }
 	void info();
+	void infoToExport();
 private:
 	int _user;
 	double _correctPercentage;

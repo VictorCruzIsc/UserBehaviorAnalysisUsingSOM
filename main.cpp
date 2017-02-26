@@ -118,8 +118,8 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 				Results::getResults(_initialSamples, _maximumSamples,
 					_samplesIncrement, _sigma, _totalExperiments,
 					TOTAL_USERS_EVALUATED, _som, _evaluateDataChunckSetCollection);
-				glutPostRedisplay();
 				cout << "Results obtention finished" << endl;
+				glutPostRedisplay();
 			}
 			break;
 		// Stop training

@@ -21,7 +21,7 @@ bool Experiment::samplesResultsCorrect(){
 }
 
 void Experiment::experimentInfo(){
-	cout << "======== Experiment "<< _experimentId << ": " <<
+	cout << "======== Experiment "<< (_experimentId + 1) << ": " <<
 	(samplesResultsCorrect() ? "correct" : "incorrect") << " ========" << endl;
 
 	map<int, ExperimentAverageAnalysis *>::iterator iterator;

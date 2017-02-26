@@ -11,7 +11,7 @@
 #include "NumericAnalysis.h"
 #include "PercentualAnalysis.h"
 
-#define DEBUG_ANALYSIS
+//#define DEBUG_ANALYSIS
 
 using namespace std;
 

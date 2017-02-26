@@ -30,15 +30,15 @@ SamplesResult* Results::evaluateUsers(int samples, int sigma, int totalUsersEval
 	return samplesResult;
 }
 
-vector<Experiment*> Results::getResults(int initialSamples, int finalSamples,
+void Results::getResults(int initialSamples, int finalSamples,
 	int increment, int sigma, int requestedExperiments, int totalUsersEvaluated,
 	SelfOrganizingMaps *som,
 	vector<vector<DataChunck *> > &evaluateDataChunckSetCollection){
 	vector<Experiment *> experiments;
-	experiments.resize(requestedExperiments);
+	vector<UserGraph *> graphics;
 	cout << "Total experiments required: " << requestedExperiments << endl;
 	for(int i=0; i<requestedExperiments; i++){
-		cout << "Start experiment " << i << endl;
+		cout << "Start experiment " << (i + 1) << endl;
 		Experiment *currentExperiment = new Experiment(i);
 		for(int samples = initialSamples;
 			samples < finalSamples;
@@ -54,5 +54,18 @@ vector<Experiment*> Results::getResults(int initialSamples, int finalSamples,
 		cout << "" << endl;
 	}
 
-	return experiments;
+	for(int i=1; i<=totalUsersEvaluated; i++){
+		vector<ExperimentAverageAnalysis *> averages;
+		for(int j=0; j<requestedExperiments; j++){
+			averages.push_back(experiments[j]->getExperimentAverageAnalysis()[i]);
+		}
+		graphics.push_back(new UserGraph(i, averages));
+	}
+
+	cout << "\n\n" << endl;
+	cout << "Graphics" << endl;
+	int totalGraphics = graphics.size();
+	for(int i=0; i<totalGraphics; i++){
+		graphics[i]->info();
+	}
 }
