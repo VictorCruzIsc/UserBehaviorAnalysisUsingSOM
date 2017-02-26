@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "SamplesResult.h"
+#include "ExperimentAverageAnalysis.h"
 
 using namespace std;
 
@@ -14,15 +15,22 @@ class Experiment{
 	public:
 		Experiment(int experimentId);
 		int getExperimentId(){ return _experimentId; }
-		vector<SamplesResult *> getExperimentResults(){ return _experimentResults; }
+		vector<SamplesResult *> getExperimentResults(){
+			return _experimentResults;
+		}
+		map<int, ExperimentAverageAnalysis *> getExperimentAverageAnalysis(){
+			return _experimentAverageAnalysis;
+		}
 		void addResult(SamplesResult *result);
 		SamplesResult * getResult(int index);
 		bool samplesResultsCorrect();
+		void processExperimentAverages(int totalUsersEvaluated);
 		void experimentInfo();
 
 	private:
 		int _experimentId;
 		vector<SamplesResult *> _experimentResults;
+		map<int, ExperimentAverageAnalysis *> _experimentAverageAnalysis;
 };
 
 #endif

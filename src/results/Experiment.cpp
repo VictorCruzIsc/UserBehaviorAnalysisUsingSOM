@@ -21,6 +21,40 @@ bool Experiment::samplesResultsCorrect(){
 }
 
 void Experiment::experimentInfo(){
-	cout << "Experiment "<< _experimentId << ": " <<
-	(samplesResultsCorrect() ? "correct" : "incorrect") << endl;
+	cout << "======== Experiment "<< _experimentId << ": " <<
+	(samplesResultsCorrect() ? "correct" : "incorrect") << " ========" << endl;
+
+	map<int, ExperimentAverageAnalysis *>::iterator iterator;
+	for(iterator = _experimentAverageAnalysis.begin();
+		iterator != _experimentAverageAnalysis.end();
+		iterator++){
+			iterator->second->info();
+		}
+	cout << "===============" << endl;
+}
+
+
+void Experiment::processExperimentAverages(int totalUsersEvaluated){
+	double correct = 0.0;
+	double incorrect = 0.0;
+	int totalSamples = _experimentResults.size();
+	for(int i=1; i<=totalUsersEvaluated;  i++){
+		for(int j=0; j<totalSamples; j++){
+			map<int, PercentualAnalysis*> currentMap =
+				_experimentResults[j]->getPercentualAnalysis();
+			correct += currentMap[i]->getCorrectSamples();
+			incorrect += currentMap[i]->getIncorrectSamples();
+		}
+
+		correct /= totalSamples;
+		incorrect /= totalSamples;
+
+		ExperimentAverageAnalysis *experimentAverageAnalysis = new ExperimentAverageAnalysis(
+			i, correct, incorrect);
+
+		_experimentAverageAnalysis[i] = experimentAverageAnalysis;
+
+		correct = 0.0;
+		incorrect = 0.0;
+	}
 }

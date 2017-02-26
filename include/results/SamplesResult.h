@@ -11,7 +11,7 @@
 #include "NumericAnalysis.h"
 #include "PercentualAnalysis.h"
 
-//#define DEBUG_ANALYSIS
+#define DEBUG_ANALYSIS
 
 using namespace std;
 
@@ -36,7 +36,8 @@ class SamplesResult{
 			_correctStadisticsResults;
 		}
 		bool isCorrect(){ return _correctResult; }
-		vector<NumericAnalysis *> getNumericAnalysis(){ return _numericAnalysis; }
+		map<int, NumericAnalysis *> getNumericAnalysis(){ return _numericAnalysis; }
+		map<int, PercentualAnalysis *> getPercentualAnalysis(){ return _percentualAnalysis; }
 
 	private:
 		void processNumericAnalysis();
@@ -53,8 +54,8 @@ class SamplesResult{
 		bool _correctResult;
 		map<int, StadisticsResults *> _errorStadisticsResults;
 		map<int, StadisticsResults *> _correctStadisticsResults;
-		vector<NumericAnalysis *> _numericAnalysis;
-		vector<PercentualAnalysis *> _percentualAnalysis;
+		map<int, NumericAnalysis *> _numericAnalysis;
+		map<int, PercentualAnalysis *> _percentualAnalysis;
 		bool _correctNumericalAnalysis;
 		bool _correctPercentualAnalysis;
 };

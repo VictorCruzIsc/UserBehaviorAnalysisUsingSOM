@@ -24,6 +24,7 @@ void SamplesResult::processNumericAnalysis(){
 	vector<int> incorrect;
 	map<int, StadisticsResults *>::iterator iterator;
 	int currentValue = 0;
+	int currentUser = 0;
 
 	for(int i=1; i<=_totalUsersEvaluated; i++){
 		iterator = _correctStadisticsResults.find(i+i);
@@ -52,8 +53,9 @@ void SamplesResult::processNumericAnalysis(){
 	}
 
 	for(int i=0; i<_totalUsersEvaluated; i++){
-		NumericAnalysis *numericAnalysis = new NumericAnalysis((i+1), correct[i], incorrect[i]);
-		_numericAnalysis.push_back(numericAnalysis);		
+		currentUser = i + 1;
+		NumericAnalysis *numericAnalysis = new NumericAnalysis(currentUser, correct[i], incorrect[i]);
+		_numericAnalysis[currentUser] = numericAnalysis;
 	}
 
 	_correctNumericalAnalysis = true;
@@ -74,7 +76,7 @@ void SamplesResult::processNumericAnalysis(){
 
 	cout << "" << endl;
 
-	for(int i=0; i<_totalUsersEvaluated; i++){
+	for(int i=1; i<=_totalUsersEvaluated; i++){
 		_numericAnalysis[i]->info();	
 	}
 #endif
@@ -86,7 +88,7 @@ void SamplesResult::processPercentualAnalysis(){
 		return;
 	}
 
-	for(int i=0; i<_totalUsersEvaluated; i++){
+	for(int i=1; i<=_totalUsersEvaluated; i++){
 		NumericAnalysis *numericAnalysis = _numericAnalysis[i];
 		int user = numericAnalysis->getUser();
 		int totalUnique = numericAnalysis->getUniqueEvaluatedSamples();
@@ -98,11 +100,11 @@ void SamplesResult::processPercentualAnalysis(){
 
 		PercentualAnalysis *percentual =  new PercentualAnalysis(user, pCorrect, pIncorrect);
 
-		_percentualAnalysis.push_back(percentual);
+		_percentualAnalysis[i] = percentual;
 	}
 
 #ifdef DEBUG_ANALYSIS
-	for(int i=0; i<_totalUsersEvaluated; i++){
+	for(int i=1; i<=_totalUsersEvaluated; i++){
 		_percentualAnalysis[i]->info();	
 	}
 #endif

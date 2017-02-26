@@ -48,6 +48,7 @@ vector<Experiment*> Results::getResults(int initialSamples, int finalSamples,
 				evaluateDataChunckSetCollection));
 			som->resetMatrixStadistics();
 		}
+		currentExperiment->processExperimentAverages(totalUsersEvaluated);
 		currentExperiment->experimentInfo();
 		experiments.push_back(currentExperiment);
 		cout << "" << endl;
