@@ -54,6 +54,8 @@ void Results::getResults(int initialSamples, int finalSamples,
 		cout << "" << endl;
 	}
 
+	// Get graphics elements
+
 	for(int i=1; i<=totalUsersEvaluated; i++){
 		vector<ExperimentAverageAnalysis *> averages;
 		for(int j=0; j<requestedExperiments; j++){
@@ -62,10 +64,16 @@ void Results::getResults(int initialSamples, int finalSamples,
 		graphics.push_back(new UserGraph(i, averages));
 	}
 
+	// Print graphics results
+
 	cout << "\n\n" << endl;
 	cout << "Graphics" << endl;
 	int totalGraphics = graphics.size();
 	for(int i=0; i<totalGraphics; i++){
 		graphics[i]->info();
 	}
+
+	// Import results to pyhton
+	string command = "python ~/Desktop/som/userBehaviorAnalysisUsingSom/python/Graphics.py";
+	system(command.c_str());
 }
