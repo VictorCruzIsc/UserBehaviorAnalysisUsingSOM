@@ -74,6 +74,6 @@ void Results::getResults(int initialSamples, int finalSamples,
 	}
 
 	// Import results to pyhton
-	string command = "python ~/Desktop/som/userBehaviorAnalysisUsingSom/python/Graphics.py";
+	string command = "python ~/Desktop/som/userBehaviorAnalysisUsingSom/python/Graphics.py E1,E2,E3,E4 75.20,27.94,52.26,28.26 24.79,72.05,47.73,71.73";
 	system(command.c_str());
 }
