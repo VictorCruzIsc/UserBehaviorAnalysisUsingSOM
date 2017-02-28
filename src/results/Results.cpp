@@ -73,7 +73,51 @@ void Results::getResults(int initialSamples, int finalSamples,
 		graphics[i]->info();
 	}
 
+	getBarGraphs(graphics, requestedExperiments);
+}
+
+void Results::getBarGraphs(vector<UserGraph *> &graphics, int totalExperiments){
 	// Import results to pyhton
-	string command = "python ~/Desktop/som/userBehaviorAnalysisUsingSom/python/Graphics.py E1,E2,E3,E4 75.20,27.94,52.26,28.26 24.79,72.05,47.73,71.73";
-	system(command.c_str());
+	string baseCommand = "python ~/Desktop/som/userBehaviorAnalysisUsingSom/python/Graphics.py";
+
+	// X-Axis labels
+	string xAxis = "";
+	for(int i=1; i<totalExperiments; i++){
+		xAxis += "E" + to_string(i) + ',';
+	}
+	xAxis += "E" + to_string(totalExperiments);
+
+	// Correct and incorrect values
+	int totalNeededGraphics = graphics.size();
+	string correct = "";
+	string incorrect = "";
+	string callingCommand = "";
+	int totalAverages = 0;
+
+	for(int i=0; i<totalNeededGraphics; i++){
+		UserGraph *currentUserGraph = graphics[i];
+		vector<ExperimentAverageAnalysis *> averages = currentUserGraph->getUserResults();
+		totalAverages = averages.size();
+		for(int j=0; j<(totalAverages - 1); j++){
+			correct += to_string(averages[j]->getCorrectPercentage()) + ',';
+			incorrect += to_string(averages[j]->getIncorrectPercentage()) + ',';
+		}
+		correct += to_string(averages[totalAverages - 1]->getCorrectPercentage());
+		incorrect += to_string(averages[totalAverages - 1]->getIncorrectPercentage());
+
+		callingCommand += baseCommand;
+		callingCommand += " " + xAxis;
+		callingCommand += " " + correct;
+		callingCommand += " " + incorrect;
+
+		cout << "Calling command: " << callingCommand << endl;
+
+		// Call python script
+		system(callingCommand.c_str());
+
+		callingCommand = "";
+		correct = "";
+		incorrect = "";
+		totalAverages = 0;
+	}
 }

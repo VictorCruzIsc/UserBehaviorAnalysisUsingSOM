@@ -14,6 +14,7 @@ class UserGraph{
 	public:
 		UserGraph(int belongingUser, vector<ExperimentAverageAnalysis *> userResults):
 			_belongingUser(belongingUser), _userResults(userResults){}
+		vector<ExperimentAverageAnalysis *> getUserResults(){ return _userResults; }
 		void info();
 	private:
 		int _belongingUser;

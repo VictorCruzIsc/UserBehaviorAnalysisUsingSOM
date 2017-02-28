@@ -1,4 +1,6 @@
 import sys
+from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
+from plotly.graph_objs import Scatter, Figure, Layout
 import plotly.plotly as py
 import plotly.graph_objs as go
 
@@ -27,5 +29,5 @@ layout = go.Layout(
 
 fig = go.Figure(data=data, layout=layout)
 
-py.plot(fig, filename='grouped-bar')
+plot(fig, filename='grouped-bar')
 

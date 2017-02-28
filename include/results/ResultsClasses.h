@@ -26,6 +26,7 @@ class Results{
 			int increment, int sigma, int experiments, int totalUsersEvaluated,
 			SelfOrganizingMaps *som,
 			vector<vector<DataChunck *> > &evaluateDataChunckSetCollection);
+		static void getBarGraphs(vector<UserGraph *> &graphics, int totalExperiments);
 };
 
 #endif
