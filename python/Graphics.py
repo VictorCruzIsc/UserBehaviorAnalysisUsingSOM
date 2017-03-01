@@ -1,12 +1,12 @@
+import plotly
 import sys
-from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
-from plotly.graph_objs import Scatter, Figure, Layout
-import plotly.plotly as py
 import plotly.graph_objs as go
+from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
+
 
 def bar_construction(values, index):
     bar_name = ''
-    if (i % 2) == 0:
+    if (i % 3) == 0:
         bar_name = 'correct'
     else:
         bar_name = 'incorrect'
@@ -18,10 +18,12 @@ def bar_construction(values, index):
 
     return bar
 
-x_labels = sys.argv[1].split(',')
+graph_name = sys.argv[1]
+
+x_labels = sys.argv[2].split(',')
 
 data = [bar_construction(sys.argv[i].split(','), i)
-    for i in range(2, len(sys.argv))]
+    for i in range(3, len(sys.argv))]
 
 layout = go.Layout(
     barmode='group'
@@ -29,5 +31,6 @@ layout = go.Layout(
 
 fig = go.Figure(data=data, layout=layout)
 
-plot(fig, filename='grouped-bar')
+plotly.offline.init_notebook_mode(connected=True)
+plotly.offline.plot(fig, filename="{}.html".format(graph_name))
 

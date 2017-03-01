@@ -92,6 +92,7 @@ void Results::getBarGraphs(vector<UserGraph *> &graphics, int totalExperiments){
 	string correct = "";
 	string incorrect = "";
 	string callingCommand = "";
+	string name = "";
 	int totalAverages = 0;
 
 	for(int i=0; i<totalNeededGraphics; i++){
@@ -105,7 +106,10 @@ void Results::getBarGraphs(vector<UserGraph *> &graphics, int totalExperiments){
 		correct += to_string(averages[totalAverages - 1]->getCorrectPercentage());
 		incorrect += to_string(averages[totalAverages - 1]->getIncorrectPercentage());
 
+		name += "User"+to_string((i + 1));
+
 		callingCommand += baseCommand;
+		callingCommand += " " + name;
 		callingCommand += " " + xAxis;
 		callingCommand += " " + correct;
 		callingCommand += " " + incorrect;
@@ -118,6 +122,7 @@ void Results::getBarGraphs(vector<UserGraph *> &graphics, int totalExperiments){
 		callingCommand = "";
 		correct = "";
 		incorrect = "";
+		name = "";
 		totalAverages = 0;
 	}
 }
