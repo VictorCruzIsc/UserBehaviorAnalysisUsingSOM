@@ -1,23 +1,21 @@
 #include "../../include/functionality/Classes.h"
 
 vector<DataPackage *> DataSet::createDataSetPackageFormat(string user,
-			int type){
+			int type, int version){
 	fstream infile;
-	string fileNamePrefix = "flows-";
-	string filesPath = "networkTrafficCaptures";
 	string line;
 	vector<string> packageElements;
 	vector<DataPackage *> packageDataSet;
+	string fileNamePrefix = "flows-";
+	string filesPath = "networkTrafficCaptures";
+
+	int elementsInFile = ((version == 1) ? 12 : 10);
 
 	// Get all names of files in the directory
 	string regexPattern = "(flows)(.*)(.csv)";
 	DIR *directory;
 	struct dirent *file;
 	regex validFile(regexPattern);
-
-	#ifdef DEBUG
-		int counter = 0;
-	#endif
 
 	switch(type){
 		case Utils::BUILD: // Build
@@ -42,70 +40,62 @@ vector<DataPackage *> DataSet::createDataSetPackageFormat(string user,
 	if(directory = opendir(filesPath.c_str())){ // Opening Directory
 		while(file = readdir(directory)){ // There is  file
 			string fileName = string(file->d_name);
-			filesPath += "/" + fileName; // Complete route to the file
+			string filePath = filesPath + "/" + fileName; // Complete route to the file
+
 			if(regex_match(fileName, validFile)){ // Means it has format flows.*.csv
-				#ifdef DEBUG
-					cout << "Ento en la regex: " << fileName << endl;
-				#endif
-				infile.open(filesPath);
-				while(getline(infile, line)){
-					replace(line.begin(), line.end(), ',', ' ');
+				infile.open(filePath);
+				if(infile.is_open()){
 
 					#ifdef DEBUG
-						cout << " DataSet: " << counter << " " << line << endl;
+						cout << "File:" << fileName << " is OPENED" << endl;
 					#endif
 
-					stringstream ssin(line);
+					while(getline(infile, line)){
+						replace(line.begin(), line.end(), ',', ' ');
+						stringstream ssin(line);
+						packageElements.resize(elementsInFile);
 
-					packageElements.resize(12);
-        	
-					for(int i=0; i<12; i++){
-						ssin >> packageElements[i];
-					}
-
-					#ifdef DEBUG
-						for(int i=0; i<12; i++){
-							cout << packageElements[i] << endl;
+						for(int i=0; i<elementsInFile; i++){
+							ssin >> packageElements[i];
 						}
-					#endif
 
-					DataPackage *dataPackage = new DataPackage(packageElements);
-					if(!dataPackage->hasError()){
-						packageDataSet.push_back(dataPackage);
+						DataPackage *dataPackage = new DataPackage(packageElements);
+						if(!dataPackage->hasError()){
+							packageDataSet.push_back(dataPackage);
+						}else{
+							#ifdef DEBUG
+								cout << "Error DataPackage not added" << endl;
+							#endif
+						}
+
+						packageElements.clear();
 					}
 
-					packageElements.clear();
+					infile.close();
 
-					#ifdef DEBUG
-						counter++;
-					#endif
+				}else{
+					cout << "File: " << fileName << " is CLOSED ";
+					cout << "Path: " << filePath << endl;
 				}
-
-				infile.close();
 			}
 		}
 	}
 
 	#ifdef DEBUG
 		cout << "No more files to read" << endl;
-		cout << packageDataSet.size() << endl;
-		for(int i=0; i<packageDataSet.size(); i++){
-			cout << i << ". " << packageDataSet[i]->getDeviceMAC() << "- "<< endl;
-		}
+		cout << "packageDataSet size: " << packageDataSet.size() << endl;
 	#endif
 
 	return packageDataSet;
 }
 
 vector<DataChunck *> DataSet::createDataSetDataChunckFormat(int idUser, int type,
-	int chunckTimeSize, int chunckTimeInterval){
+	int chunckTimeSize, int chunckTimeInterval, int version){
 
 	string userNetworkTraffic =  "user" + to_string(idUser);
 
 	vector<DataPackage*> rawPackages = DataSet::createDataSetPackageFormat(userNetworkTraffic,
-		type);
-
-	// cout << "CH1 totalRawPackages: " << rawPackages.size() << endl;
+		type, version);
 
 	vector<DataChunck*> dataChunckDataSet;
 

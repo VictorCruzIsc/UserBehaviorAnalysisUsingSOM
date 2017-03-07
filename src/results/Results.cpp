@@ -2,30 +2,16 @@
 
 SamplesResult* Results::evaluateUsers(int samples, int sigma, int totalUsersEvaluated,
 	SelfOrganizingMaps *som,
-	vector<vector<DataChunck *> > &evaluateDataChunckSetCollection){
+	vector<vector<DataChunck *> > &evaluateDataChunckSetCollection,
+	vector<int> &userIds){
 	for(int i=0; i<totalUsersEvaluated; i++){
-		switch(i){
-			case 0:
-				// dataSet, sigma, # samples, r, g, b, user
-				som->evaluateIndependentDataChuckDataSet(evaluateDataChunckSetCollection[i],
-					sigma, samples, 255, 0, 0, (i + 1));
-				break;
-			case 1:
-				// dataSet, sigma, # samples, r, g, b, user
-				som->evaluateIndependentDataChuckDataSet(evaluateDataChunckSetCollection[i],
-					sigma, samples, 0, 255, 0, (i + 1));
-				break;
-			case 2:
-				// dataSet, sigma, # samples, r, g, b, user
-				som->evaluateIndependentDataChuckDataSet(evaluateDataChunckSetCollection[i],
-					sigma, samples, 0, 0, 255, (i + 1));
-				break;
-		}
+		som->evaluateIndependentDataChuckDataSet(evaluateDataChunckSetCollection[i],
+			sigma, samples, i, i, i, userIds[i]);
 	}
 
 	int totalNeuronsEvaluated = (samples * totalUsersEvaluated);
 
-	SamplesResult* samplesResult = som->getMatrixStadistics(samples, totalUsersEvaluated, sigma);
+	SamplesResult* samplesResult = som->getMatrixStadistics(samples, totalUsersEvaluated, sigma, userIds);
 
 	return samplesResult;
 }
@@ -33,21 +19,33 @@ SamplesResult* Results::evaluateUsers(int samples, int sigma, int totalUsersEval
 void Results::getResults(int initialSamples, int finalSamples,
 	int increment, int sigma, int requestedExperiments, int totalUsersEvaluated,
 	SelfOrganizingMaps *som,
-	vector<vector<DataChunck *> > &evaluateDataChunckSetCollection){
+	vector<vector<DataChunck *> > &evaluateDataChunckSetCollection,
+	vector<int> &userIds){
+
 	vector<Experiment *> experiments;
 	vector<UserGraph *> graphics;
+
+	int currentUser = 0;
+
 	cout << "Total experiments required: " << requestedExperiments << endl;
+
 	for(int i=0; i<requestedExperiments; i++){
 		cout << "Start experiment " << (i + 1) << endl;
-		Experiment *currentExperiment = new Experiment(i);
+
+		Experiment *currentExperiment = new Experiment(i, userIds);
+
 		for(int samples = initialSamples;
 			samples < finalSamples;
 			samples += increment){
+
 			cout << "Samples: " << samples << endl;
-			currentExperiment->addResult(Results::evaluateUsers(samples, sigma, totalUsersEvaluated, som,
-				evaluateDataChunckSetCollection));
+
+			currentExperiment->addResult(
+				Results::evaluateUsers(samples, sigma, totalUsersEvaluated, som,
+					evaluateDataChunckSetCollection, userIds));
 			som->resetMatrixStadistics();
 		}
+
 		currentExperiment->processExperimentAverages(totalUsersEvaluated);
 		currentExperiment->experimentInfo();
 		experiments.push_back(currentExperiment);
@@ -55,13 +53,13 @@ void Results::getResults(int initialSamples, int finalSamples,
 	}
 
 	// Get graphics elements
-
-	for(int i=1; i<=totalUsersEvaluated; i++){
+	for(int i=0; i<totalUsersEvaluated; i++){
+		currentUser = userIds[i];
 		vector<ExperimentAverageAnalysis *> averages;
 		for(int j=0; j<requestedExperiments; j++){
-			averages.push_back(experiments[j]->getExperimentAverageAnalysis()[i]);
+			averages.push_back(experiments[j]->getExperimentAverageAnalysis()[currentUser]);
 		}
-		graphics.push_back(new UserGraph(i, averages));
+		graphics.push_back(new UserGraph(currentUser, averages));
 	}
 
 	// Print graphics results
@@ -73,10 +71,10 @@ void Results::getResults(int initialSamples, int finalSamples,
 		graphics[i]->info();
 	}
 
-	getBarGraphs(graphics, requestedExperiments);
+	getBarGraphs(graphics, requestedExperiments, userIds);
 }
 
-void Results::getBarGraphs(vector<UserGraph *> &graphics, int totalExperiments){
+void Results::getBarGraphs(vector<UserGraph *> &graphics, int totalExperiments, vector<int> &userIds){
 	// Import results to pyhton
 	string baseCommand = "python ~/Desktop/som/userBehaviorAnalysisUsingSom/python/Graphics.py";
 
@@ -106,7 +104,7 @@ void Results::getBarGraphs(vector<UserGraph *> &graphics, int totalExperiments){
 		correct += to_string(averages[totalAverages - 1]->getCorrectPercentage());
 		incorrect += to_string(averages[totalAverages - 1]->getIncorrectPercentage());
 
-		name += "User"+to_string((i + 1));
+		name += "User"+to_string(userIds[i]);
 
 		callingCommand += baseCommand;
 		callingCommand += " " + name;

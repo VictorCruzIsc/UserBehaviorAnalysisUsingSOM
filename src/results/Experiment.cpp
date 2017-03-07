@@ -1,6 +1,7 @@
 #include "../../include/results/Experiment.h"
 
-Experiment::Experiment(int experimentId):_experimentId(experimentId){}
+Experiment::Experiment(int experimentId, vector<int> &userIds):_experimentId(experimentId),
+	_userIds(userIds){}
 
 void Experiment::addResult(SamplesResult *result){
 	_experimentResults.push_back(result);
@@ -37,22 +38,31 @@ void Experiment::experimentInfo(){
 void Experiment::processExperimentAverages(int totalUsersEvaluated){
 	double correct = 0.0;
 	double incorrect = 0.0;
+	int currentUser = 0;
 	int totalSamples = _experimentResults.size();
-	for(int i=1; i<=totalUsersEvaluated;  i++){
+
+	for(int i=0; i<totalUsersEvaluated;  i++){
+		currentUser = _userIds[i];
 		for(int j=0; j<totalSamples; j++){
 			map<int, PercentualAnalysis*> currentMap =
 				_experimentResults[j]->getPercentualAnalysis();
-			correct += currentMap[i]->getCorrectSamples();
-			incorrect += currentMap[i]->getIncorrectSamples();
+
+			correct += currentMap[currentUser]->getCorrectSamples();
+			incorrect += currentMap[currentUser]->getIncorrectSamples();
+		}
+
+		if(totalSamples == 0){
+			cout << "Experiment totalSamples may cause NAN excpetion" << endl;  
 		}
 
 		correct /= totalSamples;
 		incorrect /= totalSamples;
 
+		cout << "Values to create experiment average: " << currentUser << " " << correct << " " << incorrect << endl; 
 		ExperimentAverageAnalysis *experimentAverageAnalysis = new ExperimentAverageAnalysis(
-			i, correct, incorrect);
+			currentUser, correct, incorrect);
 
-		_experimentAverageAnalysis[i] = experimentAverageAnalysis;
+		_experimentAverageAnalysis[currentUser] = experimentAverageAnalysis;
 
 		correct = 0.0;
 		incorrect = 0.0;

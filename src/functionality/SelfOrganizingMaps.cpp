@@ -360,6 +360,9 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(
 
 	int errors = 0;
 	int totalElements = inputDataset.size();
+	if(totalElements == 0){
+		cout << "SOM totalElements = 0 " << endl;
+	}
 	int initialIndex = 0;
 	int finalIndex =0;
 	int globalError = 0;
@@ -411,7 +414,17 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(
 	*/
 	{
 		average = totalDistance/totalElements;
+		if(average == 0){
+			cout << "SOM average causing NAN" << endl;
+		}
+		
+
 		variance = Utils::getVariance(distances, average);
+		if(variance == 0){
+			cout << "SOM variance causing NAN" << endl;
+			variance = 0.1;
+		}
+
 		stdDeviation = sqrt(variance);
 		sigma = sigmaMultiplier * stdDeviation;
 		lowerRange = average - sigma;
@@ -437,7 +450,8 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(
 	}
 }
 
-SamplesResult* SelfOrganizingMaps::getMatrixStadistics(int samples, int totalUsersEvaluated, int sigma){
+SamplesResult* SelfOrganizingMaps::getMatrixStadistics(int samples, int totalUsersEvaluated, int sigma,
+	vector<int> &userIds){
 	int totalPositiveColitions = 0;
 	int totalNegativeColitions = 0;
 	int correct = 0;
@@ -463,6 +477,8 @@ SamplesResult* SelfOrganizingMaps::getMatrixStadistics(int samples, int totalUse
 		}
 	}
 
+	//cout << _totalPositiveColitions << " " << _totalNegativeColitions << " " << _incorrect << " " << _correct << endl;
+
 	correctStadisticResult = ((_totalPositiveColitions + _totalNegativeColitions +
 		_incorrect + _correct) == totalNeuronsToEvaluate);
 
@@ -473,7 +489,7 @@ SamplesResult* SelfOrganizingMaps::getMatrixStadistics(int samples, int totalUse
 
 	SamplesResult *samplesResult =  new SamplesResult(samples, totalUsersEvaluated, sigma, _totalPositiveColitions,
 		_totalNegativeColitions, _correct, _incorrect, _errorStadisticsResults,
-		_correctStadisticsResults, correctStadisticResult);
+		_correctStadisticsResults, correctStadisticResult, userIds);
 
 	return samplesResult;
 }

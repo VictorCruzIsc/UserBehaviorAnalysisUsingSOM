@@ -20,6 +20,7 @@
 #include <dirent.h>
 #include <iterator>
 #include <regex>
+#include <math.h>  
 
 #include "Matrix.h"
 #include "DataPackage.h"
@@ -36,6 +37,8 @@ using namespace std;
 class Utils;
 class SelfOrganizingMaps;
 class DataSet;
+
+
 
 class Utils{
 	public:
@@ -149,7 +152,8 @@ class SelfOrganizingMaps{
 		void setWeightVector(vector<double> weightVector, int x, int y);
 
 		// Stadistics
-		SamplesResult* getMatrixStadistics(int samples, int totalUsersEvaluated, int sigma);
+		SamplesResult* getMatrixStadistics(int samples, int totalUsersEvaluated, int sigma,
+			vector<int> &userIds);
 		void resetMatrixStadistics();
 
 		// Variables
@@ -185,9 +189,9 @@ class SelfOrganizingMaps{
 
 class DataSet{
 	public:
-		static vector<DataPackage *> createDataSetPackageFormat(string user, int type);
+		static vector<DataPackage *> createDataSetPackageFormat(string user, int type, int version);
 		static vector<DataChunck *> createDataSetDataChunckFormat(int idUser, int type,
-			int chunckTimeSize, int chunckTimeInterval);
+			int chunckTimeSize, int chunckTimeInterval, int version);
 };
 
 #endif

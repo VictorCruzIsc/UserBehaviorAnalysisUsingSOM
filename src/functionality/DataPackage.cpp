@@ -43,40 +43,60 @@ DataPackage::DataPackage(bool way, int localIp, int destinationIp, int protocol,
 }
 
 DataPackage::DataPackage(vector<string> packageElements){
-	if(packageElements.size() != 12){
-		_error = true;
-		cout << "ERROR size = " << packageElements.size() << endl;
-		return;
-	}
+	int totalElements = packageElements.size();
 
 	_error =  false;
 	_internalIp = false;
 
 #ifdef DEBUG
 	cout << "Values: " << endl;
-	for(int i=0; i<12; i++){
+	for(int i=0; i<packageElements.size(); i++){
 		cout << i << " " << packageElements[i] << endl;
 	}
 #endif
 
-	// Check problem with ip
-	string ipError = "FF02";
-	size_t found = packageElements[3].find(ipError);
-	if(found != string::npos){
-    	_error = true;
-    	return;
+	vector<string> ipError;
+	ipError.push_back("FF");
+	ipError.push_back("FE");
+	
+	for(int i=0; i<ipError.size(); i++){
+		if(packageElements[1].find(ipError[i]) != string::npos){
+			_error = true;
+			return;
+		}
+
+		if(packageElements[2].find(ipError[i]) != string::npos){
+			_error = true;
+			return;
+		}
 	}
 
-	_way = wayFromString(packageElements[2]);
-	_localIp = ipFromString(packageElements[3], true);
-	_destinationIp = ipFromString(packageElements[4], false);
-	_protocol = encodeProtocolName(packageElements[5]);
-	_localPort = stoi(packageElements[6]);
-	_remotePort = stoi(packageElements[7]);
-	_transmitedBytes = stoi(packageElements[11]);
-	_originTimeStamp = stoll (packageElements[8]);
-	_deviceOSIp = packageElements[9];
-	_deviceMAC = packageElements[10];
+	switch(totalElements){
+		case 10:
+			_way = wayFromString(packageElements[0]);
+			_localIp = ipFromString(packageElements[1], true);
+			_destinationIp = ipFromString(packageElements[2], false);
+			_protocol = encodeProtocolName(packageElements[3]);
+			_localPort = stoi(packageElements[4]);
+			_remotePort = stoi(packageElements[5]);
+			_transmitedBytes = stoi(packageElements[9]);
+			_originTimeStamp = stoll (packageElements[6]);
+			_deviceOSIp = packageElements[7];
+			_deviceMAC = packageElements[8];
+			break;
+		case 12:
+			_way =  wayFromString(packageElements[2]);
+			_localIp = ipFromString(packageElements[3], true);
+			_destinationIp = ipFromString(packageElements[4], false);
+			_protocol = encodeProtocolName(packageElements[5]);
+			_localPort = stoi(packageElements[6]);
+			_remotePort = stoi(packageElements[7]);
+			_transmitedBytes = stoi(packageElements[11]);
+			_originTimeStamp = stoll (packageElements[8]);
+			_deviceOSIp = packageElements[9];
+			_deviceMAC = packageElements[10];
+			break;
+	}
 	_components = packageElements;
 }
 

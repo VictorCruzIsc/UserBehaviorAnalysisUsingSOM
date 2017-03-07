@@ -21,12 +21,15 @@ class Results{
 	public:
 		static SamplesResult* evaluateUsers(int samples, int sigma, int totalUsersEvaluated,
 			SelfOrganizingMaps *som,
-			vector<vector<DataChunck *> > &evaluateDataChunckSetCollection);
+			vector<vector<DataChunck *> > &evaluateDataChunckSetCollection,
+			vector<int> &userIds);
 		static void getResults(int initialSamples, int finalSamples,
 			int increment, int sigma, int experiments, int totalUsersEvaluated,
 			SelfOrganizingMaps *som,
-			vector<vector<DataChunck *> > &evaluateDataChunckSetCollection);
-		static void getBarGraphs(vector<UserGraph *> &graphics, int totalExperiments);
+			vector<vector<DataChunck *> > &evaluateDataChunckSetCollection,
+			vector<int> &userIds);
+		static void getBarGraphs(vector<UserGraph *> &graphics, int totalExperiments,
+			vector<int> &userIds);
 };
 
 #endif

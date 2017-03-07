@@ -5,7 +5,7 @@ SamplesResult::SamplesResult(int samples, int totalUsersEvaluated, int sigma,
 	int correct, int incorrect,
 	map<int, StadisticsResults *> errorStadisticsResults,
 	map<int, StadisticsResults *> correctStadisticsResults,
-	bool correctResult):
+	bool correctResult, vector<int> &userIds):
 	_samples(samples), _totalUsersEvaluated(totalUsersEvaluated),
 	_expectedNeuronsEvaluated (_samples * _totalUsersEvaluated),
 	_sigma(sigma), _totalPositiveCollitions(totalPositiveCollitions),
@@ -13,7 +13,8 @@ SamplesResult::SamplesResult(int samples, int totalUsersEvaluated, int sigma,
 	_incorrect(incorrect),
 	_errorStadisticsResults(errorStadisticsResults),
 	_correctStadisticsResults(correctStadisticsResults),
-	_correctResult(correctResult), _correctNumericalAnalysis(false){
+	_correctResult(correctResult), _correctNumericalAnalysis(false),
+	_userIds(userIds){
 		processNumericAnalysis();
 		processPercentualAnalysis();
 	}
@@ -26,24 +27,33 @@ void SamplesResult::processNumericAnalysis(){
 	int currentValue = 0;
 	int currentUser = 0;
 
-	for(int i=1; i<=_totalUsersEvaluated; i++){
-		iterator = _correctStadisticsResults.find(i+i);
+	for(int i=0; i<_totalUsersEvaluated; i++){
+		currentUser = _userIds[i];
+
+		iterator = _correctStadisticsResults.find(currentUser + currentUser);
+
 		if(iterator != _correctStadisticsResults.end()){
-			currentValue = _correctStadisticsResults[(i+i)]->getValue();
+			currentValue = _correctStadisticsResults[(currentUser + currentUser)]->getValue();
 		}else{
 			currentValue = 0;
 		}
 		correct.push_back(currentValue);
 	}
 
-	for(int i=1; i<=_totalUsersEvaluated; i++){
+	for(int i=0; i<_totalUsersEvaluated; i++){
+		currentUser = _userIds[i];
 		int userTotalIncorrect = 0;
-		for(iterator = _errorStadisticsResults.begin(); iterator != _errorStadisticsResults.end(); iterator++){
+		for(iterator = _errorStadisticsResults.begin();
+			iterator != _errorStadisticsResults.end();
+			iterator++){
+
 			StadisticsResults *currentResult = iterator->second;
-			if(currentResult->getFinalUserAssigned() == i){
+
+			if(currentResult->getFinalUserAssigned() == currentUser){
 				userTotalIncorrect += currentResult->getValue();
 			}
 		}
+
 		incorrect.push_back(userTotalIncorrect);
 	}
 
@@ -53,7 +63,7 @@ void SamplesResult::processNumericAnalysis(){
 	}
 
 	for(int i=0; i<_totalUsersEvaluated; i++){
-		currentUser = i + 1;
+		currentUser = _userIds[i];
 		NumericAnalysis *numericAnalysis = new NumericAnalysis(currentUser, correct[i], incorrect[i]);
 		_numericAnalysis[currentUser] = numericAnalysis;
 	}
@@ -76,20 +86,23 @@ void SamplesResult::processNumericAnalysis(){
 
 	cout << "" << endl;
 
-	for(int i=1; i<=_totalUsersEvaluated; i++){
-		_numericAnalysis[i]->info();	
+	for(int i=0; i<_totalUsersEvaluated; i++){
+		currentUser = _userIds[i];
+		_numericAnalysis[currentUser]->info();	
 	}
 #endif
 }
 
 void SamplesResult::processPercentualAnalysis(){
+	int currentUser = 0;
 	if(!_correctNumericalAnalysis){
 		cout << "Numerical Analysis is not correct, cannot go further" << endl;
 		return;
 	}
 
-	for(int i=1; i<=_totalUsersEvaluated; i++){
-		NumericAnalysis *numericAnalysis = _numericAnalysis[i];
+	for(int i=0; i<_totalUsersEvaluated; i++){
+		currentUser = _userIds[i];
+		NumericAnalysis *numericAnalysis = _numericAnalysis[currentUser];
 		int user = numericAnalysis->getUser();
 		int totalUnique = numericAnalysis->getUniqueEvaluatedSamples();
 		int correct = numericAnalysis->getCorrectSamples();
@@ -100,12 +113,13 @@ void SamplesResult::processPercentualAnalysis(){
 
 		PercentualAnalysis *percentual =  new PercentualAnalysis(user, pCorrect, pIncorrect);
 
-		_percentualAnalysis[i] = percentual;
+		_percentualAnalysis[currentUser] = percentual;
 	}
 
 #ifdef DEBUG_ANALYSIS
-	for(int i=1; i<=_totalUsersEvaluated; i++){
-		_percentualAnalysis[i]->info();	
+	for(int i=0; i<_totalUsersEvaluated; i++){
+		currentUser = _userIds[i];
+		_percentualAnalysis[currentUser]->info();	
 	}
 #endif
 }

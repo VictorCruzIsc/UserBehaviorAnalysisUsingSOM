@@ -20,7 +20,8 @@ class SamplesResult{
 		SamplesResult(int samples, int totalUsersEvaluated, int sigma,
 			int totalPositiveCollitions, int totalNegativeCollitions,
 			int correct, int incorrect, map<int, StadisticsResults *> errorStadisticsResults,
-			map<int, StadisticsResults *> correctStadisticsResults, bool correctStadisticResult);
+			map<int, StadisticsResults *> correctStadisticsResults, bool correctStadisticResult,
+			vector<int> &userIds);
 		int getSamples(){ return _samples; }
 		int getTotalUsersEvaluated(){ return _totalUsersEvaluated; }
 		int getExpectedNeuronsEvaluated(){ return _expectedNeuronsEvaluated; };
@@ -56,6 +57,7 @@ class SamplesResult{
 		map<int, StadisticsResults *> _correctStadisticsResults;
 		map<int, NumericAnalysis *> _numericAnalysis;
 		map<int, PercentualAnalysis *> _percentualAnalysis;
+		vector<int> _userIds;
 		bool _correctNumericalAnalysis;
 		bool _correctPercentualAnalysis;
 };

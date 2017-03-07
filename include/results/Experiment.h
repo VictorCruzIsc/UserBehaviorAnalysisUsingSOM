@@ -13,7 +13,7 @@ using namespace std;
 
 class Experiment{
 	public:
-		Experiment(int experimentId);
+		Experiment(int experimentId, vector<int> &userIds);
 		int getExperimentId(){ return _experimentId; }
 		vector<SamplesResult *> getExperimentResults(){
 			return _experimentResults;
@@ -31,6 +31,7 @@ class Experiment{
 		int _experimentId;
 		vector<SamplesResult *> _experimentResults;
 		map<int, ExperimentAverageAnalysis *> _experimentAverageAnalysis;
+		vector<int> _userIds;
 };
 
 #endif

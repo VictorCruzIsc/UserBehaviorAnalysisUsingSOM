@@ -15,7 +15,7 @@
 
 // SOM constants
 #define TOTALWEIGHTS 			3
-#define MAXEPOCHS 				1000
+#define MAXEPOCHS 				10
 #define NORMALSIZE 				100
 #define INITIALLEARNINGRATE 	0.1
 #define SIGMA 					1
@@ -25,7 +25,6 @@
 #define CHUNCKTIMEINTERVAL 		10	// Given in seconds
 
 // Results constants
-#define TOTAL_USERS_EVALUATED 	3
 
 // Developing constants
 //#define DEBUG
@@ -42,11 +41,15 @@ int 							_executionType;
 int 							_width;
 int 							_height;
 int 							_countingSampling;
+int 							_randInput;
+int 							_version;
+int 							_currentEpochs;
 bool 							_training;
 bool							_isEvaluationDataSetInitialized;
 SelfOrganizingMaps				*_som;
 
 // Results variables
+int 							_totalUsersEvaluated;
 int 							_maximumSamples;
 int 							_initialSamples;
 int 							_totalExperiments;
@@ -57,6 +60,7 @@ vector<DataChunck *>			_buildDataChunckSet;
 vector<DataChunck *>			_trainDataChunckSet;
 vector<DataChunck *>			_evaluateDataChunckSet;
 vector<vector<DataChunck *> >	_evaluateDataChunckSetCollection;
+vector<int> 					_userIds;
 
 // ===================== Local Method Headers =====================
 // OpenGl methods
@@ -117,7 +121,7 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 				cout << "Results obtention..." << endl;
 				Results::getResults(_initialSamples, _maximumSamples,
 					_samplesIncrement, _sigma, _totalExperiments,
-					TOTAL_USERS_EVALUATED, _som, _evaluateDataChunckSetCollection);
+					_totalUsersEvaluated, _som, _evaluateDataChunckSetCollection, _userIds);
 				cout << "Results obtention finished" << endl;
 				glutPostRedisplay();
 			}
@@ -144,16 +148,11 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 }
 
 void idle(void){
-	if ((_training) && (_som->getEpochs() < MAXEPOCHS)){
-#ifdef DEBUG
-		_countingSampling++;
-		if(_countingSampling % 500 == 0)
-			cout << _countingSampling << endl;
-#endif
-		int randInput = rand() % _trainDataSetSize;
-		_som->trainSegmentedFunctions(_trainDataChunckSet[randInput]->dataChunckToVector());
+	if(_training){
+		_randInput = rand() % _trainDataSetSize;
+		_som->trainSegmentedFunctions(_trainDataChunckSet[_randInput]->dataChunckToVector());
 		glutPostRedisplay();
- 	}
+	}
 }
 
 void init(){
@@ -174,10 +173,10 @@ void init(){
 * Initialize build, train and evaluate dataSets for a specific user
 * enables isEvaluationDataSetInitialized flag
 */
-void initUserDataSet(int idUser, int chunckTimeSize, int chunckTimeInterval){
-	_buildDataChunckSet = DataSet::createDataSetDataChunckFormat(idUser, Utils::BUILD, chunckTimeSize, chunckTimeInterval);
-	_trainDataChunckSet = DataSet::createDataSetDataChunckFormat(idUser, Utils::TRAIN, chunckTimeSize, chunckTimeInterval);
-	_evaluateDataChunckSet = DataSet::createDataSetDataChunckFormat(idUser, Utils::EVALUATE, chunckTimeSize, chunckTimeInterval);
+void initUserDataSet(int idUser, int chunckTimeSize, int chunckTimeInterval, int version){
+	_buildDataChunckSet = DataSet::createDataSetDataChunckFormat(idUser, Utils::BUILD, chunckTimeSize, chunckTimeInterval, version);
+	_trainDataChunckSet = DataSet::createDataSetDataChunckFormat(idUser, Utils::TRAIN, chunckTimeSize, chunckTimeInterval, version);
+	_evaluateDataChunckSet = DataSet::createDataSetDataChunckFormat(idUser, Utils::EVALUATE, chunckTimeSize, chunckTimeInterval, version);
 
 	_trainDataSetSize = _trainDataChunckSet.size();
 
@@ -189,22 +188,31 @@ void initUserDataSet(int idUser, int chunckTimeSize, int chunckTimeInterval){
 * if no data is available, Utils:BUILD data is used
 */
 bool createEvaluationDataSets(){
-	int dataSetType = Utils::BUILD;
-	for(int i=1; i<4; i++){
-		if(i == 3){
-			dataSetType = Utils::EVALUATE;
+	if(_version == 1){
+		int dataSetType = Utils::BUILD;
+		for(int i=1; i<4; i++){
+			if(i == 3){
+				dataSetType = Utils::EVALUATE;
+			}
+			vector<DataChunck *> dataChunckSet =
+				DataSet::createDataSetDataChunckFormat(i, dataSetType, CHUNCKTIMESIZE, CHUNCKTIMEINTERVAL, _version);
+			_evaluateDataChunckSetCollection.push_back(dataChunckSet);
 		}
-		vector<DataChunck *> dataChunckSet =
-			DataSet::createDataSetDataChunckFormat(i, dataSetType, CHUNCKTIMESIZE, CHUNCKTIMEINTERVAL);
-		_evaluateDataChunckSetCollection.push_back(dataChunckSet);
-	}
 
-	if(_evaluateDataChunckSetCollection.size() != 3){
-		cout << "Error initializing de evaluation datasets";
-		_evaluateDataChunckSetCollection.clear();;
-		return false;
+		if(_evaluateDataChunckSetCollection.size() != 3){
+			cout << "Error initializing de evaluation datasets";
+			_evaluateDataChunckSetCollection.clear();;
+			return false;
+		}
+		return true;
+	}else{
+		for(int i=0; i<_totalUsersEvaluated; i++){
+			vector<DataChunck *> dataChunckSet =
+				DataSet::createDataSetDataChunckFormat(_userIds[i], Utils::EVALUATE, CHUNCKTIMESIZE, CHUNCKTIMEINTERVAL, _version);
+			_evaluateDataChunckSetCollection.push_back(dataChunckSet);
+		}
+		return true;
 	}
-	return true;
 }
 
 // ===================== Method Declaration =======================
@@ -212,14 +220,16 @@ bool createEvaluationDataSets(){
 // ===================== Main Declaration =========================
 int main(int argc, char **argv){
 	if(argc < 3 ){
-		cout << "At least 3 parameters are required to use the program" << endl;
+		cout << "At least 4 parameters are required to use the program" << endl;
 		cout << "1: Program name" << endl;
 		cout << "2: Execution type [0 - Train Matrix | 1 - Load Matrix]" << endl;
 		cout << "Mod 0 - 3: User required to train matrix" << endl;
-		cout << "Mod 1 - 3 Initial amount of samples to evaluate" << endl;
-		cout << "Mod 1 - 4 Maximun amount of samples to evaluate" << endl;
-		cout << "Mod 1 - 5 Increment of samples unit" << endl;
-		cout << "Mod 1 - 6 Total experiments required" << endl;
+		cout << "Mod 0 - 4: First/Second Version" << endl;
+		cout << "Mod 1 - 2: First/Second Version" << endl;
+		cout << "Mod 1 - 3: Initial amount of samples to evaluate" << endl;
+		cout << "Mod 1 - 4: Maximun amount of samples to evaluate" << endl;
+		cout << "Mod 1 - 5: Increment of samples unit" << endl;
+		cout << "Mod 1 - 6: Total experiments required" << endl;
 		cout << "Mod 1 - 7... N Files that conform the matrix" << endl;
 		return 1;
 	}
@@ -229,25 +239,24 @@ int main(int argc, char **argv){
 	_sigma = SIGMA;
 	_executionType = atoi(argv[1]);
 
-#ifdef DEBUG
 	_countingSampling = 0;
-#endif
 
 	switch(_executionType){
 		case 0:{ // Analyze an user
 			cout << "Verificando argumentos validos para ejecucion por DataSet de usuario..." << endl;
-			if(argc < 3){ // 0: Program, 1: Execution type, 2: User to be analyzed
+			if(argc < 4){ // 0: Program, 1: Execution type, 2: User to be analyzed 3: Version
 				cout << "Hacen falta argumentos para la ejecucion del por DataSet de usuario" << endl;
 				return 1;
 			}
 
 			int user = atoi(argv[2]);
+			_version = atoi(argv[3]);
 
 			cout << "Argumentos validos para la ejecucion por DataSet de usuario" << endl;
 
 			cout << "Se esta creando el dataset desde los archivos..." << endl;
 
-			initUserDataSet(user, CHUNCKTIMESIZE, CHUNCKTIMEINTERVAL);
+			initUserDataSet(user, CHUNCKTIMESIZE, CHUNCKTIMEINTERVAL, _version);
 
 			cout << "El dataset fue creado correctamente" << endl;
 
@@ -267,30 +276,35 @@ int main(int argc, char **argv){
 		}
 			break;
 		case 1:{ // Get the matrix from a previous training
-			if(argc < 6){
+			if(argc < 7){
 				cout << "For Load Matrix mode at least 7 parameters are required:" << endl;
 				cout << "0 Program name" << endl;
 				cout << "1 Execution type" << endl;
-				cout << "2 Initial amount of samples to evaluate" << endl;
-				cout << "3 Maximun amount of samples to evaluate" << endl;
-				cout << "4 Increment of samples unit" << endl;
-				cout << "5 Total experiments required" << endl;
-				cout << "6... N Files that conform the matrix" << endl;
+				cout << "2 First/Second Version" << endl;
+				cout << "3 Initial amount of samples to evaluate" << endl;
+				cout << "4 Maximun amount of samples to evaluate" << endl;
+				cout << "5 Increment of samples unit" << endl;
+				cout << "6 Total experiments required" << endl;
+				cout << "7... N Files that conform the matrix" << endl;
 			}
 
 			vector<char *> fileNames;
+			vector<int> userIds;
+			_version = atoi(argv[2]);
+			_initialSamples = atoi(argv[3]);
+			_maximumSamples = atoi(argv[4]);
+			_samplesIncrement = atoi(argv[5]);
+			_totalExperiments = atoi(argv[6]);
 
-			_initialSamples = atoi(argv[2]);
-			_maximumSamples = atoi(argv[3]);
-			_samplesIncrement = atoi(argv[4]);
-			_totalExperiments = atoi(argv[5]);
-
-			for(int files=6; files<argc; files++){
+			for(int files=7; files<argc; files+=2){
 				fileNames.push_back(argv[files]);
+				_userIds.push_back(atoi(argv[(files+1)]));
 			}
 
-			int totalFiles = fileNames.size();
-			int matrixComposition = sqrt(totalFiles);
+			_totalUsersEvaluated = fileNames.size();
+			cout << "Total evaluated users: " << _totalUsersEvaluated << endl;
+
+			int matrixComposition = sqrt(_totalUsersEvaluated);
 
 			cout << "Creating evaluation dataset..." << endl;
 			_isEvaluationDataSetInitialized = createEvaluationDataSets();
@@ -304,10 +318,10 @@ int main(int argc, char **argv){
 			_height = BASEHEIGHT * matrixComposition;
 			_openGLFovy = BASEOPENGLFOVY * matrixComposition;
 
-			cout << totalFiles << " Are about to be exported..." << endl;
+			cout << _totalUsersEvaluated << " Are about to be exported..." << endl;
 
 			_som = Utils::importSOMFromFiles(fileNames, matrixComposition,
-				totalFiles);
+				_totalUsersEvaluated);
 
 			cout << "Files were exported correctly" << endl;
 		}
@@ -323,7 +337,7 @@ int main(int argc, char **argv){
 	// OpenGL register callback functions
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
-	glutKeyboardFunc(keyboard); //TODO
+	glutKeyboardFunc(keyboard);
 	glutIdleFunc(idle);
 
 	// OpenGL initalize parameters
