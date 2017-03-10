@@ -2,10 +2,20 @@
 #include <cstdio>
 #include <cstdlib>
 #include <vector>
-#include <GL/glut.h>
 
 #include "include/functionality/Classes.h"
 #include "include/results/ResultsClasses.h"
+
+#define MAC
+
+#ifdef MAC
+	#include <OpenGL/gl.h>
+	#include <OpenGL/glu.h>
+	#include <OpenGL/glext.h>
+	#include <GLUT/glut.h>
+#else
+	#include <GL/glut.h>
+#endif
 
 // OpenGL constants
 #define BASEWIDTH				400
