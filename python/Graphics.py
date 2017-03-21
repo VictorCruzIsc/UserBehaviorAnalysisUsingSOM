@@ -33,4 +33,3 @@ fig = go.Figure(data=data, layout=layout)
 
 plotly.offline.init_notebook_mode(connected=True)
 plotly.offline.plot(fig, filename="{}.html".format(graph_name))
-
