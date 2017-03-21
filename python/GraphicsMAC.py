@@ -1,8 +1,6 @@
 import plotly
 import sys
 import plotly.graph_objs as go
-from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
-
 
 def bar_construction(values, index):
     bar_name = ''
@@ -31,5 +29,4 @@ layout = go.Layout(
 
 fig = go.Figure(data=data, layout=layout)
 
-plotly.offline.init_notebook_mode(connected=True)
 plotly.offline.plot(fig, filename="{}.html".format(graph_name))

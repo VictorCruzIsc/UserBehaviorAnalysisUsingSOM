@@ -76,7 +76,13 @@ void Results::getResults(int initialSamples, int finalSamples,
 
 void Results::getBarGraphs(vector<UserGraph *> &graphics, int totalExperiments, vector<int> &userIds){
 	// Import results to pyhton
-	string baseCommand = "python ~/Desktop/som/userBehaviorAnalysisUsingSom/python/Graphics.py";
+	string baseCommand = "";
+
+#ifdef MAC
+	baseCommand = "python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py";
+#else
+	baseCommand = "python ~/Desktop/som/userBehaviorAnalysisUsingSom/python/Graphics.py";
+#endif
 
 	// X-Axis labels
 	string xAxis = "";

@@ -13,6 +13,8 @@
 #include "UserGraph.h"
 #include "ExperimentAverageAnalysis.h"
 
+#define MAC
+
 using namespace std;
 
 class Results;
