@@ -108,3 +108,5 @@ for folder in $(ls $unzippedCapturesParentFolderName); do
     fi
   done
 done
+
+rm -rfv $unzippedCapturesParentFolderName
