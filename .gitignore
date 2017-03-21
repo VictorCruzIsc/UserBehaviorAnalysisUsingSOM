@@ -1,1 +1,8 @@
+# OS added files #
 .DS_Store
+
+# Dataset .zip file #
+CapturesV2.zip
+
+# Compiled files #
+*som*
