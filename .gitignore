@@ -6,3 +6,8 @@ CapturesV2.zip
 
 # Compiled files #
 *som*
+
+# .csv files created for dataset purposes #
+networkTrafficCapturesBuildDataSet/user*
+networkTrafficCapturesEvaluationDataSet/user*
+networkTrafficCapturesTrainDataSet/user*
