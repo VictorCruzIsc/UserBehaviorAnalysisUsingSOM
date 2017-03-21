@@ -36,9 +36,8 @@ for folder in $(ls $unzippedCapturesParentFolderName); do
   else
     echo $folder NOT Processed
   fi
-
+  
   rm -rfv $folderName
-
   folderNameLength=${#folder}
   unraredFolder=${folder::(folderNameLength-4)}
 

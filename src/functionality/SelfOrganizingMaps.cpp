@@ -227,12 +227,7 @@ void SelfOrganizingMaps::trainSegmentedFunctions(vector<double> inputVector){
 		return;
 	}
 
-	Neuron *currentNeuron = NULL;
-	double distanceToBMU = 0.0;
-	double influence = 0.0;
-
 	Neuron *bmu = getBMU(inputVector);
-	
 	updateMatrixWeigths(bmu, inputVector);
 
 	_iterations++;
