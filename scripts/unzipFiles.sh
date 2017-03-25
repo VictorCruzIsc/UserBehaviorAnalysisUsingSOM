@@ -4,7 +4,14 @@ unzippedCapturesParentFolderName="CapturasV2"
 berny="Berny"
 delia="Delia"
 vortega="Vortega"
-pardinas="Pardi+%A6as"
+
+os=`uname`
+if [ "$os" = "Linux" ]; then
+  pardinas="Pardi├▒as"
+else
+  pardinas="Pardi+%A6as"
+fi
+
 pardinasRenamed="Pardinas"
 userId=0
 
