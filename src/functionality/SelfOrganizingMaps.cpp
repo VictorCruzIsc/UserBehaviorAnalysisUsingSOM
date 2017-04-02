@@ -374,11 +374,14 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(
 
 	weights.resize(3);
 
+	srand(time(NULL));
+
 	// Get initial and final index of the iteration
 	{
-		initialIndex = rand() / totalElements;
+		//initialIndex = rand() / totalElements;
+		initialIndex = rand() % totalElements;
 		while((initialIndex + totalNeuronsToEvaluate) >= totalElements){
-			initialIndex = rand() / totalElements;
+			initialIndex = rand() % totalElements;
 		}
 		finalIndex = initialIndex + totalNeuronsToEvaluate;
 	}

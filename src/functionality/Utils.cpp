@@ -1,6 +1,7 @@
 #include "../../include/functionality/Classes.h"
 
 int Utils::getRandomDoubleNumber(){
+	srand(time(NULL));
     return (double)rand() / RAND_MAX;
 }
 

@@ -153,7 +153,6 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 			Utils::exportMatrixToFile(_som->getMatrix(), _som->getEpochs(),
 				MAXEPOCHS, INITIALLEARNINGRATE, _som->getCurrenLearningRate());
 			break;
-		// Starts stadistics
 	}
 }
 
@@ -233,14 +232,19 @@ int main(int argc, char **argv){
 		cout << "At least 4 parameters are required to use the program" << endl;
 		cout << "1: Program name" << endl;
 		cout << "2: Execution type [0 - Train Matrix | 1 - Load Matrix]" << endl;
-		cout << "Mod 0 - 3: User required to train matrix" << endl;
-		cout << "Mod 0 - 4: First/Second Version" << endl;
-		cout << "Mod 1 - 2: First/Second Version" << endl;
-		cout << "Mod 1 - 3: Initial amount of samples to evaluate" << endl;
-		cout << "Mod 1 - 4: Maximun amount of samples to evaluate" << endl;
-		cout << "Mod 1 - 5: Increment of samples unit" << endl;
-		cout << "Mod 1 - 6: Total experiments required" << endl;
-		cout << "Mod 1 - 7... N Files that conform the matrix" << endl;
+		cout << endl;
+		cout << "0 - Train Matrix mode" << endl;
+		cout << "3: User required to train matrix" << endl;
+		cout << "4: First/Second Version" << endl;
+		cout << endl;
+		cout << "1 - Load Matrix mode" << endl;
+		cout << "3: First/Second Version" << endl;
+		cout << "4: Initial amount of samples to evaluate" << endl;
+		cout << "5: Maximun amount of samples to evaluate" << endl;
+		cout << "6: Increment of samples unit" << endl;
+		cout << "7: Total experiments required" << endl;
+		cout << "To define the users selected to evaluate the format is as follows" << endl;
+		cout << "<savedTraining> <user_id>" << endl;
 		return 1;
 	}
 
@@ -253,9 +257,10 @@ int main(int argc, char **argv){
 
 	switch(_executionType){
 		case 0:{ // Analyze an user
-			cout << "Verificando argumentos validos para ejecucion por DataSet de usuario..." << endl;
-			if(argc < 4){ // 0: Program, 1: Execution type, 2: User to be analyzed 3: Version
-				cout << "Hacen falta argumentos para la ejecucion del por DataSet de usuario" << endl;
+			cout << "Verifying that arguments are valid..." << endl;
+
+			if(argc < 4){
+				cout << "Missing arguments for Train matrix mode" << endl;
 				return 1;
 			}
 

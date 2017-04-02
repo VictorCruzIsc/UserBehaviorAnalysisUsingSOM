@@ -200,8 +200,8 @@ void Neuron::setNeuronColor(vector<double> rgb){
 }
 
 // Private methods
-
 void Neuron::initializeNeuron(){
+	srand(time(NULL));
 	for(int i=0; i<_totalWeights; i++){
 		_weights[i] = (double)rand() / (double)RAND_MAX;
 	}

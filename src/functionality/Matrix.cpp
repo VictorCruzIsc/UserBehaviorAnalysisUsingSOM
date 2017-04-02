@@ -123,7 +123,7 @@ void Matrix::initializeMatrix(vector<RGB*> dataSet){
 	int dataSetSize = dataSet.size();
 	int dataSetIndex = 0;
 
-	srand (time(0));
+	srand (time(NULL));
 
 	// Initiliazing neurons, from a dataset
 	for(int row=0; row < _size; row++){
@@ -142,7 +142,7 @@ void Matrix::initializeMatrix(vector<DataPackage*> dataSet){
 	int dataSetSize = dataSet.size();
 	int dataSetIndex = 0;
 
-	srand (time(0));
+	srand (time(NULL));
 
 	// Initiliazing neurons, from a dataset
 	for(int row=0; row < _size; row++){
@@ -160,7 +160,7 @@ void Matrix::initializeMatrix(vector<DataChunck*> &dataSet, int idUser){
 	int dataSetSize = dataSet.size();
 	int dataSetIndex = 0;
 
-	srand (time(0));
+	srand (time(NULL));
 
 	// Initiliazing neurons, from a dataset
 	for(int row=0; row < _size; row++){
