@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "include/functionality/Classes.h"
-#include "include/results/ResultsClasses.h"
+#include "include/results/Results.h"
 
 #define MAC
 
@@ -114,7 +114,9 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 			if(_executionType == 0){
 				cout << "Execution type is training" << endl;
 				cout << "Total samples: " << _trainDataSetSize << endl;
+
 				_training = !_training;
+
 				if(_training)
 					cout << "Training..." << endl;
 				else

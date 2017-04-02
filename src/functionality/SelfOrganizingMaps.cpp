@@ -90,20 +90,24 @@ double SelfOrganizingMaps::getCurrenLearningRate(){
 	return ((double)_epochs/_maxEpochs);
 }
 
+/*
+* Evaluates a complete data set in order to get statistical information, through
+* getting BMU's on a "colcha" to identify which neurons math it's creation user
+* and which are not able to do so.
+* Also setting to each neuron which user they were confused to.
+*/
 void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(
 	vector<DataChunck *> inputDataset, int sigmaMultiplier,
 	int totalNeuronsToEvaluate, double red, double green, double blue,
 	int evaluatedIdUser){
 
-	vector<double> weights;
-	vector<double> distances;
-	vector<Neuron *> bmus;
-
-	int errors = 0;
 	int totalElements = inputDataset.size();
 	if(totalElements == 0){
 		cout << "SOM totalElements = 0 " << endl;
+		return;
 	}
+
+	int errors = 0;
 	int initialIndex = 0;
 	int finalIndex =0;
 	int globalError = 0;
@@ -118,22 +122,27 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(
 	double upperRange = 0.0;
 	double globalPercentileError = 0;
 
+	vector<double> weights;
+	vector<double> distances;
+	vector<Neuron *> bmus;
+
 	weights.resize(3);
 
+	// Set seed for getting a real random number
 	srand(time(NULL));
 
 	// Get initial and final index of the iteration
 	{
-		//initialIndex = rand() / totalElements;
 		initialIndex = rand() % totalElements;
 		while((initialIndex + totalNeuronsToEvaluate) >= totalElements){
 			initialIndex = rand() % totalElements;
 		}
+
 		finalIndex = initialIndex + totalNeuronsToEvaluate;
 	}
 
 	/*
-	* Getting BMU of the dataset
+	* Getting a BMU for every element of the dataset
 	* Applying changes to get neuron stadistics
 	*/
 	{
@@ -149,12 +158,16 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(
 			totalDistance += distance;
 
 			// Applying bmu neuron stadistics
+			// Each neuron is created with an unique user, this function
+			// check if the neuron creation user matches the evaluated user
+			// and also check if the neuron was previously selected as a BMU
+			// to get the number of positive and negative collitions
 			bmu -> processNeuronAfterEvaluation(evaluatedIdUser);
 		}
 	}
 
 	/*
-	* Retrieving stadistical information
+	* Retrieving statistical information
 	*/
 	{
 		average = totalDistance/totalElements;
@@ -181,7 +194,8 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(
 	* marked on black
 	*/
 	{
-		for(int i=0; i<bmus.size();i++){
+		int totalBMUS = bmus.size();
+		for(int i=0; i<totalBMUS; i++){
 			distance = distances[i];
 			Neuron *bmu = bmus[i];
 			if(distance < lowerRange || distance > upperRange){
@@ -194,6 +208,9 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(
 	}
 }
 
+/*
+* Get's an overview of the status of the complete matrix once it got evaluated
+*/
 SamplesResult* SelfOrganizingMaps::getMatrixStadistics(int samples, int totalUsersEvaluated, int sigma,
 	vector<int> &userIds){
 	int totalPositiveColitions = 0;
@@ -208,6 +225,9 @@ SamplesResult* SelfOrganizingMaps::getMatrixStadistics(int samples, int totalUse
 	_errorStadisticsResults.clear();
 	_correctStadisticsResults.clear();
 
+	// Iterates all over the matrix to get the postive and negative collitions,
+	// evalaute how many neutons match the correct user and how many dont
+	// also create a map to define to which user each neurons was mistaken or correct
 	for(int row=0; row<_size; row++){
 		for(int col=0; col<_size; col++){
 			neuron = _matrix->getNeuron(row, col);
@@ -216,13 +236,14 @@ SamplesResult* SelfOrganizingMaps::getMatrixStadistics(int samples, int totalUse
 				_totalNegativeColitions += neuron->getNegativeColitions();
 				match = neuron->userMatches();
 				match ? _correct++ : _incorrect++; 
+
+				// Defines to which user the current neuron was mistaken or matches correctly
 				setAnStadisticResult(neuron->getConstructedIdUser(), neuron->getEvaluatedIdUser(), match);
 			}
 		}
 	}
 
-	//cout << _totalPositiveColitions << " " << _totalNegativeColitions << " " << _incorrect << " " << _correct << endl;
-
+	// Verifies that teh results of the different variables math and are the same of the evaluated neurons
 	correctStadisticResult = ((_totalPositiveColitions + _totalNegativeColitions +
 		_incorrect + _correct) == totalNeuronsToEvaluate);
 
@@ -253,6 +274,58 @@ void SelfOrganizingMaps::resetMatrixStadistics(){
 	_correctStadisticsResults.clear();
 }
 
+/*
+* Defines to which user the current neuron was mistaken or matches correctly
+* Example:
+* The matrix was created with the users 4,5,6,7
+* Each neuron after evaluation has the creator user id, and the matching user id, if
+* both ids are the same the neuron matches correctly, otherwise it was mistaken.
+* In both cases it is needed to know which user id the neuron match
+* Initial and final represent the creator user id and the matching user id after evaluation
+* the correct defines if the neuron matched correctly it's ccreator user or not.
+* In order to have a complete stadistic, the idea to get how many neurons of one creator user id
+* match with other user id, so two maps are created, one for correct and one for incorrect neurons
+* where the key is defined defined by the sum of initial and final
+* Example:
+* Creators users are 3, 4, 5, 6
+* A neuron was created by user 3 and matches user 3 the key is 6 and the value stored is one in the
+* map of the correct, at the the correct map will only have as many keys as evaluated users.
+* Another neuron is created the by user 5 but matches user 6 the key is 11 and the value stores is 1
+* another neuron is created the by user 6 but matches user 5 the key is also 11 and the value now is 2
+* both entries are stored in the incorrect map.
+*
+* So by the example you can see that is is possible to know which user is getting similar to other
+* and which users are completly correct
+*
+* The following data are the keys created for the example
+*
+* Created user	Matching user 	Created key
+		3			3				6			[Correct map]
+		3			4				7			[Incorrect map]
+		3			5				8			[Incorrect map]
+		3			6				9			[Incorrect map]
+		3			7				10			[Incorrect map]
+		4			3				7			[Incorrect map] and as it was previously created in the map, increments map value in 1
+		4			4				8			[Correct map]
+		4			5				9			[Incorrect map] and as it was previously created in the map, increments map value in 1
+		4			6				10			[Incorrect map] and as it was previously created in the map, increments map value in 1
+		4			7				11			[Incorrect map]
+		5			3				8			[Incorrect map] and as it was previously created in the map, increments map value in 1
+		5			4				9			[Incorrect map] and as it was previously created in the map, increments map value in 1
+		5			5				10			[Correct map]
+		5			6				11			[Incorrect map] and as it was previously created in the map, increments map value in 1
+		5			7				12			[Incorrect map]
+		6			3				9			[Incorrect map] and as it was previously created in the map, increments map value in 1
+		6			4				10			[Incorrect map] and as it was previously created in the map, increments map value in 1
+		6			5				11			[Incorrect map] and as it was previously created in the map, increments map value in 1
+		6			6				12			[Correct map]
+		6			7				13			[Incorrect map]
+		7			3				10			[Incorrect map] and as it was previously created in the map, increments map value in 1
+		7			4				11			[Incorrect map] and as it was previously created in the map, increments map value in 1
+		7			5				12			[Incorrect map] and as it was previously created in the map, increments map value in 1
+		7			6				13			[Incorrect map] and as it was previously created in the map, increments map value in 1
+		7			7				14			[Correct map]
+*/
 void SelfOrganizingMaps::setAnStadisticResult(int initial, int final, bool correct){
 	map<int, StadisticsResults *> *stadisticsResults = &_correctStadisticsResults;
 	if(!correct){
@@ -277,7 +350,6 @@ void SelfOrganizingMaps::setNeuron(Neuron *neuron){
 
 // OpenGL needed functions
 void SelfOrganizingMaps::displayUsingNeuronColor(){
-	vector<double> weigths;
 	for(int row=0; row<_size; row++){
 		for(int col=0; col<_size; col++){
 			RGB *neuronColor = _matrix->getNeuron(row, col)->getNeuronColor();

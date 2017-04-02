@@ -1,0 +1,221 @@
+./som 1 2 200 2500 700 10 trainedMatrixes/user4_1_11E.txt 4 trainedMatrixes/user5_1_11E.txt 5 trainedMatrixes/user6_1_11E.txt 6 trainedMatrixes/user7_1_11E.txt 7
+Total evaluated users: 4
+Creating evaluation dataset...
+Evaluation dataset was created correctly
+4 Are about to be exported...
+Files were exported correctly
+Results obtention...
+Total experiments required: 10
+Start experiment 1
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 4 100 0
+Values to create experiment average: 5 43.626 56.374
+Values to create experiment average: 6 98.2514 1.74856
+Values to create experiment average: 7 35.3429 64.6571
+======== Experiment 1: correct ========
+4 100 0
+5 43.626 56.374
+6 98.2514 1.74856
+7 35.3429 64.6571
+===============
+
+Start experiment 2
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 4 99.5098 0.490196
+Values to create experiment average: 5 44.8369 55.1631
+Values to create experiment average: 6 100 0
+Values to create experiment average: 7 35.4401 64.5599
+======== Experiment 2: correct ========
+4 99.5098 0.490196
+5 44.8369 55.1631
+6 100 0
+7 35.4401 64.5599
+===============
+
+Start experiment 3
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 4 100 0
+Values to create experiment average: 5 46.7136 53.2864
+Values to create experiment average: 6 97.3405 2.65951
+Values to create experiment average: 7 37.0829 62.9171
+======== Experiment 3: correct ========
+4 100 0
+5 46.7136 53.2864
+6 97.3405 2.65951
+7 37.0829 62.9171
+===============
+
+Start experiment 4
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 4 99.537 0.462963
+Values to create experiment average: 5 37.3858 62.6142
+Values to create experiment average: 6 96.8376 3.16239
+Values to create experiment average: 7 35.2777 64.7223
+======== Experiment 4: correct ========
+4 99.537 0.462963
+5 37.3858 62.6142
+6 96.8376 3.16239
+7 35.2777 64.7223
+===============
+
+Start experiment 5
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 4 100 0
+Values to create experiment average: 5 40.7938 59.2062
+Values to create experiment average: 6 98.2466 1.75341
+Values to create experiment average: 7 33.8753 66.1247
+======== Experiment 5: correct ========
+4 100 0
+5 40.7938 59.2062
+6 98.2466 1.75341
+7 33.8753 66.1247
+===============
+
+Start experiment 6
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 4 100 0
+Values to create experiment average: 5 44.0148 55.9852
+Values to create experiment average: 6 97.8729 2.12712
+Values to create experiment average: 7 34.4268 65.5732
+======== Experiment 6: correct ========
+4 100 0
+5 44.0148 55.9852
+6 97.8729 2.12712
+7 34.4268 65.5732
+===============
+
+Start experiment 7
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 4 99.7059 0.294118
+Values to create experiment average: 5 40.3477 59.6523
+Values to create experiment average: 6 96.692 3.30796
+Values to create experiment average: 7 35 65
+======== Experiment 7: correct ========
+4 99.7059 0.294118
+5 40.3477 59.6523
+6 96.692 3.30796
+7 35 65
+===============
+
+Start experiment 8
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 4 100 0
+Values to create experiment average: 5 45.1069 54.8931
+Values to create experiment average: 6 97.4218 2.57824
+Values to create experiment average: 7 33.0429 66.9571
+======== Experiment 8: correct ========
+4 100 0
+5 45.1069 54.8931
+6 97.4218 2.57824
+7 33.0429 66.9571
+===============
+
+Start experiment 9
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 4 100 0
+Values to create experiment average: 5 45.118 54.882
+Values to create experiment average: 6 96.5422 3.45779
+Values to create experiment average: 7 29.7969 70.2031
+======== Experiment 9: correct ========
+4 100 0
+5 45.118 54.882
+6 96.5422 3.45779
+7 29.7969 70.2031
+===============
+
+Start experiment 10
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 4 99.0909 0.909091
+Values to create experiment average: 5 37.7501 62.2499
+Values to create experiment average: 6 97.052 2.94803
+Values to create experiment average: 7 38.4774 61.5226
+======== Experiment 10: correct ========
+4 99.0909 0.909091
+5 37.7501 62.2499
+6 97.052 2.94803
+7 38.4774 61.5226
+===============
+
+
+
+
+Graphics
+User 4 10
+100 0
+99.5098 0.490196
+100 0
+99.537 0.462963
+100 0
+100 0
+99.7059 0.294118
+100 0
+100 0
+99.0909 0.909091
+User 5 10
+43.626 56.374
+44.8369 55.1631
+46.7136 53.2864
+37.3858 62.6142
+40.7938 59.2062
+44.0148 55.9852
+40.3477 59.6523
+45.1069 54.8931
+45.118 54.882
+37.7501 62.2499
+User 6 10
+98.2514 1.74856
+100 0
+97.3405 2.65951
+96.8376 3.16239
+98.2466 1.75341
+97.8729 2.12712
+96.692 3.30796
+97.4218 2.57824
+96.5422 3.45779
+97.052 2.94803
+User 7 10
+35.3429 64.6571
+35.4401 64.5599
+37.0829 62.9171
+35.2777 64.7223
+33.8753 66.1247
+34.4268 65.5732
+35 65
+33.0429 66.9571
+29.7969 70.2031
+38.4774 61.5226
+Calling command: python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py User4 E1,E2,E3,E4,E5,E6,E7,E8,E9,E10 100.000000,99.509804,100.000000,99.537037,100.000000,100.000000,99.705882,100.000000,100.000000,99.090909 0.000000,0.490196,0.000000,0.462963,0.000000,0.000000,0.294118,0.000000,0.000000,0.909091
+Calling command: python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py User5 E1,E2,E3,E4,E5,E6,E7,E8,E9,E10 43.625957,44.836872,46.713566,37.385830,40.793821,44.014777,40.347662,45.106902,45.118011,37.750133 56.374043,55.163128,53.286434,62.614170,59.206179,55.985223,59.652338,54.893098,54.881989,62.249867
+Calling command: python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py User6 E1,E2,E3,E4,E5,E6,E7,E8,E9,E10 98.251436,100.000000,97.340494,96.837607,98.246590,97.872880,96.692035,97.421759,96.542209,97.051974 1.748564,0.000000,2.659506,3.162393,1.753410,2.127120,3.307965,2.578241,3.457791,2.948026
+Calling command: python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py User7 E1,E2,E3,E4,E5,E6,E7,E8,E9,E10 35.342865,35.440085,37.082949,35.277702,33.875347,34.426840,35.000007,33.042912,29.796884,38.477377 64.657135,64.559915,62.917051,64.722298,66.124653,65.573160,64.999993,66.957088,70.203116,61.522623
+Results obtention finished
