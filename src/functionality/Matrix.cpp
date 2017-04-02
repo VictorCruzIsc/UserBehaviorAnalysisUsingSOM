@@ -13,24 +13,6 @@ Matrix::Matrix(int size, int totalWeights, bool initialize) : _size(size),
 	}
 }
 
-Matrix::Matrix(int size, int totalWeights, vector<RGB*> dataSet) :
-	_size(size), _totalWeights(totalWeights), _totalNeurons(size * size){
-	_matrix.resize(_size);
-	for(int i=0; i<_size; i++){
-		_matrix[i].resize(_size);
-	}
-	initializeMatrix(dataSet);
-}
-
-Matrix::Matrix(int size, int totalWeights, vector<DataPackage*> dataSet) :
-	_size(size), _totalWeights(totalWeights), _totalNeurons(size * size){
-	_matrix.resize(_size);
-	for(int i=0; i<_size; i++){
-		_matrix[i].resize(_size);
-	}
-	initializeMatrix(dataSet);
-}
-
 Matrix::Matrix(int size, int totalWeights, vector<DataChunck*> dataSet, int idUser) :
 	_size(size), _totalWeights(totalWeights), _totalNeurons(size * size){
 	_matrix.resize(_size);
@@ -112,43 +94,6 @@ void Matrix::initializeMatrix(){
 	for(int row=0; row < _size; row++){
 		for(int col=0; col < _size; col++){
 			Neuron *neuron = new Neuron(row, col, _totalWeights);
-			_matrix[row][col] = neuron;
-		}
-	}
-}
-
-// Initializa the matrix from a dataSet, selecting randomly the index
-// of the dataSet to be uploaded to the matrix
-void Matrix::initializeMatrix(vector<RGB*> dataSet){
-	int dataSetSize = dataSet.size();
-	int dataSetIndex = 0;
-
-	srand (time(NULL));
-
-	// Initiliazing neurons, from a dataset
-	for(int row=0; row < _size; row++){
-		for(int col=0; col < _size; col++){
-			dataSetIndex = rand() % dataSetSize;
-			Neuron *neuron = new Neuron(row, col, _totalWeights, dataSet[dataSetIndex]);
-			_matrix[row][col] = neuron;
-		}
-	}
-}
-
-
-// Initializa the matrix from a dataSet, selecting randomly the index
-// of the dataSet to be uploaded to the matrix
-void Matrix::initializeMatrix(vector<DataPackage*> dataSet){
-	int dataSetSize = dataSet.size();
-	int dataSetIndex = 0;
-
-	srand (time(NULL));
-
-	// Initiliazing neurons, from a dataset
-	for(int row=0; row < _size; row++){
-		for(int col=0; col < _size; col++){
-			dataSetIndex = rand() % dataSetSize;
-			Neuron *neuron = new Neuron(row, col, _totalWeights, dataSet[dataSetIndex]);
 			_matrix[row][col] = neuron;
 		}
 	}

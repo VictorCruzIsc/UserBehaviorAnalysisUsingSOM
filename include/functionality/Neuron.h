@@ -19,7 +19,6 @@ class Neuron{
 		Neuron(int x, int y, int totalWeights);
 		Neuron(int x, int y, vector<double> weigths);
 		Neuron(int x, int y, int totalWeights, RGB* rgb);
-		Neuron(int x, int y, int totalWeights, DataPackage* dataPackage);
 		Neuron(int x, int y, int totalWeights, DataChunck* dataChunck);
 		~Neuron();
 

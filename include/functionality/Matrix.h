@@ -16,8 +16,6 @@ using namespace std;
 class Matrix{
 	public:
 		Matrix(int size, int totalWeights, bool initialize);
-		Matrix(int size, int totalWeights, vector<RGB*> dataSet);
-		Matrix(int size, int totalWeights, vector<DataPackage*> dataSet);
 		Matrix(int size, int totalWeights, vector<DataChunck*> dataSet, int idUser);
 		~Matrix();
 		int getSize();
@@ -39,8 +37,6 @@ class Matrix{
 
 		// Methods
 		void initializeMatrix();
-		void initializeMatrix(vector<RGB*> dataSet);
-		void initializeMatrix(vector<DataPackage*> dataSet);
 		void initializeMatrix(vector<DataChunck*> &dataSet, int idUser);
 };
 #endif

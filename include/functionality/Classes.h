@@ -107,16 +107,9 @@ class SelfOrganizingMaps{
 		// Create SOM completely from scratch
 		SelfOrganizingMaps(int size, int totalWeights, int maxEpochs,
 			double learningRate, int totalSamples, bool initialize);
-		// Create SOM from a specific color dataset
-		SelfOrganizingMaps(int size, int totalWeights,
-			int maxEpochs, double initialLearningRate, vector<RGB* > dataSet,
-			int totalSamples);
 		// Create SOM from a Matrix already trained
 		SelfOrganizingMaps(int size, int totalWeights,
 			int maxEpochs, double initialLearningRate, Matrix *matrix,
-			int totalSamples);
-		SelfOrganizingMaps(int size, int totalWeights,
-			int maxEpochs, double initialLearningRate, vector<DataPackage* > dataSet,
 			int totalSamples);
 		SelfOrganizingMaps(int size, int totalWeights,
 			int maxEpochs, double initialLearningRate, vector<DataChunck* > dataSet,
@@ -139,8 +132,6 @@ class SelfOrganizingMaps{
 		void setNeuron(Neuron *neuron);
 
 		// Main functionality of the algorithm
-		void train(vector<double> inputVector);
-		void trainPlainCode(vector<double> inputVector);
 		void trainSegmentedFunctions(vector<double> inputVector);
 		double getCurrenLearningRate();
 
