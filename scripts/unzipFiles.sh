@@ -1,9 +1,12 @@
 #!/bin/bash
-capturesZippedFolder="CapturesV2"
+capturesZippedFolder="CapturasV2"
 unzippedCapturesParentFolderName="CapturasV2"
 berny="Berny"
 delia="Delia"
 vortega="Vortega"
+luis="Luis"
+ivan="ivan"
+cervantes="Cervantes"
 
 os=`uname`
 if [ "$os" = "Linux" ]; then
@@ -20,7 +23,7 @@ rm -rfv ../$unzippedCapturesParentFolderName
 rm -rfv $unzippedCapturesParentFolderName
 
 #clean previous folder
-for i in `seq 4 8`; do
+for i in `seq 4 10`; do
   rm -rfv ../networkTrafficCapturesBuildDataSet/user$i
   rm -rfv ../networkTrafficCapturesEvaluationDataSet/user$i
   rm -rfv ../networkTrafficCapturesTrainDataSet/user$i
@@ -32,9 +35,19 @@ unzip ../$capturesZippedFolder.zip
 # remove folders that do not cotain usefule information
 rm $unzippedCapturesParentFolderName/DCastro.rar
 
+unrar x $unzippedCapturesParentFolderName/Captur* -d $unzippedCapturesParentFolderName/Luis/
+rm -rfv $unzippedCapturesParentFolderName/Captur*.rar
+cd $unzippedCapturesParentFolderName
+rar a Luis Luis/
+rm -rfv Luis/
+cd ..
+
+echo "+++++++++ Termino de hacer el pre procesamiento +++++++++"
+
 # unzip folder in parent folder
 for folder in $(ls $unzippedCapturesParentFolderName); do
   folderName=$unzippedCapturesParentFolderName/$folder
+  echo "------------------------------ Procesando $folderName ------------------------------"
   previousName="";
   if [[ $folder =~ .*\.rar ]]; then
     unrar x $folderName -d $unzippedCapturesParentFolderName
@@ -59,8 +72,13 @@ for folder in $(ls $unzippedCapturesParentFolderName); do
     userId=7
   elif [ "$unraredFolder" = "$vortega" ]; then
     userId=8
-  else #cervates
+  elif [ "$unraredFolder" = "$cervantes" ]; then
     userId=5
+  elif [ "$unraredFolder" = "$luis" ]; then
+    userId=9
+  elif [ "$unraredFolder" = "$ivan" ]; then
+    unraredFolder="capturasIvan"
+    userId=10
   fi
 
   # unzip individual folders in every user folder
@@ -71,6 +89,8 @@ for folder in $(ls $unzippedCapturesParentFolderName); do
       unzip "$unzippedCapturesParentFolderName/$unraredFolder/$previousName$zippedFile" -d $unzippedCapturesParentFolderName/$unraredFolder/
       rm $fileName
       ((totalDataSetElements++))
+    elif [[ $zippedFile =~ .*\.csv ]]; then
+      ((totalDataSetElements++))
     else
      echo $fileName NOT Processed
     fi
@@ -80,7 +100,7 @@ for folder in $(ls $unzippedCapturesParentFolderName); do
     rm $unzippedCapturesParentFolderName/$unraredFolder/*.zip
   fi
 
-  #move files to it's corresponding dataset and user folder
+  #move files to its corresponding dataset and user folder
   totalElementsPerDataSetType=$((totalDataSetElements/3))
   totalCSV=0
   namingElement=0
@@ -117,3 +137,5 @@ for folder in $(ls $unzippedCapturesParentFolderName); do
 done
 
 rm -rfv $unzippedCapturesParentFolderName
+
+echo "Script has finished"
