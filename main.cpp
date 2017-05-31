@@ -26,7 +26,7 @@
 // SOM constants
 #define TOTALWEIGHTS 			3
 #define MAXEPOCHS 				10
-#define NORMALSIZE 				100
+#define NORMALSIZE 				50
 #define INITIALLEARNINGRATE 	0.1
 #define SIGMA 					1
 
@@ -185,9 +185,15 @@ void init(){
 * enables isEvaluationDataSetInitialized flag
 */
 void initUserDataSet(int idUser, int chunckTimeSize, int chunckTimeInterval, int version){
+	cout << "Start building Build DataSet..." << endl;
 	_buildDataChunckSet = DataSet::createDataSetDataChunckFormat(idUser, Utils::BUILD, chunckTimeSize, chunckTimeInterval, version);
+	cout << "Finish building Build DataSet" << endl;
+	cout << "Start building Train DataSet..." << endl;
 	_trainDataChunckSet = DataSet::createDataSetDataChunckFormat(idUser, Utils::TRAIN, chunckTimeSize, chunckTimeInterval, version);
+	cout << "Finish building Train DataSet" << endl;
+	cout << "Start building Evaluation DataSet..." << endl;
 	_evaluateDataChunckSet = DataSet::createDataSetDataChunckFormat(idUser, Utils::EVALUATE, chunckTimeSize, chunckTimeInterval, version);
+	cout << "Finish building Evaluation DataSet" << endl;
 
 	_trainDataSetSize = _trainDataChunckSet.size();
 
