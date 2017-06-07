@@ -124,3 +124,11 @@ void DataChunck::info(){
 	else dataChunckInfo += "Only metrics: FALSE";
 	cout << dataChunckInfo << endl;
 }
+
+string DataChunck::exportDataChunck(){
+	string dataChunckStringRepresentation = "" + to_string(_proportionTCPUDPMetric);
+	dataChunckStringRepresentation += " " + to_string(_bytesToInternalIPMetric);
+	dataChunckStringRepresentation += " " + to_string(_bytesThroughWebMetric);
+
+	return dataChunckStringRepresentation;
+}

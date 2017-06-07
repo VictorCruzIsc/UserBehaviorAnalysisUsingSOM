@@ -26,7 +26,7 @@
 // SOM constants
 #define TOTALWEIGHTS 			3
 #define MAXEPOCHS 				10
-#define NORMALSIZE 				50
+#define NORMALSIZE 				75
 #define INITIALLEARNINGRATE 	0.1
 #define SIGMA 					1
 

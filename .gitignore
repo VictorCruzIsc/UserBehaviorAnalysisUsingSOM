@@ -6,6 +6,7 @@ CapturasV2.zip
 
 # Compiled files #
 *som*
+*dataset_module*
 
 # .csv files created for dataset purposes #
 networkTrafficCapturesBuildDataSet/user*

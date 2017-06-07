@@ -126,7 +126,10 @@ class DataChunck{
 		}
 
 		vector<double> dataChunckToVector();
+
 		void info();
+
+		string exportDataChunck();
 
 	private:
 		// Original Values

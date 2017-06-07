@@ -33,6 +33,24 @@ void Utils::exportMatrixToFile(Matrix *matrix, int completedEpochs,
 	cout << "Se ha terminado de guardar el entrenamiento" << endl;
 }
 
+void Utils::exportDataChuckDataSet(int type, int userId, vector<DataChunck *> &dataSet){
+	string filename = Utils::buildFileNameDataSet(type, userId);
+
+	cout << "DataChunck " << filename << " start exporting..." << endl;
+
+	ofstream file;
+	file.open(filename);
+	int totalElements = dataSet.size();
+	file << totalElements;
+	file << "\n";
+	for(int i=0; i<totalElements; i++){
+		string line = dataSet[i]->exportDataChunck() + "\n";
+		file << line;
+	}
+	file.close();
+	cout << "DataChunck " << filename << " exported correctly" << endl;
+}
+
 SelfOrganizingMaps* Utils::importSOMFromFiles(char *fileName){
     fstream infile;
     string line;
@@ -252,6 +270,18 @@ string Utils::buildFileName(){
     int year = (now->tm_year + 1900);
     string fileName = to_string(year) + "." + to_string(month) + "." +
 		to_string(day) + "-" + Utils::currentTime() + ".txt";
+	return fileName;
+}
+
+string Utils::buildFileNameDataSet(int type, int userId){
+	time_t t = time(0);
+	struct tm * now = localtime( & t );
+	int month = (now->tm_mon + 1);
+    int day = (now->tm_mday  + 1);
+    int year = (now->tm_year + 1900);
+    string fileName = to_string(type) + "." + to_string(userId) + "."
+		+ to_string(year) + "." + to_string(month) + "."
+		+ to_string(day) + "-" + Utils::currentTime() + ".txt";
 	return fileName;
 }
 

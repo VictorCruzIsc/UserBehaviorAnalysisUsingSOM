@@ -61,6 +61,7 @@ class Utils{
 		static void exportMatrixToFile(Matrix *matrix, int completedEpochs,
 			int maxEpochs, double initialLearningRate,
 			double finalLearningRate);
+		static void exportDataChuckDataSet(int type, int userId, vector<DataChunck *> &dataSet);
 		static Matrix* importMatrixFromFile(char *fileName);
 		static SelfOrganizingMaps* importSOMFromFiles(char *fileName);
 		static SelfOrganizingMaps* importSOMFromFiles(vector<char *> fileNames,
@@ -99,6 +100,7 @@ class Utils{
 
 		// Others
 		static string buildFileName();
+		static string buildFileNameDataSet(int type, int userId);
 		static double getVariance(vector<double> samples, double average);
 };
 
