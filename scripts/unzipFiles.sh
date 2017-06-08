@@ -153,4 +153,6 @@ done
 
 rm -rfv $unzippedCapturesParentFolderName
 
+cat ../networkTrafficCapturesTrainDataSet/user9/flows-11.csv | tail -r | tail -n +3 | tail -r
+
 echo "+++++++++ 1) FINISH: running script +++++++++"
