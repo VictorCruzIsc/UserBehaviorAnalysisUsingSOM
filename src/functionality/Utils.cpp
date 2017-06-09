@@ -39,7 +39,7 @@ void Utils::exportDataChuckDataSet(int type, int userId, vector<DataChunck *> &d
 	cout << "DataChunck " << filename << " start exporting..." << endl;
 
 	ofstream file;
-	file.open(filename);
+	file.open("chunks/" + filename);
 	int totalElements = dataSet.size();
 	file << totalElements;
 	file << "\n";
@@ -279,9 +279,7 @@ string Utils::buildFileNameDataSet(int type, int userId){
 	int month = (now->tm_mon + 1);
     int day = (now->tm_mday  + 1);
     int year = (now->tm_year + 1900);
-    string fileName = to_string(type) + "." + to_string(userId) + "."
-		+ to_string(year) + "." + to_string(month) + "."
-		+ to_string(day) + "-" + Utils::currentTime() + ".txt";
+    string fileName = to_string(type) + "." + to_string(userId) + ".txt";
 	return fileName;
 }
 

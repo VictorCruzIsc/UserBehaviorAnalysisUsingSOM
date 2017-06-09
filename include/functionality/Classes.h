@@ -196,6 +196,7 @@ class DataSet{
 		static vector<DataPackage *> createDataSetPackageFormat(string user, int type, int version);
 		static vector<DataChunck *> createDataSetDataChunckFormat(int idUser, int type,
 			int chunckTimeSize, int chunckTimeInterval, int version);
+		static vector<DataChunck *> createDataSetDataChunckFormatFromFile(int idUser, int type);
 };
 
 #endif

@@ -1,3 +1,13 @@
+/*
+* This module is in charge of creating a complete data chunck set based on the captured packages of any user.
+* It will create many files denoted as 1_<userId>_date.txt that contains the three metrics of a data chunck,
+* the first line in all files will denote the total elements contained in the file.
+* COMPILE:
+* Enable makefile dataset_module to compile it
+* RUNINING:
+* ./dataset_module <userId>+
+*/
+
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>

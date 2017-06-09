@@ -172,3 +172,56 @@ vector<DataChunck *> DataSet::createDataSetDataChunckFormat(int idUser, int type
 
 	return dataChunckDataSet;
 }
+
+vector<DataChunck *> DataSet::createDataSetDataChunckFormatFromFile(int idUser, int type){
+	vector<DataPackage*> dataChunckComposition;
+	vector<string> packageElements;
+	vector<DataChunck*> dataChunckDataSet;
+
+	int totalReadLines = 0;
+	string fileName =  to_string(type) + "." + to_string(idUser) + ".txt";
+	string filePath = "chunks/" + fileName;
+	string::size_type sz;
+
+	//cout << "FilePath: " << filePath << endl;
+
+	fstream infile;
+	string line;
+	packageElements.resize(3);
+
+	infile.open(filePath);
+
+	if(infile.is_open()){
+		//cout << "File is open" << endl;
+		while(getline(infile, line)){
+			totalReadLines++;
+			stringstream ssin(line);
+
+			//cout << line << endl;
+
+			if(totalReadLines != 1){
+				for(int i=0; i<3; i++){
+					ssin >> packageElements[i];
+				}
+
+				DataChunck *chunck =  new DataChunck(stod(packageElements[0]),
+					stod(packageElements[1]), stod(packageElements[2]), dataChunckComposition);
+
+				//chunck->info();
+
+				dataChunckDataSet.push_back(chunck);
+
+				packageElements.clear();
+			}else{
+				cout << "Total elements in file: " + line << endl;
+			}
+		}
+		infile.close();
+	}else{
+		cout << "File: " << fileName << " is CLOSED ";
+		cout << "Path: " << filePath << endl;
+	}
+
+	cout << "Total elements processed: " << dataChunckDataSet.size() << endl;
+	return dataChunckDataSet;
+}
