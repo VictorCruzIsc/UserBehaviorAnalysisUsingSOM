@@ -1,7 +1,6 @@
 #include "../../include/functionality/Classes.h"
 
-vector<DataPackage *> DataSet::createDataSetPackageFormat(string user,
-			int type, int version){
+vector<DataPackage *> DataSet::createDataSetPackageFormat(string user, int type, int version){
 	fstream infile;
 	string line;
 	vector<string> packageElements;

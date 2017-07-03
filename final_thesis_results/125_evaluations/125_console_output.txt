@@ -1,0 +1,228 @@
+Bitsos-MacBook-Pro:UserBehaviorAnalysisUsingSOM victorcruz$ ./evaluate_module 200 2500 700 10 10_125_10E_100000.txt 10 4_125_10E_100000.txt 4 5_125_10E_100000.txt 5 9_125_10E_100000.txt 9
+Total evaluated users: 4
+Creating evaluation dataset...
+Total elements in file: 45381
+Total elements processed: 45381
+Elements in user: 10is 45381
+Total elements in file: 24191
+Total elements processed: 24191
+Elements in user: 4is 24191
+Total elements in file: 3573
+Total elements processed: 3573
+Elements in user: 5is 3573
+Total elements in file: 114668
+Total elements processed: 114668
+Elements in user: 9is 114668
+Evaluation dataset was created correctly
+4 Are about to be exported...
+Files were exported correctly
+Results obtention...
+Total experiments required: 10
+Start experiment 1
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 10 100 0
+Values to create experiment average: 4 17.9018 82.0982
+Values to create experiment average: 5 14.7593 85.2407
+Values to create experiment average: 9 48.5678 51.4322
+======== Experiment 1: correct ========
+4 17.9018 82.0982
+5 14.7593 85.2407
+9 48.5678 51.4322
+10 100 0
+===============
+
+Start experiment 2
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 10 100 0
+Values to create experiment average: 4 10.7276 89.2724
+Values to create experiment average: 5 7.98619 92.0138
+Values to create experiment average: 9 46.2681 53.7319
+======== Experiment 2: correct ========
+4 10.7276 89.2724
+5 7.98619 92.0138
+9 46.2681 53.7319
+10 100 0
+===============
+
+Start experiment 3
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 10 100 0
+Values to create experiment average: 4 14.7958 85.2042
+Values to create experiment average: 5 11.422 88.578
+Values to create experiment average: 9 49.2567 50.7433
+======== Experiment 3: correct ========
+4 14.7958 85.2042
+5 11.422 88.578
+9 49.2567 50.7433
+10 100 0
+===============
+
+Start experiment 4
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 10 100 0
+Values to create experiment average: 4 14.4032 85.5968
+Values to create experiment average: 5 11.2909 88.7091
+Values to create experiment average: 9 51.2943 48.7057
+======== Experiment 4: correct ========
+4 14.4032 85.5968
+5 11.2909 88.7091
+9 51.2943 48.7057
+10 100 0
+===============
+
+Start experiment 5
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 10 100 0
+Values to create experiment average: 4 10.2488 89.7512
+Values to create experiment average: 5 12.2423 87.7577
+Values to create experiment average: 9 46.5433 53.4567
+======== Experiment 5: correct ========
+4 10.2488 89.7512
+5 12.2423 87.7577
+9 46.5433 53.4567
+10 100 0
+===============
+
+Start experiment 6
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 10 82.9861 17.0139
+Values to create experiment average: 4 13.1138 86.8862
+Values to create experiment average: 5 12.1084 87.8916
+Values to create experiment average: 9 63.5507 36.4493
+======== Experiment 6: correct ========
+4 13.1138 86.8862
+5 12.1084 87.8916
+9 63.5507 36.4493
+10 82.9861 17.0139
+===============
+
+Start experiment 7
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 10 100 0
+Values to create experiment average: 4 19.4893 80.5107
+Values to create experiment average: 5 8.68711 91.3129
+Values to create experiment average: 9 36.2845 63.7155
+======== Experiment 7: correct ========
+4 19.4893 80.5107
+5 8.68711 91.3129
+9 36.2845 63.7155
+10 100 0
+===============
+
+Start experiment 8
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 10 100 0
+Values to create experiment average: 4 11.3853 88.6147
+Values to create experiment average: 5 8.41526 91.5847
+Values to create experiment average: 9 45.7364 54.2636
+======== Experiment 8: correct ========
+4 11.3853 88.6147
+5 8.41526 91.5847
+9 45.7364 54.2636
+10 100 0
+===============
+
+Start experiment 9
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 10 86.5 13.5
+Values to create experiment average: 4 15.792 84.208
+Values to create experiment average: 5 9.80797 90.192
+Values to create experiment average: 9 56.3637 43.6363
+======== Experiment 9: correct ========
+4 15.792 84.208
+5 9.80797 90.192
+9 56.3637 43.6363
+10 86.5 13.5
+===============
+
+Start experiment 10
+Samples: 200
+Samples: 900
+Samples: 1600
+Samples: 2300
+Values to create experiment average: 10 100 0
+Values to create experiment average: 4 10.0321 89.9679
+Values to create experiment average: 5 15.5635 84.4365
+Values to create experiment average: 9 43.4393 56.5607
+======== Experiment 10: correct ========
+4 10.0321 89.9679
+5 15.5635 84.4365
+9 43.4393 56.5607
+10 100 0
+===============
+
+
+
+
+Graphics
+User 10 10
+100 0
+100 0
+100 0
+100 0
+100 0
+82.9861 17.0139
+100 0
+100 0
+86.5 13.5
+100 0
+User 4 10
+17.9018 82.0982
+10.7276 89.2724
+14.7958 85.2042
+14.4032 85.5968
+10.2488 89.7512
+13.1138 86.8862
+19.4893 80.5107
+11.3853 88.6147
+15.792 84.208
+10.0321 89.9679
+User 5 10
+14.7593 85.2407
+7.98619 92.0138
+11.422 88.578
+11.2909 88.7091
+12.2423 87.7577
+12.1084 87.8916
+8.68711 91.3129
+8.41526 91.5847
+9.80797 90.192
+15.5635 84.4365
+User 9 10
+48.5678 51.4322
+46.2681 53.7319
+49.2567 50.7433
+51.2943 48.7057
+46.5433 53.4567
+63.5507 36.4493
+36.2845 63.7155
+45.7364 54.2636
+56.3637 43.6363
+43.4393 56.5607
