@@ -16,15 +16,11 @@
 
 # === Global variables ===
 source('coolBlueHotRed.R')
-working_directory <- "./Documents/git/UserBehaviorAnalysisUsingSOM/R"
 
-# === Algorithm needed variables ===
-user <- 4
-build_file <- "./chunks/1.4.txt"
-train_file <- "./chunks/2.4.txt"
-evaluate_file <- "./chunks/3.4.txt"
+working_directory <- "./Documents/git/UserBehaviorAnalysisUsingSOM/R"
+output_file_folder <- "./r_trained_som"
+dataset_file_folder <- "./chunks"
 train_dataset_max_size <- 100000
-total_neurons <- 50
 epochs <- 10
 learning_rate <- c(0.05, 0.01)
 
@@ -37,18 +33,16 @@ topography <- "rectangular"
 # === Train module ===
 # Needed package
 require(kohonen)
+
 setup_environment(working_directory)
-# Obtaining datasets
-datasets <- get_datasets(build_file, train_file, evaluate_file, train_dataset_max_size)
-# SOM algoruthm
-som_model <- get_som_solution(total_neurons, total_neurons, topography,
-                              datasets$train, epochs, learning_rate,
-                              datasets$build, TRUE)
-# Extract SOM trained values
-som_trained_neurons <- get_som_exportable_values(som_model$codes[[1]], user)
-# som_trained_neurons
-# Export elements for C++ analysis
-write.table(trained_som_values, file="outfile.txt",sep=" ", col.names = FALSE, row.names = FALSE)
+
+users <- c(4, 5, 9, 10)
+lattice_dimensions <- c(50, 75, 100, 125)
+
+get_trained_som(users, lattice_dimensions,
+                output_file_folder, dataset_file_folder,
+                train_dataset_max_size, epochs,
+                learning_rate, neighbourhood,topography)
 
 
 # === Obtained information analysis ===
@@ -149,11 +143,46 @@ get_som_solution <- function(x_neurons, y_neurons, topography,
 }
 
 get_som_exportable_values <- function(raw_data, user){
-  raw_data <- cbind(trained_som_values, user)
-  raw_data <- cbind(trained_som_values, 0)
-  raw_data <- cbind(trained_som_values, 0)
-  raw_data <- cbind(trained_som_values, 0)
+  raw_data <- cbind(raw_data, user)
+  raw_data <- cbind(raw_data, 0)
+  raw_data <- cbind(raw_data, 0)
+  raw_data <- cbind(raw_data, 0)
   
   return(raw_data)
 }
 
+get_trained_som <- function(users, lattice_dimensions,
+                            output_file_folder, dataset_file_folder,
+                            train_dataset_max_size, epochs,
+                            learning_rate, neighbourhood,
+                            topography){
+  for(user in users){
+    for(dimension in lattice_dimensions){
+      #print(paste(user, dimension))
+      trained_som_name <- c("trained_lattice_", user, "_", dimension, "_", epochs, ".txt")
+      build_dataset_input_name <- c("1", ".", user, ".txt")
+      train_dataset_input_name <- c("2", ".", user, ".txt")
+      evaluate_dataset_input_name <- c("3", ".", user, ".txt")
+      
+      trained_som_destination_path <- paste(c(output_file_folder,"/",trained_som_name), collapse = "")
+      build_dataset_path <- paste(c(dataset_file_folder, "/", build_dataset_input_name), collapse = "")
+      train_dataset_path <- paste(c(dataset_file_folder, "/", train_dataset_input_name), collapse = "")
+      evaluate_dataset_path <- paste(c(dataset_file_folder, "/", evaluate_dataset_input_name), collapse = "")
+      
+      # Obtaining datasets
+      datasets <- get_datasets(build_dataset_path, train_dataset_path, evaluate_dataset_path, train_dataset_max_size)
+      
+      # SOM algoruthm
+      som_model <- get_som_solution(dimension, dimension, topography,
+                                    datasets$train, epochs, learning_rate,
+                                    datasets$build, TRUE)
+      
+      # Extract SOM trained values
+      som_trained_neurons <- get_som_exportable_values(som_model$codes[[1]], user)
+      
+      # Export elements for C++ analysis
+      write.table(som_trained_neurons, file=trained_som_destination_path, sep=" ",
+                  col.names = FALSE, row.names = FALSE)
+    }
+  }
+}
