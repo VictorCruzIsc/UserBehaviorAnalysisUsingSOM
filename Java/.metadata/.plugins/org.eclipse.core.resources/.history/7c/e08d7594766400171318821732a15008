@@ -1,0 +1,25 @@
+package modules;
+
+import java.awt.geom.GeneralPath;
+import java.util.List;
+
+import org.omg.PortableInterceptor.USER_EXCEPTION;
+
+public class Dataset {
+	private static String GENERAL_PATH = "/Users/victorcruz/Documents/git/UserBehaviorAnalysisUsingSOM/networkTrafficCaptures";
+	private static String BUILD = "BuildDataSet";
+	private static String TRAIN = "TrainDataSet";
+	private static String EVALUATE = "EvaluationDataSet";
+	private static String USER = "user";
+	
+	public enum DATASET_TYPE{
+		DST_BUILD, DST_TRAIN, DST_EVALUATE
+	}
+	
+	private static List<String> getFileNames(String idUser){
+		String user =  USER + idUser;
+		String build = GENERAL_PATH + "/" + BUILD + "/" + user;
+		String train = GENERAL_PATH + "/" + TRAIN + "/" + user;
+		String evaluate = GENERAL_PATH + "/" + EVALUATE + "/" + user;
+	}
+}

@@ -1,0 +1,96 @@
+package models;
+
+public class Package {
+	private boolean way;
+	private long localIp;
+	private long destinationIp;
+	private int localPort;
+	private int remotePort;
+	private int transmitedBytes;
+	private int protocol;
+	private long timeStamp;
+	
+	public Package(boolean way, long localIp, long destinationIp, int localPort, int remotePort, int transmitedBytes,
+			int protocol, long timeStamp) {
+		super();
+		this.way = way;
+		this.localIp = localIp;
+		this.destinationIp = destinationIp;
+		this.localPort = localPort;
+		this.remotePort = remotePort;
+		this.transmitedBytes = transmitedBytes;
+		this.protocol = protocol;
+		this.timeStamp = timeStamp;
+	}
+
+	public boolean isWay() {
+		return way;
+	}
+
+	public void setWay(boolean way) {
+		this.way = way;
+	}
+
+	public long getLocalIp() {
+		return localIp;
+	}
+
+	public void setLocalIp(long localIp) {
+		this.localIp = localIp;
+	}
+
+	public long getDestinationIp() {
+		return destinationIp;
+	}
+
+	public void setDestinationIp(long destinationIp) {
+		this.destinationIp = destinationIp;
+	}
+
+	public int getLocalPort() {
+		return localPort;
+	}
+
+	public void setLocalPort(int localPort) {
+		this.localPort = localPort;
+	}
+
+	public int getRemotePort() {
+		return remotePort;
+	}
+
+	public void setRemotePort(int remotePort) {
+		this.remotePort = remotePort;
+	}
+
+	public int getTransmitedBytes() {
+		return transmitedBytes;
+	}
+
+	public void setTransmitedBytes(int transmitedBytes) {
+		this.transmitedBytes = transmitedBytes;
+	}
+
+	public int getProtocol() {
+		return protocol;
+	}
+
+	public void setProtocol(int protocol) {
+		this.protocol = protocol;
+	}
+
+	public long getTimeStamp() {
+		return timeStamp;
+	}
+
+	public void setTimeStamp(long timeStamp) {
+		this.timeStamp = timeStamp;
+	}
+
+	@Override
+	public String toString() {
+		return "Package [way=" + way + ", localIp=" + localIp + ", destinationIp=" + destinationIp + ", localPort="
+				+ localPort + ", remotePort=" + remotePort + ", transmitedBytes=" + transmitedBytes + ", protocol="
+				+ protocol + ", timeStamp=" + timeStamp + "]";
+	}
+}

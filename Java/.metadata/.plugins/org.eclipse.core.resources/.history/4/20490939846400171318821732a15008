@@ -1,0 +1,89 @@
+package modules;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import utils.Utils;
+
+import models.Package;
+
+public class Dataset {
+	private static String GENERAL_PATH = "/Documents/git/UserBehaviorAnalysisUsingSOM/networkTrafficCaptures";
+	private static String BUILD = "BuildDataSet";
+	private static String TRAIN = "TrainDataSet";
+	private static String EVALUATE = "EvaluationDataSet";
+	private static String USER = "user";
+	
+	public enum DATASET_TYPE{
+		DST_BUILD, DST_TRAIN, DST_EVALUATE
+	}
+	
+	private static List<String> getFolderNames(String idUser){
+		String home = System.getProperty("user.home");
+		String base = home + GENERAL_PATH;
+		String user =  USER + idUser;
+		String build = base + BUILD + "/" + user;
+		String train = base + TRAIN + "/" + user;
+		String evaluate = base + EVALUATE + "/" + user;
+		
+		List<String> fileNames = new ArrayList<>();
+		fileNames.add(build);
+		fileNames.add(train);
+		fileNames.add(evaluate);
+		
+		return fileNames;
+	}
+	
+	private static List<String> getFolderFileNames(File folder){
+		File[] files = folder.listFiles();
+		List<String> fileNames = new ArrayList<>();
+		
+		for (File file : files) {
+			String fileName = file.getAbsolutePath();
+			if (fileName.endsWith(".csv")) {
+				fileNames.add(fileName);
+			}
+		}
+		
+		return fileNames;
+	}
+	
+	public static List<List<Package>> getRawPackages(String idUser){
+		// Retrieve the name of the build, train and evaluate folders
+		// to get the correct destinations.
+		List<String> datasetFolderNames = getFolderNames(idUser);
+		List<List<Package>> basePackages = new ArrayList<>();
+		
+		for(String dataSetFolderName : datasetFolderNames){
+			File dataSetFolder = new File(dataSetFolderName);
+			List<String> dataSetFlowsFileNames = getFolderFileNames(dataSetFolder);
+			
+			if(dataSetFlowsFileNames.size() > 0){
+				List<Package> dataSetPackages = new ArrayList<>();
+				
+				for(String flowFileName : dataSetFlowsFileNames){
+					List<String> fileContents = Utils.readFileContent(flowFileName);
+					
+					if(fileContents == null){
+						Utils.logError("getRawPackages(String idUser) fileContents is null, path: " +
+								dataSetFolderName + "/" + flowFileName);
+						continue;
+					}
+					
+					//Utils.logInfo(fileName + " total lines:" + fileContents.size());
+					for(String rawCapture : fileContents){
+						Package currentPackage = new Package(rawCapture);
+					}
+					
+				}
+			}else{
+				Utils.logError("getRawPackages(String idUser) fileNames size() is 0 path: " +
+						dataSetFolderName);
+				return null;
+			}
+		}
+		
+		return null;
+	}
+}

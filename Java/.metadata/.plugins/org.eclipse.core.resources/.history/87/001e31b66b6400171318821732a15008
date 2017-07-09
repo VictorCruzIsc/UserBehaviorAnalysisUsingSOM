@@ -1,0 +1,50 @@
+package utils;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Utils {
+	private static final String ERROR = "ERROR";
+	private static final String INFO = "INFO";
+	private static final String WARNING = "WARNING";
+	
+	public static void logError(String msg){
+		System.out.println(ERROR + ":" + msg);
+	}
+	
+	public static void logInfo(String msg){
+		System.out.println(INFO + ":" + msg);
+	}
+	
+	public static void logWarning(String msg){
+		System.out.println(WARNING + ":" + msg);
+	}
+	
+	public static List<String> readFileContent(String fileName){
+		List<String> fileContents = null;
+		try {
+			FileInputStream fileInputStream = new FileInputStream(fileName);
+			InputStreamReader inputStream = new InputStreamReader(fileInputStream);
+			BufferedReader bufferedReader = new BufferedReader(inputStream);
+			fileContents = new ArrayList<>();
+			String line;
+			while ((line = bufferedReader.readLine()) != null) {
+				fileContents.add(line);
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return fileContents;
+	}
+}

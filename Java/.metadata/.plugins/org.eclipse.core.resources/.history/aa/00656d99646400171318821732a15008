@@ -1,0 +1,25 @@
+package models;
+
+public class Package {
+	private boolean way;
+	private long localIp;
+	private long destinationIp;
+	private int localPort;
+	private int remotePort;
+	private int transmitedBytes;
+	private int protocol;
+	private long timeStamp;
+	
+	public Package(boolean way, long localIp, long destinationIp, int localPort, int remotePort, int transmitedBytes,
+			int protocol, long timeStamp) {
+		super();
+		this.way = way;
+		this.localIp = localIp;
+		this.destinationIp = destinationIp;
+		this.localPort = localPort;
+		this.remotePort = remotePort;
+		this.transmitedBytes = transmitedBytes;
+		this.protocol = protocol;
+		this.timeStamp = timeStamp;
+	}
+}

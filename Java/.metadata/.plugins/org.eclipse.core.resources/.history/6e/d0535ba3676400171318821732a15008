@@ -1,0 +1,154 @@
+package models;
+
+import java.util.List;
+
+import utils.Utils;
+
+public class AnalysisVector {
+	private double totalBytes;
+	private double totalBytesTCP;
+	private double totalBytesUDP;
+	private double totalBytesBackbone;
+	private double totalBytesWeb;
+	private double metricTCPUDP;
+	private double metricBackbone;
+	private double metricWeb;
+	private long startTimeStamp;
+	private long finishTimeStamp;
+	private List<Package> packages;
+	
+	public AnalysisVector(double totalBytes, double totalBytesTCP, double totalBytesUDP, double totalBytesBackbone,
+			double totalBytesWeb, double metricTCPUDP, double metricBackbone, double metricWeb, long startTimeStamp,
+			long finishTimeStamp, List<Package> packages) {
+		super();
+		this.totalBytes = totalBytes;
+		this.totalBytesTCP = totalBytesTCP;
+		this.totalBytesUDP = totalBytesUDP;
+		this.totalBytesBackbone = totalBytesBackbone;
+		this.totalBytesWeb = totalBytesWeb;
+		this.metricTCPUDP = metricTCPUDP;
+		this.metricBackbone = metricBackbone;
+		this.metricWeb = metricWeb;
+		this.startTimeStamp = startTimeStamp;
+		this.finishTimeStamp = finishTimeStamp;
+		this.packages = packages;
+	}
+
+	public double getTotalBytes() {
+		return totalBytes;
+	}
+
+	public void setTotalBytes(double totalBytes) {
+		this.totalBytes = totalBytes;
+	}
+
+	public double getTotalBytesTCP() {
+		return totalBytesTCP;
+	}
+
+	public void setTotalBytesTCP(double totalBytesTCP) {
+		this.totalBytesTCP = totalBytesTCP;
+	}
+
+	public double getTotalBytesUDP() {
+		return totalBytesUDP;
+	}
+
+	public void setTotalBytesUDP(double totalBytesUDP) {
+		this.totalBytesUDP = totalBytesUDP;
+	}
+
+	public double getTotalBytesBackbone() {
+		return totalBytesBackbone;
+	}
+
+	public void setTotalBytesBackbone(double totalBytesBackbone) {
+		this.totalBytesBackbone = totalBytesBackbone;
+	}
+
+	public double getTotalBytesWeb() {
+		return totalBytesWeb;
+	}
+
+	public void setTotalBytesWeb(double totalBytesWeb) {
+		this.totalBytesWeb = totalBytesWeb;
+	}
+
+	public double getMetricTCPUDP() {
+		return metricTCPUDP;
+	}
+
+	public void setMetricTCPUDP(double metricTCPUDP) {
+		this.metricTCPUDP = metricTCPUDP;
+	}
+
+	public double getMetricBackbone() {
+		return metricBackbone;
+	}
+
+	public void setMetricBackbone(double metricBackbone) {
+		this.metricBackbone = metricBackbone;
+	}
+
+	public double getMetricWeb() {
+		return metricWeb;
+	}
+
+	public void setMetricWeb(double metricWeb) {
+		this.metricWeb = metricWeb;
+	}
+
+	public long getStartTimeStamp() {
+		return startTimeStamp;
+	}
+
+	public void setStartTimeStamp(long startTimeStamp) {
+		this.startTimeStamp = startTimeStamp;
+	}
+
+	public long getFinishTimeStamp() {
+		return finishTimeStamp;
+	}
+
+	public void setFinishTimeStamp(long finishTimeStamp) {
+		this.finishTimeStamp = finishTimeStamp;
+	}
+
+	public List<Package> getPackages() {
+		return packages;
+	}
+
+	public void setPackages(List<Package> packages) {
+		this.packages = packages;
+	}
+	
+	/*
+	this.metricTCPUDP = metricTCPUDP;
+	this.metricBackbone = metricBackbone;
+	this.metricWeb = metricWeb;
+	*/
+	private void processTCPUDPMetric(){
+		if(totalBytes != 0){
+			this.metricTCPUDP = (totalBytesTCP + totalBytesUDP) / totalBytes;
+		}else{
+			Utils.logError("On processTCPUDPMetric() there is an error of 0");
+		}
+	}
+	
+	private void processBackboneMetric(){
+		if(totalBytes != 0){
+			this.metricBackbone = totalBytesBackbone / totalBytes;
+		}else{
+			Utils.logError("On processBackboneMetric() there is an error of 0");
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "AnalysisVector [totalBytes=" + totalBytes + ", totalBytesTCP=" + totalBytesTCP + ", totalBytesUDP="
+				+ totalBytesUDP + ", totalBytesBackbone=" + totalBytesBackbone + ", totalBytesWeb=" + totalBytesWeb
+				+ ", metricTCPUDP=" + metricTCPUDP + ", metricBackbone=" + metricBackbone + ", metricWeb=" + metricWeb
+				+ ", startTimeStamp=" + startTimeStamp + ", finishTimeStamp=" + finishTimeStamp + ", packages="
+				+ packages + "]";
+	}
+}

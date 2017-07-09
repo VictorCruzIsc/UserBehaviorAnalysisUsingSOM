@@ -1,0 +1,17 @@
+package models;
+
+import java.util.List;
+
+public class AnalysisVector {
+	private double totalBytes;
+	private double totalBytesTCP;
+	private double totalBytesUDP;
+	private double totalBytesBackbone;
+	private double totalBytesWeb;
+	private double metricTCPUDP;
+	private double metricBackbone;
+	private double metricWeb;
+	private long startTimeStamp;
+	private long finishTimeStamp;
+	private List<Package> packages;
+}

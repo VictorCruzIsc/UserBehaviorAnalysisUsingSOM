@@ -1,0 +1,59 @@
+package modules;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+
+public class Dataset {
+	private static String GENERAL_PATH = "/Users/victorcruz/Documents/git/UserBehaviorAnalysisUsingSOM/networkTrafficCaptures";
+	private static String BUILD = "BuildDataSet";
+	private static String TRAIN = "TrainDataSet";
+	private static String EVALUATE = "EvaluationDataSet";
+	private static String USER = "user";
+	
+	public enum DATASET_TYPE{
+		DST_BUILD, DST_TRAIN, DST_EVALUATE
+	}
+	
+	private static List<String> getFolderNames(String idUser){
+		String user =  USER + idUser;
+		String build = GENERAL_PATH + "/" + BUILD + "/" + user;
+		String train = GENERAL_PATH + "/" + TRAIN + "/" + user;
+		String evaluate = GENERAL_PATH + "/" + EVALUATE + "/" + user;
+		
+		List<String> fileNames = new ArrayList<>();
+		fileNames.add(build);
+		fileNames.add(train);
+		fileNames.add(evaluate);
+		
+		return fileNames;
+	}
+	
+	private static List<String> getFolderFileNames(File folder){
+		File[] files = folder.listFiles();
+		// String flowsPattern = "(flows)(.*)(.csv)";
+		// Pattern pattern = Pattern.compile(flowsPattern);
+		
+		List<String> fileNames = new ArrayList<>();
+		
+		for(File file : files){
+			if(file.isFile()){
+				String fileName = file.getName();
+				if(fileName.endsWith(".csv")){
+					fileNames.add(fileName);
+				}
+			}
+		}
+		
+		return fileNames;
+	}
+	
+	private List<Package> getRawPackages(String idUser){
+		List<String> folderNames = getFolderNames(idUser);
+		for(String folderName : folderNames){
+			File folder = new File(folderName);
+			List<String> fileNames = getFolderFileNames(folder);
+		}
+	}
+}

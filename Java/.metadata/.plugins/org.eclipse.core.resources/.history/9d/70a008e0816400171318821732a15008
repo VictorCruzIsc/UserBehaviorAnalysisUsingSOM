@@ -1,0 +1,137 @@
+package models;
+
+import utils.Utils;
+
+public class Package {
+	private final long FIRSTOCTET = 16777216;
+	private final long SECONDOCTET = 65536;
+	private final long THIRDOCTET = 256;
+	private final long FOURTHOCTET = 1;
+	// private final long INTERNALIPFIRSTOCTET = 148 * FIRSTOCTET;
+	// private final long INTERNALIPSECONDOCTET = 201 * SECONDOCTET;
+	// private final long INTERNALIPMASK = INTERNALIPFIRSTOCTET + INTERNALIPSECONDOCTET;
+	
+	private boolean way;
+	private long localIp;
+	private long destinationIp;
+	private int localPort;
+	private int remotePort;
+	private int transmitedBytes;
+	private int protocol;
+	private long timeStamp;
+	
+	public Package(boolean way, String localIp, String destinationIp, int localPort, int remotePort, int transmitedBytes,
+			int protocol, long timeStamp) {
+		super();
+		this.way = way;
+		this.localIp = ipFromString(localIp);
+		this.destinationIp = ipFromString(destinationIp);
+		this.localPort = localPort;
+		this.remotePort = remotePort;
+		this.transmitedBytes = transmitedBytes;
+		this.protocol = protocol;
+		this.timeStamp = timeStamp;
+	}
+	
+	public Package(String rawData){
+		
+	}
+
+	public boolean isWay() {
+		return way;
+	}
+
+	public void setWay(boolean way) {
+		this.way = way;
+	}
+
+	public long getLocalIp() {
+		return localIp;
+	}
+
+	public void setLocalIp(long localIp) {
+		this.localIp = localIp;
+	}
+
+	public long getDestinationIp() {
+		return destinationIp;
+	}
+
+	public void setDestinationIp(long destinationIp) {
+		this.destinationIp = destinationIp;
+	}
+
+	public int getLocalPort() {
+		return localPort;
+	}
+
+	public void setLocalPort(int localPort) {
+		this.localPort = localPort;
+	}
+
+	public int getRemotePort() {
+		return remotePort;
+	}
+
+	public void setRemotePort(int remotePort) {
+		this.remotePort = remotePort;
+	}
+
+	public int getTransmitedBytes() {
+		return transmitedBytes;
+	}
+
+	public void setTransmitedBytes(int transmitedBytes) {
+		this.transmitedBytes = transmitedBytes;
+	}
+
+	public int getProtocol() {
+		return protocol;
+	}
+
+	public void setProtocol(int protocol) {
+		this.protocol = protocol;
+	}
+
+	public long getTimeStamp() {
+		return timeStamp;
+	}
+
+	public void setTimeStamp(long timeStamp) {
+		this.timeStamp = timeStamp;
+	}
+	
+	/**
+	 * 189.230.4.163
+	 * To calculate the decimal address from a dotted string, perform the following calculation.
+	 * (first octet * 256³) + (second octet * 256²) + (third octet * 256) + (fourth octet)
+	 * =	(first octet * 16777216) + (second octet * 65536) + (third octet * 256) + (fourth octet)
+	 * =	(189 * 16777216) + (230 * 65536) + (4 * 256) + (163)
+	 * = 3185968291
+	 * @param ipUniversalFormat
+	 * @return
+	 */
+	private long ipFromString(String ipUniversalFormat){
+		String[] ipOctets = ipUniversalFormat.split(".");
+		
+		if(ipOctets.length != 4){
+			Utils.logError("ipFromString(String ipUniversalFormat) error ip conversion returns 0");
+			return 0;
+		}
+		
+		long ipValue = 0;
+		ipValue += Long.valueOf(ipOctets[0]) * FIRSTOCTET;
+		ipValue += Long.valueOf(ipOctets[1]) * SECONDOCTET;
+		ipValue += Long.valueOf(ipOctets[2]) * THIRDOCTET;
+		ipValue += Long.valueOf(ipOctets[3]) * FOURTHOCTET;
+		
+		return ipValue;
+	}
+
+	@Override
+	public String toString() {
+		return "Package [way=" + way + ", localIp=" + localIp + ", destinationIp=" + destinationIp + ", localPort="
+				+ localPort + ", remotePort=" + remotePort + ", transmitedBytes=" + transmitedBytes + ", protocol="
+				+ protocol + ", timeStamp=" + timeStamp + "]";
+	}
+}

@@ -1,0 +1,34 @@
+package models;
+
+import java.util.List;
+
+public class AnalysisVector {
+	private double totalBytes;
+	private double totalBytesTCP;
+	private double totalBytesUDP;
+	private double totalBytesBackbone;
+	private double totalBytesWeb;
+	private double metricTCPUDP;
+	private double metricBackbone;
+	private double metricWeb;
+	private long startTimeStamp;
+	private long finishTimeStamp;
+	private List<Package> packages;
+	
+	public AnalysisVector(double totalBytes, double totalBytesTCP, double totalBytesUDP, double totalBytesBackbone,
+			double totalBytesWeb, double metricTCPUDP, double metricBackbone, double metricWeb, long startTimeStamp,
+			long finishTimeStamp, List<Package> packages) {
+		super();
+		this.totalBytes = totalBytes;
+		this.totalBytesTCP = totalBytesTCP;
+		this.totalBytesUDP = totalBytesUDP;
+		this.totalBytesBackbone = totalBytesBackbone;
+		this.totalBytesWeb = totalBytesWeb;
+		this.metricTCPUDP = metricTCPUDP;
+		this.metricBackbone = metricBackbone;
+		this.metricWeb = metricWeb;
+		this.startTimeStamp = startTimeStamp;
+		this.finishTimeStamp = finishTimeStamp;
+		this.packages = packages;
+	}
+}

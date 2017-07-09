@@ -86,6 +86,7 @@ void SamplesResult::processNumericAnalysis(){
 
 	cout << "" << endl;
 
+	//cout << "HERE: " << _totalUsersEvaluated << endl;
 	for(int i=0; i<_totalUsersEvaluated; i++){
 		currentUser = _userIds[i];
 		_numericAnalysis[currentUser]->info();	
@@ -108,8 +109,13 @@ void SamplesResult::processPercentualAnalysis(){
 		int correct = numericAnalysis->getCorrectSamples();
 		int incorrect =  numericAnalysis->getIncorrectSamples();
 
-		double pCorrect = ((double)correct/totalUnique) * 100;
-		double pIncorrect = ((double)incorrect/totalUnique) * 100;
+		double pCorrect = 0;
+		double pIncorrect = 0;
+
+		if(totalUnique != 0){
+			pCorrect = ((double)correct/totalUnique) * 100;
+			pIncorrect = ((double)incorrect/totalUnique) * 100;
+		}
 
 		PercentualAnalysis *percentual =  new PercentualAnalysis(user, pCorrect, pIncorrect);
 

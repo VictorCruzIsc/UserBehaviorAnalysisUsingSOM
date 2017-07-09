@@ -1,0 +1,12 @@
+package models;
+
+public class Package {
+	private boolean way;
+	private long localIp;
+	private long destinationIp;
+	private int localPort;
+	private int remotePort;
+	private int transmitedBytes;
+	private int protocol;
+	private long timeStamp;
+}
