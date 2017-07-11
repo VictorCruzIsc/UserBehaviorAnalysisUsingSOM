@@ -14,14 +14,17 @@
 # [10] http://www.statmethods.net/input/exportingdata.html
 # [11] https://stackoverflow.com/questions/10608526/writing-a-matrix-to-a-file-without-a-header-and-row-numbers
 
-# === Global variables ===
-source('coolBlueHotRed.R')
+# Before using this script some things are needed:
+# 1. "chunks" folder should be placed inside the folder R, otherwise an error will be raised
+# 2. Every file, when obtained has the number of "chunks" that it contains, you need to erase this number or an error wil be also raised
+# 3. A folder named "r_trained_som" should be under the folder R, otherwise the trained lattices will not be saved.
 
+# === Global variables ===
 working_directory <- "./Documents/git/UserBehaviorAnalysisUsingSOM/R"
 output_file_folder <- "./r_trained_som"
 dataset_file_folder <- "./chunks"
 train_dataset_max_size <- 100000
-epochs <- 10
+epochs <- 25
 learning_rate <- c(0.05, 0.01)
 
 #[circular(euclidean distance) | square(maximum distances)]
@@ -46,6 +49,27 @@ get_trained_som(users, lattice_dimensions,
 
 
 # === Obtained information analysis ===
+trained_som_name <- c("trained_lattice_", 4, "_", 50, "_", epochs, ".txt")
+trained_som_destination_path <- paste(c(output_file_folder,"/",trained_som_name), collapse = "")
+trained_som_destination_path
+
+trained_som_name <- c("trained_lattice_", 4, "_", 50, "_", epochs, ".txt")
+build_dataset_input_name <- c("1", ".", 4, ".txt")
+train_dataset_input_name <- c("2", ".", 4, ".txt")
+evaluate_dataset_input_name <- c("3", ".", 4, ".txt")
+
+trained_som_destination_path <- paste(c(output_file_folder,"/",trained_som_name), collapse = "")
+build_dataset_path <- paste(c(dataset_file_folder, "/", build_dataset_input_name), collapse = "")
+train_dataset_path <- paste(c(dataset_file_folder, "/", train_dataset_input_name), collapse = "")
+evaluate_dataset_path <- paste(c(dataset_file_folder, "/", evaluate_dataset_input_name), collapse = "")
+
+import_build_dataset <- read.table(build_dataset_path)
+
+datasets <- get_datasets(build_dataset_path, train_dataset_path, evaluate_dataset_path, train_dataset_max_size)
+
+# Obtaining datasets
+datasets <- get_datasets(build_dataset_path, train_dataset_path, evaluate_dataset_path, train_dataset_max_size)
+
 # Datasets es un lista con 3 vectores build, train y evaluate
 
 # Forma 1 de acceder a los vectores
@@ -186,3 +210,4 @@ get_trained_som <- function(users, lattice_dimensions,
     }
   }
 }
+
