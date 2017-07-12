@@ -245,14 +245,11 @@ void Neuron::setNeuronStatics(int idUser, int evaluatedIdUser, bool evaluated,
 void Neuron::processNeuronAfterEvaluation(int idUser){
 	_evaluatedIdUser = idUser;
 	_matchingUser = (_constructedIdUser == _evaluatedIdUser);
+	_evaluated = true;
 
-	if(_evaluated){
-		if(_matchingUser){
-			_positiveColitions++;
-		}else{
-			_negativeColitions++;
-		}
+	if(_matchingUser){
+		_positiveColitions++;
 	}else{
-		_evaluated = true;
+		_negativeColitions++;
 	}
 }
