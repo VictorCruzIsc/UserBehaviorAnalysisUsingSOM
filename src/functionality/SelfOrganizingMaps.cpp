@@ -259,6 +259,20 @@ SamplesResult* SelfOrganizingMaps::getMatrixStadistics(int samples, int totalUse
 	return samplesResult;
 }
 
+int SelfOrganizingMaps::getPositiveMatchesByUser(int idUser){
+	int correct = 0;
+	for(int row=0; row<_size; row++){
+		for(int col=0; col<_size; col++){
+			Neuron *neuron = _matrix->getNeuron(row, col);
+			if(neuron->isEvaluated() &&
+				neuron->getConstructedIdUser() == idUser){
+				correct += neuron->getPositiveColitions();
+			}
+		}
+	}
+	return correct;
+}
+
 void SelfOrganizingMaps::resetMatrixStadistics(){
 	for(int row=0; row<_size; row++){
 		for(int col=0; col<_size; col++){

@@ -50,11 +50,24 @@ SamplesResult* Results::evaluateUsers(int samples, int sigma, int totalUsersEval
 * processed to get a complete analysis and report the status of the
 * user in a graph that represents all the experiments
 */
-void Results::getResults(int initialSamples, int finalSamples,
-	int increment, int sigma, int requestedExperiments, int totalUsersEvaluated,
+void Results::getResults(int initialSamples, int finalSamples, int increment,
+	int sigma, int requestedExperiments, int totalUsersEvaluated,
 	SelfOrganizingMaps *som,
 	vector<vector<DataChunck *> > &evaluateDataChunckSetCollection,
 	vector<int> &userIds){
+
+	// Execute the total required experiment, but with different amount of samples
+	for(int samples=initialSamples; samples<finalSamples; samples+=increment){
+		cout << "Running experiments with " << samples << " neurons" << endl;
+
+		for(int experiment=0; experiment<requestedExperiments; experiment++){
+			cout << "Executing " << (experiment + 1) << "/";
+			cout << requestedExperiments << endl;
+
+			SamplesResult* samplesResult = evaluateUsers(samples, sigma,
+				totalUsersEvaluated, som, evaluateDataChunckSetCollection, userIds);
+		}
+	}
 
 	vector<Experiment *> experiments;
 	vector<UserGraph *> graphics;
@@ -124,6 +137,67 @@ void Results::getResults(int initialSamples, int finalSamples,
 
 	// Execute python script
 	getBarGraphs(graphics, requestedExperiments, userIds);
+}
+
+ExperimentGeneric * Results::processExperiment(int experimentId,
+	int initialSamples, int finalSamples, int increment, vector<int> &userIds,
+	SelfOrganizingMaps *som,
+	vector<vector<DataChunck *> > &evaluateDataChunckSetCollection){
+
+	vector<EvaluationGeneric*> experimentEvaluations;
+	vector<int> experimentEvaluatedVectors;
+	int totalUsersEvaluated = userIds.size();
+
+	for(int samples=initialSamples; samples<finalSamples; samples+=increment){
+		experimentEvaluatedVectors.push_back(samples);
+
+		// Evaluation of dataset by users
+		for(int i=0; i<totalUsersEvaluated; i++){
+			som->evaluateIndependentDataChuckDataSet(
+				evaluateDataChunckSetCollection[i],
+				0.05, samples, i, i, i, userIds[i]);
+		}
+
+		// Get positive matches by user to create evaluations
+		for(int i=0; i<totalUsersEvaluated; i++){
+			int currentUser = userIds[i];
+			int positiveByUser = som->getPositiveMatchesByUser(currentUser);
+			int negativeByUser = samples - positiveByUser;
+			EvaluationGeneric *evaluation = new EvaluationGeneric(currentUser,
+				samples, positiveByUser, negativeByUser);
+			experimentEvaluations.push_back(evaluation);
+		}
+
+		som->resetMatrixStadistics();
+	}
+
+	ExperimentGeneric *experiment = new ExperimentGeneric(experimentId, userIds,
+		experimentEvaluations, experimentEvaluatedVectors);
+
+	return experiment;
+}
+
+vector<ExperimentGeneric *> Results::processExperimentResults(int initialSamples,
+	int finalSamples, int increment, int requestedExperiments,
+	SelfOrganizingMaps *som,
+	vector<vector<DataChunck *> > &evaluateDataChunckSetCollection,
+	vector<int> &userIds){
+	vector<ExperimentGeneric *> experiments;
+	for(int i=0; i<requestedExperiments; i++){
+		int experimentId = (i + 1);
+		cout << "Running experiment: " << experimentId << endl;
+		experiments.push_back(processExperiment(experimentId, initialSamples,
+			finalSamples, increment, userIds, som, evaluateDataChunckSetCollection));
+		cout << "Finish running experiment: " << experimentId << endl;
+	}
+
+	if(experiments.size() == requestedExperiments){
+		cout << "Processing experiment results finishes correctly." << endl;
+	}else{
+		cout << "ERROR: Processing experiment results." << endl;
+	}
+
+	return experiments;
 }
 
 /*

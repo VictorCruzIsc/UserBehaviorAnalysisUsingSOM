@@ -12,12 +12,11 @@
 #include "Experiment.h"
 #include "UserGraph.h"
 #include "ExperimentAverageAnalysis.h"
+#include "ExperimentGeneric.h"
 
 #define MAC
 
 using namespace std;
-
-class Results;
 
 class Results{
 	public:
@@ -32,6 +31,14 @@ class Results{
 			vector<int> &userIds);
 		static void getBarGraphs(vector<UserGraph *> &graphics, int totalExperiments,
 			vector<int> &userIds);
+		static ExperimentGeneric* processExperiment(int experimentId,
+			int initialSamples, int finalSamples, int increment,
+			vector<int> &userIds, SelfOrganizingMaps *som,
+			vector<vector<DataChunck *> > &evaluateDataChunckSetCollection);
+		static vector<ExperimentGeneric *> processExperimentResults(
+			int initialSamples, int finalSamples, int increment,
+			int requestedExperiments, SelfOrganizingMaps *som,
+			vector<vector<DataChunck *> > &evaluateDataChunckSetCollection,
+			vector<int> &userIds);
 };
-
 #endif

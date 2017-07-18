@@ -160,6 +160,8 @@ class SelfOrganizingMaps{
 			vector<int> &userIds);
 		void resetMatrixStadistics();
 
+		int getPositiveMatchesByUser(int idUser);
+
 		// Variables
 		int _incorrect;
 		int _totalPositiveColitions;
