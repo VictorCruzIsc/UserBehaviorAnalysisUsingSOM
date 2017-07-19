@@ -136,7 +136,7 @@ void Results::getResults(int initialSamples, int finalSamples, int increment,
 	}
 
 	// Execute python script
-	getBarGraphs(graphics, requestedExperiments, userIds);
+	//getBarGraphs(graphics, requestedExperiments, userIds);
 }
 
 ExperimentGeneric * Results::processExperiment(int experimentId,
@@ -205,11 +205,51 @@ vector<ExperimentGeneric *> Results::processExperimentResults(int initialSamples
 	return experiments;
 }
 
+void Results::getBarGraphs(vector<double> positives,
+			vector<double> negative, vector<string> xAxis, string graphName){
+	string baseCommand = "";
+	string callingCommand = "";
+	string xAxisLabels = "";
+	string correct = "";
+	string incorrect = "";
+
+	#ifdef MAC
+		baseCommand = "python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py";
+	#else
+		baseCommand = "python ~/Desktop/som/userBehaviorAnalysisUsingSom/python/Graphics.py";
+	#endif
+
+	int totalReceivedData = positives.size();
+
+	for(int i=1; i<=(totalReceivedData - 1); i++){
+		xAxisLabels += xAxis[i - 1] + ",";
+	}
+	xAxisLabels += xAxis[totalReceivedData - 1];
+
+	for(int i=1; i<=(totalReceivedData - 1); i++){
+		correct += to_string(positives[i]) + ",";
+		incorrect += to_string(negative[i]) + ",";
+	}
+	correct += to_string(positives[totalReceivedData - 1]);
+	incorrect += to_string(negative[totalReceivedData - 1]);
+
+	callingCommand += baseCommand;
+	callingCommand += " " + graphName;
+	callingCommand += " " + xAxisLabels;
+	callingCommand += " " + correct;
+	callingCommand += " " + incorrect;
+
+	cout << "Calling command: " << callingCommand << endl;
+
+	// Call python script
+	system(callingCommand.c_str());
+}
+
 /*
 * Executes a python script that shows the information, correct vs incorrect percentages among all the
 * experiments
-*/
-void Results::getBarGraphs(vector<UserGraph *> &graphics, int totalExperiments, vector<int> &userIds){
+
+void getBarGraphs(vector<UserGraph *> &graphics, int totalExperiments, vector<int> &userIds){
 	int totalNeededGraphics = graphics.size();
 	int totalAverages = 0;
 	string baseCommand = "";
@@ -264,3 +304,4 @@ void Results::getBarGraphs(vector<UserGraph *> &graphics, int totalExperiments, 
 		totalAverages = 0;
 	}
 }
+*/

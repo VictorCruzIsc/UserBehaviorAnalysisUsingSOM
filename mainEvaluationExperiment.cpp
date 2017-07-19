@@ -150,8 +150,8 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 						int positives = results[1];
 						int negatives = results[2];
 
-						vectorsPositives.push_back(positives);
-						vectorsNegatives.push_back(negatives);
+						vectorsPositives.push_back((positives/(double)currentSample) * 100);
+						vectorsNegatives.push_back((negatives/(double)currentSample) * 100);
 
 						// Track for obtaining averages
 						positiveTotalByVectors += positives;
@@ -165,9 +165,18 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 					}
 
 					// Graph obtention is here
+					/*
 					for(int i=0; i<_totalExperiments; i++){
 						cout << "[" << vectorsPositives[i] << "," << vectorsNegatives[i] << "]" << endl;
 					}
+					*/
+					vector<string> xAxisLabels;
+					for(int i=0; i<_totalExperiments; i++){
+						string label = "E" + to_string(i);
+						xAxisLabels.push_back(label);
+					}
+
+					Results::getBarGraphs(vectorsPositives, vectorsNegatives, xAxisLabels, "User" + to_string(currentUserId) + "-" + to_string(currentSample));
 
 					double avgPositiveByVectors = ((positiveTotalByVectors/(double)_totalExperiments)/currentSample) * 100;
 					double avgNegativeByVectors = ((negativetotalByVectors/(double)_totalExperiments)/currentSample) * 100;
@@ -182,12 +191,22 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 				}
 
 				// Process user average graph
+				/*
 				for(int i=0; i<totalSamples; i++){
 					double positiveAVG = avgPositives[i];
 					double negativeAVG = avgNegatives[i];
 					double total = positiveAVG + negativeAVG;
 					cout << "[" << positiveAVG << "," << negativeAVG << "] = " << total << endl;
 				}
+				*/
+
+				vector<string> xAxisLabelsAVG;
+				for(int i=0; i<totalSamples; i++){
+					string label = "Sample" + to_string(samples[i]);
+					xAxisLabelsAVG.push_back(label);
+				}
+
+				Results::getBarGraphs(avgPositives, avgNegatives, xAxisLabelsAVG, "User" + to_string(currentUserId) + "AVGs");
 			}
 			break;
 	}
