@@ -65,6 +65,7 @@ int 							_samplesIncrement;
 vector<DataChunck *>			_trainDataChunckSet;
 vector<vector<DataChunck *> >	_evaluateDataChunckSetCollection;
 vector<int> 					_userIds;
+vector<ExperimentGeneric *>		_experiments;
 
 // ===================== Local Method Headers =====================
 // OpenGl methods
@@ -99,18 +100,95 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 	switch (key){
 		case 'r':
 			cout << "Results obtention..." << endl;
-			vector<ExperimentGeneric *> experiments = 
-				Results::processExperimentResults(_initialSamples, _maximumSamples,
-					_samplesIncrement, _totalExperiments, _som,
+			_experiments = Results::processExperimentResults(_initialSamples,
+				_maximumSamples, _samplesIncrement, _totalExperiments, _som,
 					_evaluateDataChunckSetCollection, _userIds);
 
-			int totalExperiments = experiments.size();
+			for(int i=0; i<_experiments.size(); i++){
+				_experiments[i]->info();
+			}
 
-			for(int i=0; i<totalExperiments; i++){
-				experiments[i]->info();
+
+			if(_experiments.size() == _totalExperiments){
+				cout << "Results obtention finished" << endl;
+			}else{
+				cout << "ERROR: Results do not match" << endl;
 			}
 			
 			glutPostRedisplay();
+			break;
+		case 'g':
+			// When experiments are obtained the graphs can be processed
+			if(_experiments.size() != _totalExperiments){
+				cout << "ERROR: No available data" << endl;
+				return;
+			}
+
+			// Represent all the samples that the experiments have
+			vector<int> samples = _experiments[0]->getEvaluatedVectors();
+			int totalSamples = samples.size();
+
+			for(int userId=0; userId<_totalUsersEvaluated; userId++){
+				int currentUserId = _userIds[userId];
+
+				vector<double> avgPositives;
+				vector<double> avgNegatives;
+				for(int z=0; z<totalSamples; z++){
+					int currentSample = samples[z];
+
+					vector<double> vectorsPositives;
+					vector<double> vectorsNegatives;
+
+					int positiveTotalByVectors = 0;
+					int negativetotalByVectors = 0;
+					for(int experiment=0; experiment<_totalExperiments; experiment++){
+						vector<int> results =
+							_experiments[experiment]->getMatrixResults(
+								currentUserId, currentSample);
+
+						// Something is needed to recdord this results for the graphic
+						int positives = results[1];
+						int negatives = results[2];
+
+						vectorsPositives.push_back(positives);
+						vectorsNegatives.push_back(negatives);
+
+						// Track for obtaining averages
+						positiveTotalByVectors += positives;
+						negativetotalByVectors += negatives;
+					}
+
+					if(vectorsPositives.size() != _totalExperiments || vectorsNegatives.size() != _totalExperiments){
+						cout << "ERROR: Data obtentention for user - evaluated vectors | SAMPLES: " << currentSample << " - " << "USER:" << currentUserId;
+						cout << " data will not be precessed, so no individual graphs will be obtained either" << endl;
+						continue;
+					}
+
+					// Graph obtention is here
+					for(int i=0; i<_totalExperiments; i++){
+						cout << "[" << vectorsPositives[i] << "," << vectorsNegatives[i] << "]" << endl;
+					}
+
+					double avgPositiveByVectors = ((positiveTotalByVectors/(double)_totalExperiments)/currentSample) * 100;
+					double avgNegativeByVectors = ((negativetotalByVectors/(double)_totalExperiments)/currentSample) * 100;
+
+					avgPositives.push_back(avgPositiveByVectors);
+					avgNegatives.push_back(avgNegativeByVectors);
+				}
+
+				if(avgPositives.size() != totalSamples || avgNegatives.size() != totalSamples){
+					cout << "ERROR: Data AVG obtentions USER:" << currentUserId;
+					cout << " AVG will not be obtained" << endl;
+				}
+
+				// Process user average graph
+				for(int i=0; i<totalSamples; i++){
+					double positiveAVG = avgPositives[i];
+					double negativeAVG = avgNegatives[i];
+					double total = positiveAVG + negativeAVG;
+					cout << "[" << positiveAVG << "," << negativeAVG << "] = " << total << endl;
+				}
+			}
 			break;
 	}
 }

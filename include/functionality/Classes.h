@@ -161,6 +161,7 @@ class SelfOrganizingMaps{
 		void resetMatrixStadistics();
 
 		int getPositiveMatchesByUser(int idUser);
+		int getNegativeMatchesByTrainedLattice();
 
 		// Variables
 		int _incorrect;

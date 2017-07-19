@@ -150,7 +150,7 @@ ExperimentGeneric * Results::processExperiment(int experimentId,
 
 	for(int samples=initialSamples; samples<finalSamples; samples+=increment){
 		experimentEvaluatedVectors.push_back(samples);
-
+		int totalNegativeInLattice = 0;
 		// Evaluation of dataset by users
 		for(int i=0; i<totalUsersEvaluated; i++){
 			som->evaluateIndependentDataChuckDataSet(
@@ -163,9 +163,14 @@ ExperimentGeneric * Results::processExperiment(int experimentId,
 			int currentUser = userIds[i];
 			int positiveByUser = som->getPositiveMatchesByUser(currentUser);
 			int negativeByUser = samples - positiveByUser;
+			totalNegativeInLattice += negativeByUser;
 			EvaluationGeneric *evaluation = new EvaluationGeneric(currentUser,
 				samples, positiveByUser, negativeByUser);
 			experimentEvaluations.push_back(evaluation);
+		}
+
+		if(som->getNegativeMatchesByTrainedLattice() != totalNegativeInLattice){
+			cout << "ERROR: Negative is not matching " << endl;
 		}
 
 		som->resetMatrixStadistics();

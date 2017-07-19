@@ -8,6 +8,7 @@ vector<int> ExperimentGeneric::getMatrixResults(int userId, int vectorsEvaluated
 		}
 		if(currentEvaluation->getRelatedUser() == userId &&
 			currentEvaluation->getTotalEvaluatedVectors() == vectorsEvaluated){
+			cout << "Match " << userId << ":" << vectorsEvaluated << endl;
 			vector<int> evaluationData;
 			evaluationData.push_back(i);
 			evaluationData.push_back(currentEvaluation->getTotalPositive());

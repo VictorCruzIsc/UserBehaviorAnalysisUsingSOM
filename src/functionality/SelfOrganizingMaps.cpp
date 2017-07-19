@@ -130,26 +130,54 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(
 
 	// Set seed for getting a real random number
 	srand(time(NULL));
+	if(totalElements >= totalNeuronsToEvaluate){
+		// Normal execution
+		// Get initial and final index of the iteration
+		//cout << "Normal execution" << endl;
 
-	// Get initial and final index of the iteration
-	{
-		initialIndex = rand() % totalElements;
-		while((initialIndex + totalNeuronsToEvaluate) >= totalElements){
+		{
 			initialIndex = rand() % totalElements;
+			while((initialIndex + totalNeuronsToEvaluate) >= totalElements){
+				initialIndex = rand() % totalElements;
+			}
+
+			finalIndex = initialIndex + totalNeuronsToEvaluate;
 		}
 
-		finalIndex = initialIndex + totalNeuronsToEvaluate;
-	}
+		/*
+		* Getting a BMU for every element of the dataset
+		* Applying changes to get neuron stadistics
+		*/
+		{
+			for(int i=initialIndex; i<finalIndex; i++){
+				weights[0] = inputDataset[i]->getProportionTCPUDPMetric();
+				weights[1] = inputDataset[i]->getBytesToInternalIPMetric();
+				weights[2] = inputDataset[i]->getBytesThroughWebMetric();
 
-	/*
-	* Getting a BMU for every element of the dataset
-	* Applying changes to get neuron stadistics
-	*/
-	{
-		for(int i=initialIndex; i<finalIndex; i++){
-			weights[0] = inputDataset[i]->getProportionTCPUDPMetric();
-			weights[1] = inputDataset[i]->getBytesToInternalIPMetric();
-			weights[2] = inputDataset[i]->getBytesThroughWebMetric();
+				Neuron *bmu = getBMU(weights);
+				distance = bmu->distanceToInputVector(weights);
+				distances.push_back(distance);
+				bmus.push_back(bmu);
+				totalDistance += distance;
+
+				// Applying bmu neuron stadistics
+				// Each neuron is created with an unique user, this function
+				// check if the neuron creation user matches the evaluated user
+				// and also check if the neuron was previously selected as a BMU
+				// to get the number of positive and negative collitions
+				bmu -> processNeuronAfterEvaluation(evaluatedIdUser);
+			}
+		}
+	}else{
+		// cout << "Special execution" << endl;
+		srand(time(NULL));
+		int index = 0;
+		for(int i=0; i<totalNeuronsToEvaluate; i++){
+			index = rand() % totalElements;
+
+			weights[0] = inputDataset[index]->getProportionTCPUDPMetric();
+			weights[1] = inputDataset[index]->getBytesToInternalIPMetric();
+			weights[2] = inputDataset[index]->getBytesThroughWebMetric();
 
 			Neuron *bmu = getBMU(weights);
 			distance = bmu->distanceToInputVector(weights);
@@ -271,6 +299,19 @@ int SelfOrganizingMaps::getPositiveMatchesByUser(int idUser){
 		}
 	}
 	return correct;
+}
+
+int SelfOrganizingMaps::getNegativeMatchesByTrainedLattice(){
+	int incorrect = 0;
+	for(int row=0; row<_size; row++){
+		for(int col=0; col<_size; col++){
+			Neuron *neuron = _matrix->getNeuron(row, col);
+			if(neuron->isEvaluated()){
+				incorrect += neuron->getNegativeColitions();
+			}
+		}
+	}
+	return incorrect;
 }
 
 void SelfOrganizingMaps::resetMatrixStadistics(){
