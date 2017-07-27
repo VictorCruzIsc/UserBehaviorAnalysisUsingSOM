@@ -158,20 +158,27 @@ ExperimentGeneric * Results::processExperiment(int experimentId,
 				0.05, samples, i, i, i, userIds[i]);
 		}
 
+		int expectedEvaluatedNeurons = samples * totalUsersEvaluated;
+		int realNeuronsEvaluated = som->getTotalNeuronsEvaluated();
+		if(expectedEvaluatedNeurons != realNeuronsEvaluated){
+			cout << "ERROR on total Neurons evaluated " << realNeuronsEvaluated << endl;
+		}
+
 		// Get positive matches by user to create evaluations
 		for(int i=0; i<totalUsersEvaluated; i++){
 			int currentUser = userIds[i];
-			int positiveByUser = som->getPositiveMatchesByUser(currentUser);
-			int negativeByUser = samples - positiveByUser;
-			totalNegativeInLattice += negativeByUser;
+			int positiveByUser = som->getMatchesByUser(currentUser);
+			vector<int> data = som->getNegativeMatchesByUser(currentUser);
+			int idleByUser = data[0];
+			int negativeByUser = data[1];
 			EvaluationGeneric *evaluation = new EvaluationGeneric(currentUser,
-				samples, positiveByUser, negativeByUser);
+				samples, positiveByUser, negativeByUser, idleByUser);
 			experimentEvaluations.push_back(evaluation);
 		}
 
-		if(som->getNegativeMatchesByTrainedLattice() != totalNegativeInLattice){
-			cout << "ERROR: Negative is not matching " << endl;
-		}
+		//if(som->getNegativeMatchesByTrainedLattice() != totalNegativeInLattice){
+		//	cout << "ERROR: Negative is not matching " << endl;
+		//}
 
 		som->resetMatrixStadistics();
 	}
@@ -238,6 +245,50 @@ void Results::getBarGraphs(vector<double> positives,
 	callingCommand += " " + xAxisLabels;
 	callingCommand += " " + correct;
 	callingCommand += " " + incorrect;
+
+	cout << "Calling command: " << callingCommand << endl;
+
+	// Call python script
+	system(callingCommand.c_str());
+}
+
+void Results::getBarGraphs(vector<double> positives,
+			vector<double> negative, vector<double> idle, vector<string> xAxis, string graphName){
+	string baseCommand = "";
+	string callingCommand = "";
+	string xAxisLabels = "";
+	string correct = "";
+	string incorrect = "";
+	string idleString = "";
+
+	#ifdef MAC
+		baseCommand = "python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py";
+	#else
+		baseCommand = "python ~/Desktop/som/userBehaviorAnalysisUsingSom/python/Graphics.py";
+	#endif
+
+	int totalReceivedData = positives.size();
+
+	for(int i=1; i<=(totalReceivedData - 1); i++){
+		xAxisLabels += xAxis[i - 1] + ",";
+	}
+	xAxisLabels += xAxis[totalReceivedData - 1];
+
+	for(int i=1; i<=(totalReceivedData - 1); i++){
+		correct += to_string(positives[i]) + ",";
+		incorrect += to_string(negative[i]) + ",";
+		idleString += to_string(idle[i]) + ",";
+	}
+	correct += to_string(positives[totalReceivedData - 1]);
+	incorrect += to_string(negative[totalReceivedData - 1]);
+	idleString += to_string(idle[totalReceivedData - 1]);
+
+	callingCommand += baseCommand;
+	callingCommand += " " + graphName;
+	callingCommand += " " + xAxisLabels;
+	callingCommand += " " + correct;
+	callingCommand += " " + incorrect;
+	callingCommand += " " + idleString;
 
 	cout << "Calling command: " << callingCommand << endl;
 

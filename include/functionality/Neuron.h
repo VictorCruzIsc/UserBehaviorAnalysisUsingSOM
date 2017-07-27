@@ -7,6 +7,7 @@
 #include <vector>
 #include <time.h>
 #include <string>
+#include <map>
 
 #include "RGB.h"
 #include "DataPackage.h"
@@ -51,6 +52,18 @@ class Neuron{
 		double distanceToInputVector(vector<double> inputVector);
 		void processNeuronAfterEvaluation(int idUser);
 
+		map<int,int> getEvaluationResults(){ return _evaluationResults; }
+		int getTotalMatches();
+		void clearEvaluationResults(){ _evaluationResults.clear(); }
+
+		void increaseEvaluationResults(int matchingId);
+		int getIdleResultsMatch(int idleId);
+		int getCorrectResultMatch();
+		int getIncorrectResultMatch();
+		int getMatches(int matchingId);
+
+
+
 	private:
 		int 			_x;
 		int				_y;
@@ -63,6 +76,7 @@ class Neuron{
 		bool			_matchingUser;
 		vector<double> 	_weights;
 		RGB 			*_neuronColor;
+		map<int, int>	_evaluationResults;
 
 		// Methods
 		void initializeNeuron();

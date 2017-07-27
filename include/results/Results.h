@@ -35,6 +35,8 @@ class Results{
 		*/
 		static void getBarGraphs(vector<double> positives,
 			vector<double> negative, vector<string> xAxis, string graphName);
+		static void getBarGraphs(vector<double> positives,
+			vector<double> negative, vector<double> idle, vector<string> xAxis, string graphName);
 		static ExperimentGeneric* processExperiment(int experimentId,
 			int initialSamples, int finalSamples, int increment,
 			vector<int> &userIds, SelfOrganizingMaps *som,

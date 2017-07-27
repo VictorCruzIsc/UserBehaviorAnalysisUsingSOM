@@ -133,14 +133,17 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 
 				vector<double> avgPositives;
 				vector<double> avgNegatives;
+				vector<double> avgIdles;
 				for(int z=0; z<totalSamples; z++){
 					int currentSample = samples[z];
 
 					vector<double> vectorsPositives;
 					vector<double> vectorsNegatives;
+					vector<double> vectorsIdles;
 
 					int positiveTotalByVectors = 0;
 					int negativetotalByVectors = 0;
+					int idleTotalByVectors = 0;
 					for(int experiment=0; experiment<_totalExperiments; experiment++){
 						vector<int> results =
 							_experiments[experiment]->getMatrixResults(
@@ -149,16 +152,19 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 						// Something is needed to recdord this results for the graphic
 						int positives = results[1];
 						int negatives = results[2];
+						int idles = results[3];
 
 						vectorsPositives.push_back((positives/(double)currentSample) * 100);
 						vectorsNegatives.push_back((negatives/(double)currentSample) * 100);
+						vectorsIdles.push_back((idles/(double)currentSample) * 100);
 
 						// Track for obtaining averages
 						positiveTotalByVectors += positives;
 						negativetotalByVectors += negatives;
+						idleTotalByVectors += idles;
 					}
 
-					if(vectorsPositives.size() != _totalExperiments || vectorsNegatives.size() != _totalExperiments){
+					if(vectorsPositives.size() != _totalExperiments || vectorsNegatives.size() != _totalExperiments || vectorsIdles.size() != _totalExperiments){
 						cout << "ERROR: Data obtentention for user - evaluated vectors | SAMPLES: " << currentSample << " - " << "USER:" << currentUserId;
 						cout << " data will not be precessed, so no individual graphs will be obtained either" << endl;
 						continue;
@@ -176,16 +182,18 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 						xAxisLabels.push_back(label);
 					}
 
-					Results::getBarGraphs(vectorsPositives, vectorsNegatives, xAxisLabels, "User" + to_string(currentUserId) + "-" + to_string(currentSample));
+					Results::getBarGraphs(vectorsPositives, vectorsNegatives, vectorsIdles, xAxisLabels, "User" + to_string(currentUserId) + "-" + to_string(currentSample));
 
 					double avgPositiveByVectors = ((positiveTotalByVectors/(double)_totalExperiments)/currentSample) * 100;
 					double avgNegativeByVectors = ((negativetotalByVectors/(double)_totalExperiments)/currentSample) * 100;
+					double avgIdleByVectors = ((idleTotalByVectors/(double)_totalExperiments)/currentSample) * 100;
 
 					avgPositives.push_back(avgPositiveByVectors);
 					avgNegatives.push_back(avgNegativeByVectors);
+					avgIdles.push_back(avgIdleByVectors);
 				}
 
-				if(avgPositives.size() != totalSamples || avgNegatives.size() != totalSamples){
+				if(avgPositives.size() != totalSamples || avgNegatives.size() != totalSamples || avgIdles.size() != totalSamples){
 					cout << "ERROR: Data AVG obtentions USER:" << currentUserId;
 					cout << " AVG will not be obtained" << endl;
 				}
@@ -206,7 +214,7 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 					xAxisLabelsAVG.push_back(label);
 				}
 
-				Results::getBarGraphs(avgPositives, avgNegatives, xAxisLabelsAVG, "User" + to_string(currentUserId) + "AVGs");
+				Results::getBarGraphs(avgPositives, avgNegatives, avgIdles, xAxisLabelsAVG, "User" + to_string(currentUserId) + "AVGs");
 			}
 			break;
 	}

@@ -13,6 +13,7 @@ vector<int> ExperimentGeneric::getMatrixResults(int userId, int vectorsEvaluated
 			evaluationData.push_back(i);
 			evaluationData.push_back(currentEvaluation->getTotalPositive());
 			evaluationData.push_back(currentEvaluation->getTotalNegative());
+			evaluationData.push_back(currentEvaluation->getTotalIdle());
 			return evaluationData;
 		}
 	}
@@ -33,6 +34,7 @@ vector<double> ExperimentGeneric::getMatrixResultsPercentages(int userId,
 			evaluationData.push_back(i);
 			evaluationData.push_back(currentEvaluation->getPositivePercentage());
 			evaluationData.push_back(currentEvaluation->getNegativePercentage());
+			evaluationData.push_back(currentEvaluation->getIdlePercentage());
 			return evaluationData;
 		}
 	}

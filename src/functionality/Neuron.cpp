@@ -230,6 +230,8 @@ void Neuron::resetNeuronStatics(){
 	_negativeColitions = 0;
 	_evaluated = false;
 	_matchingUser = false;
+
+	clearEvaluationResults();
 }
 
 void Neuron::setNeuronStatics(int idUser, int evaluatedIdUser, bool evaluated,
@@ -247,9 +249,61 @@ void Neuron::processNeuronAfterEvaluation(int idUser){
 	_matchingUser = (_constructedIdUser == _evaluatedIdUser);
 	_evaluated = true;
 
-	if(_matchingUser){
-		_positiveColitions++;
+	increaseEvaluationResults(idUser);
+}
+
+void Neuron::increaseEvaluationResults(int matchingId){
+	if(_evaluationResults.find(matchingId) == _evaluationResults.end()){
+		_evaluationResults[matchingId] =  1;
 	}else{
-		_negativeColitions++;
+		int value = _evaluationResults[matchingId];
+		_evaluationResults[matchingId] = (value + 1);
 	}
 }
+
+int Neuron::getIdleResultsMatch(int idleId){
+	if(_evaluationResults.find(idleId) == _evaluationResults.end()){
+		return 0;
+	}else{
+		return _evaluationResults[idleId];
+	}
+}
+
+int Neuron::getCorrectResultMatch(){
+	if(_evaluationResults.find(_constructedIdUser) == _evaluationResults.end()){
+		return 0;
+	}else{
+		return _evaluationResults[_constructedIdUser];
+	}
+}
+
+int Neuron::getTotalMatches(){
+	int totalMatches = 0;
+	map<int, int>::iterator it;
+	for(it = _evaluationResults.begin(); it != _evaluationResults.end(); it++){
+		totalMatches += it->second;
+	}
+
+	return totalMatches;
+}
+
+int Neuron::getIncorrectResultMatch(){
+	int totalIncorrect = 0;
+	for(map<int, int>::iterator it = _evaluationResults.begin();
+		it != _evaluationResults.end(); it++){
+		if(it->first != _constructedIdUser){
+			totalIncorrect += it->second;
+		}
+	}
+
+	return totalIncorrect;
+}
+
+int Neuron::getMatches(int matchingId){
+	if(_evaluationResults.find(matchingId) == _evaluationResults.end()){
+		return 0;
+	}else{
+		return _evaluationResults[matchingId];
+	}
+}
+

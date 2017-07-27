@@ -160,8 +160,12 @@ class SelfOrganizingMaps{
 			vector<int> &userIds);
 		void resetMatrixStadistics();
 
-		int getPositiveMatchesByUser(int idUser);
+		int getMatchesByUser(int idUser);
+		vector<int> getNegativeMatchesByUser(int idUser);
+		int getIdleMatchesByUser(int idUser, int idIdleUser);
 		int getNegativeMatchesByTrainedLattice();
+
+		int getTotalNeuronsEvaluated();
 
 		// Variables
 		int _incorrect;

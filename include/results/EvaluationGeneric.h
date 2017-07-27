@@ -22,18 +22,23 @@ using namespace std;
 class EvaluationGeneric{
 public:
 	EvaluationGeneric(int relatedUSer, int totalEvaluatedVectors, int totalPositive,
-		int totalNegative):_relatedUser(relatedUSer),
+		int totalNegative, int totalIdle):_relatedUser(relatedUSer),
 	_totalEvaluatedVectors(totalEvaluatedVectors),
-	_totalPositive(totalPositive), _totalNegative(totalNegative){
+	_totalPositive(totalPositive), _totalNegative(totalNegative),
+	_totalIdle(totalIdle){
 		_correct = verifyEvaluationIsCorrect();
 
 		if(_correct){
 			_positivePercentage = processPositivePercentage();
 			_negativePercentage = processNegativePercentage();
+			_idlePercentage = processIdlePercentage();
 		}else{
 			cout << "ERROR: User -> " << _relatedUser;
-			cout << " totalPositive and totalNegative do not match. ";
-			cout << (_totalPositive + totalNegative) << " != ";
+			cout << " totalPositive " << _totalPositive;
+			cout << " totalNegative " << _totalNegative;
+			cout << " totalIdle " << _totalIdle;
+			cout << " do not match. ";
+			cout << (_totalPositive + _totalNegative + _totalIdle) << " != ";
 			cout << _totalEvaluatedVectors << endl;
 		}
 	};
@@ -42,23 +47,28 @@ public:
 	int getTotalEvaluatedVectors(){ return _totalEvaluatedVectors; }
 	int getTotalPositive(){ return _totalPositive; }
 	int getTotalNegative(){ return _totalNegative; }
+	int getTotalIdle(){ return _totalIdle; }
 	double isEvaluationCorrect(){ return _correct; }
 
 	double getPositivePercentage();
 	double getNegativePercentage();
+	double getIdlePercentage();
 	void info();
 
 private:
 	bool verifyEvaluationIsCorrect();
 	double processPositivePercentage();
 	double processNegativePercentage();
+	double processIdlePercentage();
 
 	int _relatedUser;
 	int _totalEvaluatedVectors;
 	int _totalPositive;
 	int _totalNegative;
+	int _totalIdle;
 	double _positivePercentage;
 	double _negativePercentage;
+	double _idlePercentage;
 	bool _correct;
 };
 #endif

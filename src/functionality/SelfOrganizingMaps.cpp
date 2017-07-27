@@ -287,18 +287,72 @@ SamplesResult* SelfOrganizingMaps::getMatrixStadistics(int samples, int totalUse
 	return samplesResult;
 }
 
-int SelfOrganizingMaps::getPositiveMatchesByUser(int idUser){
-	int correct = 0;
+int SelfOrganizingMaps::getTotalNeuronsEvaluated(){
+	int matches = 0;
+	for(int row=0; row<_size; row++){
+		for(int col=0; col<_size; col++){
+			Neuron *neuron = _matrix->getNeuron(row, col);
+			if(neuron->isEvaluated()){
+				matches += neuron->getTotalMatches();
+			}
+		}
+	}
+	return matches;
+}
+
+int SelfOrganizingMaps::getMatchesByUser(int idUser){
+	int matches = 0;
 	for(int row=0; row<_size; row++){
 		for(int col=0; col<_size; col++){
 			Neuron *neuron = _matrix->getNeuron(row, col);
 			if(neuron->isEvaluated() &&
 				neuron->getConstructedIdUser() == idUser){
-				correct += neuron->getPositiveColitions();
+				matches += neuron->getMatches(idUser);
 			}
 		}
 	}
-	return correct;
+	return matches;
+}
+
+vector<int> SelfOrganizingMaps::getNegativeMatchesByUser(int idUser){
+	int totalNegativeMatches = 0;
+	int negativeMatches = 0;
+	int idleMatches = 0;
+	for(int row=0; row<_size; row++){
+		for(int col=0; col<_size; col++){
+			Neuron *neuron = _matrix->getNeuron(row, col);
+			if(neuron->isEvaluated() &&
+				neuron->getConstructedIdUser() != idUser){
+				int localMatches = neuron->getMatches(idUser);
+				totalNegativeMatches += localMatches;
+
+				if(neuron->getConstructedIdUser() == 6){
+					idleMatches += localMatches;
+				}else{
+					negativeMatches += localMatches;
+				}
+			}
+		}
+	}
+	vector<int> data;
+	data.push_back(idleMatches);
+	data.push_back(negativeMatches);
+	data.push_back(totalNegativeMatches);
+	return data;
+}
+
+int SelfOrganizingMaps::getIdleMatchesByUser(int idUser, int idIdleUser){
+	int matches = 0;
+	for(int row=0; row<_size; row++){
+		for(int col=0; col<_size; col++){
+			Neuron *neuron = _matrix->getNeuron(row, col);
+			if(neuron->isEvaluated() &&
+				neuron->getConstructedIdUser() == idIdleUser){
+				matches += neuron->getMatches(idUser);
+			}
+		}
+	}
+	return matches;
 }
 
 int SelfOrganizingMaps::getNegativeMatchesByTrainedLattice(){
