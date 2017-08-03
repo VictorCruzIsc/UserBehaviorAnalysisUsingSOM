@@ -213,7 +213,8 @@ vector<ExperimentGeneric *> Results::processExperimentResults(int initialSamples
 }
 
 void Results::getBarGraphs(vector<double> positives,
-			vector<double> negative, vector<string> xAxis, string graphName){
+			vector<double> negative, vector<string> xAxis, string graphName)
+{
 	string baseCommand = "";
 	string callingCommand = "";
 	string xAxisLabels = "";
@@ -290,10 +291,50 @@ void Results::getBarGraphs(vector<double> positives,
 	callingCommand += " " + incorrect;
 	callingCommand += " " + idleString;
 
-	cout << "Calling command: " << callingCommand << endl;
+	cout << "EXECUTED COMMAND: " << callingCommand << endl;
 
 	// Call python script
 	system(callingCommand.c_str());
+}
+
+void Results::getBarGraphsOnlyCommand(vector<double> positives,
+			vector<double> negative, vector<double> idle, vector<string> xAxis, string graphName){
+	string baseCommand = "";
+	string callingCommand = "";
+	string xAxisLabels = "";
+	string correct = "";
+	string incorrect = "";
+	string idleString = "";
+
+	baseCommand = "python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py";
+
+	int totalReceivedData = positives.size();
+
+	for(int i=1; i<=(totalReceivedData - 1); i++){
+		xAxisLabels += xAxis[i - 1] + ",";
+	}
+	xAxisLabels += xAxis[totalReceivedData - 1];
+
+	for(int i=1; i<=(totalReceivedData - 1); i++){
+		correct += to_string(positives[i]) + ",";
+		incorrect += to_string(negative[i]) + ",";
+		idleString += to_string(idle[i]) + ",";
+	}
+	correct += to_string(positives[totalReceivedData - 1]);
+	incorrect += to_string(negative[totalReceivedData - 1]);
+	idleString += to_string(idle[totalReceivedData - 1]);
+
+	callingCommand += baseCommand;
+	callingCommand += " " + graphName;
+	callingCommand += " " + xAxisLabels;
+	callingCommand += " " + correct;
+	callingCommand += " " + incorrect;
+	callingCommand += " " + idleString;
+
+	cout << "THEORICAL COMMAND: " << callingCommand << endl;
+
+	// Call python script
+	// system(callingCommand.c_str());
 }
 
 /*

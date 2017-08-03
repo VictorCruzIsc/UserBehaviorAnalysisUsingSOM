@@ -4,10 +4,12 @@ import plotly.graph_objs as go
 
 def bar_construction(values, index):
     bar_name = ''
-    if (i % 3) == 0:
+    if (index == 3):
         bar_name = 'correct'
-    else:
+    elif (index == 4):
         bar_name = 'incorrect'
+    else:
+        bar_name = 'idle'
 
     bar = go.Bar(
         x = x_labels,

@@ -61,6 +61,7 @@ int 							_maximumSamples;
 int 							_initialSamples;
 int 							_totalExperiments;
 int 							_samplesIncrement;
+int 							_evMatrix;
 
 vector<DataChunck *>			_trainDataChunckSet;
 vector<vector<DataChunck *> >	_evaluateDataChunckSetCollection;
@@ -104,10 +105,11 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 				_maximumSamples, _samplesIncrement, _totalExperiments, _som,
 					_evaluateDataChunckSetCollection, _userIds);
 
+			/*
 			for(int i=0; i<_experiments.size(); i++){
 				_experiments[i]->info();
 			}
-
+			*/
 
 			if(_experiments.size() == _totalExperiments){
 				cout << "Results obtention finished" << endl;
@@ -115,7 +117,7 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 				cout << "ERROR: Results do not match" << endl;
 			}
 			
-			glutPostRedisplay();
+			//glutPostRedisplay();
 			break;
 		case 'g':
 			// When experiments are obtained the graphs can be processed
@@ -176,13 +178,14 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 						cout << "[" << vectorsPositives[i] << "," << vectorsNegatives[i] << "]" << endl;
 					}
 					*/
+
 					vector<string> xAxisLabels;
 					for(int i=0; i<_totalExperiments; i++){
 						string label = "E" + to_string(i);
 						xAxisLabels.push_back(label);
 					}
 
-					Results::getBarGraphs(vectorsPositives, vectorsNegatives, vectorsIdles, xAxisLabels, "User" + to_string(currentUserId) + "-" + to_string(currentSample));
+					Results::getBarGraphsOnlyCommand(vectorsPositives, vectorsNegatives, vectorsIdles, xAxisLabels, "User" + to_string(currentUserId) + "-" + to_string(currentSample));
 
 					double avgPositiveByVectors = ((positiveTotalByVectors/(double)_totalExperiments)/currentSample) * 100;
 					double avgNegativeByVectors = ((negativetotalByVectors/(double)_totalExperiments)/currentSample) * 100;
@@ -214,7 +217,48 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
 					xAxisLabelsAVG.push_back(label);
 				}
 
-				Results::getBarGraphs(avgPositives, avgNegatives, avgIdles, xAxisLabelsAVG, "User" + to_string(currentUserId) + "AVGs");
+				Results::getBarGraphsOnlyCommand(avgPositives, avgNegatives, avgIdles, xAxisLabelsAVG, "User" + to_string(currentUserId) + "AVGs");
+
+				// Plot only the average of the average results
+				{
+					int totalAVGPositives = avgPositives.size();
+					int totalAVGNegatives = avgNegatives.size();
+					int totalAVGIdle = avgIdles.size();
+
+					double secAVGPos = 0.0;
+					double secAVGNeg = 0.0;
+					double secAVGIdle = 0.0;
+
+					for(int i=0; i<totalAVGPositives; i++){
+						secAVGPos += avgPositives[i];
+					}
+					secAVGPos = secAVGPos/totalAVGPositives;
+
+					for(int i=0; i<totalAVGNegatives; i++){
+						secAVGNeg += avgNegatives[i];
+					}
+					secAVGNeg = secAVGNeg/totalAVGNegatives;
+
+					for(int i=0; i<totalAVGIdle; i++){
+						secAVGIdle += avgIdles[i];
+					}
+					secAVGIdle = secAVGIdle/totalAVGIdle;
+
+					vector<double> pos_;
+					pos_.push_back(secAVGPos);
+
+					vector<double> neg_;
+					neg_.push_back(secAVGNeg);
+
+					vector<double>idle_;
+					idle_.push_back(secAVGIdle);
+
+					vector<string> _axis;
+					_axis.push_back("Samples_results_avgs");
+
+					Results::getBarGraphs(pos_, neg_, idle_, _axis,
+						"User_" + to_string(currentUserId) + "_samples_avgs" + "_" + to_string(_evMatrix));
+				}
 			}
 			break;
 	}
@@ -257,25 +301,27 @@ bool createEvaluationDataSets(){
 }
 
 int main(int argc, char **argv){
-	if(argc < 5){
+	if(argc < 6){
 		cout << "Program needs at least the following elements" << endl;
 		cout << "0 Program" << endl;
-		cout << "1 Init samples" << endl;
-		cout << "2 Max samples" << endl;
-		cout << "3 Samples increment" << endl;
-		cout << "4 Total experiments" << endl;
+		cout << "1 Ev matrix" << endl;
+		cout << "2 Init samples" << endl;
+		cout << "3 Max samples" << endl;
+		cout << "4 Samples increment" << endl;
+		cout << "5 Total experiments" << endl;
 		cout << "(<trained_matrix_file> <user_id>)+" << endl;
 	}
 	vector<char *> fileNames;
 	vector<int> userIds;
-	_initialSamples = atoi(argv[1]);
-	_maximumSamples = atoi(argv[2]);
-	_samplesIncrement = atoi(argv[3]);
-	_totalExperiments = atoi(argv[4]);
+	_evMatrix = atoi(argv[1]);
+	_initialSamples = atoi(argv[2]);
+	_maximumSamples = atoi(argv[3]);
+	_samplesIncrement = atoi(argv[4]);
+	_totalExperiments = atoi(argv[5]);
 
 	_sigma = SIGMA;
 
-	for(int files=5; files<argc; files+=2){
+	for(int files=6; files<argc; files+=2){
 		fileNames.push_back(argv[files]);
 		_userIds.push_back(atoi(argv[(files+1)]));
 	}

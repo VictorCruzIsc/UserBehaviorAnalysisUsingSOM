@@ -39,8 +39,8 @@ require(kohonen)
 
 setup_environment(working_directory)
 
-users <- c(4, 5, 9, 10)
-lattice_dimensions <- c(50, 75, 100, 125)
+users <- c(4, 5, 6, 9, 10)
+lattice_dimensions <- c(50, 75, 100, 125, 150)
 
 get_trained_som(users, lattice_dimensions,
                 output_file_folder, dataset_file_folder,

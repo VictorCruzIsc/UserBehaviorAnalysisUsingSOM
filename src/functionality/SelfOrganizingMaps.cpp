@@ -129,7 +129,8 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(
 	weights.resize(3);
 
 	// Set seed for getting a real random number
-	srand(time(NULL));
+	//srand(time(NULL));
+	/*
 	if(totalElements >= totalNeuronsToEvaluate){
 		// Normal execution
 		// Get initial and final index of the iteration
@@ -147,7 +148,6 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(
 		/*
 		* Getting a BMU for every element of the dataset
 		* Applying changes to get neuron stadistics
-		*/
 		{
 			for(int i=initialIndex; i<finalIndex; i++){
 				weights[0] = inputDataset[i]->getProportionTCPUDPMetric();
@@ -169,6 +169,7 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(
 			}
 		}
 	}else{
+	*/
 		// cout << "Special execution" << endl;
 		srand(time(NULL));
 		int index = 0;
@@ -192,7 +193,7 @@ void SelfOrganizingMaps::evaluateIndependentDataChuckDataSet(
 			// to get the number of positive and negative collitions
 			bmu -> processNeuronAfterEvaluation(evaluatedIdUser);
 		}
-	}
+	//}
 
 	/*
 	* Retrieving statistical information
