@@ -1,0 +1,2 @@
+ 2848 ttys000    0:23.27 ./../evaluate_module 50 200 800 150 3 ../R/r_trained_som/trained_lattice_6_50_25.txt 6 ../R/r_trained_som/trained_lattice_4_50_25.txt 4 ../R/r_trained_som/trained_lattice_5_50_25.txt 5 ../R/r_trained_som/trained_lattice_9_50_25.txt 9
+ 2851 ttys001    0:00.00 grep ./evaluate
