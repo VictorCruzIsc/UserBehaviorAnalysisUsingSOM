@@ -52,14 +52,11 @@ string 							_identifier;
 
 // ===================== Local Method Headers =====================
 void resultsObtention(){
-	cout << "Results obtention..." << endl;
 	_experiments = Results::processExperimentResults(_initialSamples,
 	_maximumSamples, _samplesIncrement, _totalExperiments, _som,
 	_evaluateDataChunckSetCollection, _userIds);
 
-	if(_experiments.size() == _totalExperiments){
-		cout << "Results obtention finished" << endl;
-	}else{
+	if(_experiments.size() != _totalExperiments){
 		cout << "ERROR: Results do not match" << endl;
 	}
 }
@@ -81,6 +78,7 @@ void graphicsObtention(){
 				vector<double> avgPositives;
 				vector<double> avgNegatives;
 				vector<double> avgIdles;
+
 				for(int z=0; z<totalSamples; z++){
 					int currentSample = samples[z];
 
@@ -117,21 +115,6 @@ void graphicsObtention(){
 						continue;
 					}
 
-					// Graph obtention is here
-					/*
-					for(int i=0; i<_totalExperiments; i++){
-						cout << "[" << vectorsPositives[i] << "," << vectorsNegatives[i] << "]" << endl;
-					}
-					*/
-
-					vector<string> xAxisLabels;
-					for(int i=0; i<_totalExperiments; i++){
-						string label = "E" + to_string(i);
-						xAxisLabels.push_back(label);
-					}
-
-					Results::getBarGraphsOnlyCommand(vectorsPositives, vectorsNegatives, vectorsIdles, xAxisLabels, "User" + to_string(currentUserId) + "-" + to_string(currentSample));
-
 					double avgPositiveByVectors = ((positiveTotalByVectors/(double)_totalExperiments)/currentSample) * 100;
 					double avgNegativeByVectors = ((negativetotalByVectors/(double)_totalExperiments)/currentSample) * 100;
 					double avgIdleByVectors = ((idleTotalByVectors/(double)_totalExperiments)/currentSample) * 100;
@@ -146,23 +129,9 @@ void graphicsObtention(){
 					cout << " AVG will not be obtained" << endl;
 				}
 
-				// Process user average graph
-				/*
-				for(int i=0; i<totalSamples; i++){
-					double positiveAVG = avgPositives[i];
-					double negativeAVG = avgNegatives[i];
-					double total = positiveAVG + negativeAVG;
-					cout << "[" << positiveAVG << "," << negativeAVG << "] = " << total << endl;
-				}
-				*/
-
 				vector<string> xAxisLabelsAVG;
-				for(int i=0; i<totalSamples; i++){
-					string label = "Sample" + to_string(samples[i]);
-					xAxisLabelsAVG.push_back(label);
-				}
 
-				Results::getBarGraphsOnlyCommand(avgPositives, avgNegatives, avgIdles, xAxisLabelsAVG, "User" + to_string(currentUserId) + "AVGs");
+				Results::getBarGraphsOnlyCommand(avgPositives, avgNegatives, avgIdles, xAxisLabelsAVG, to_string(_evMatrix) + "_" + _identifier);
 
 				// Plot only the average of the average results
 				{
@@ -177,6 +146,7 @@ void graphicsObtention(){
 					for(int i=0; i<totalAVGPositives; i++){
 						secAVGPos += avgPositives[i];
 					}
+
 					secAVGPos = secAVGPos/totalAVGPositives;
 
 					for(int i=0; i<totalAVGNegatives; i++){
@@ -209,9 +179,9 @@ void graphicsObtention(){
 
 bool createEvaluationDataSets(){
 	for(int i=0; i<_totalUsersEvaluated; i++){
-		vector<DataChunck *> dataChunckSet = DataSet::createDataSetDataChunckFormatFromFile(_userIds[i], Utils::EVALUATE);
+		vector<DataChunck *> dataChunckSet =
+			DataSet::createDataSetDataChunckFormatFromFile(_userIds[i], Utils::EVALUATE);
 		int totalElements = dataChunckSet.size();
-		cout << "Elements in user: " << _userIds[i] << "is " << totalElements << endl;
 		if(totalElements > 0){
 			_evaluateDataChunckSetCollection.push_back(dataChunckSet);
 		}else{
@@ -222,16 +192,6 @@ bool createEvaluationDataSets(){
 }
 
 int main(int argc, char **argv){
-	if(argc < 6){
-		cout << "Program needs at least the following elements" << endl;
-		cout << "0 Program" << endl;
-		cout << "1 Ev matrix" << endl;
-		cout << "2 Init samples" << endl;
-		cout << "3 Max samples" << endl;
-		cout << "4 Samples increment" << endl;
-		cout << "5 Total experiments" << endl;
-		cout << "(<trained_matrix_file> <user_id>)+" << endl;
-	}
 	vector<char *> fileNames;
 	vector<int> userIds;
 	_evMatrix = atoi(argv[1]);
@@ -250,7 +210,6 @@ int main(int argc, char **argv){
 	}
 
 	_totalUsersEvaluated = fileNames.size();
-	cout << "Total evaluated users: " << _totalUsersEvaluated << endl;
 
 	for(int y=0; y<_totalUsersEvaluated; y++){
 		_identifier += to_string(_userIds[y]);
@@ -258,26 +217,19 @@ int main(int argc, char **argv){
 
 	int matrixComposition = sqrt(_totalUsersEvaluated);
 
-	cout << "Creating evaluation dataset..." << endl;
 	_isEvaluationDataSetInitialized = createEvaluationDataSets();
 	
 	if(!_isEvaluationDataSetInitialized){
 		cout << "It was not possible to create the evaluation dataset" << endl;
 		return 1;
-	}else{
-		cout << "Evaluation dataset was created correctly" << endl;
 	}
-
-	cout << _totalUsersEvaluated << " Are about to be exported..." << endl;
 
 	_som = Utils::importSOMFromFiles(fileNames, matrixComposition, _totalUsersEvaluated);
 
-	cout << "Files were exported correctly" << endl;
-
-	cout << "RESULTS" << endl;
+	cout << "OBTAINING RESULTS" << endl;
 	resultsObtention();
 
-	cout << "GRAPHICS" << endl;
+	cout << "\nOBTAINING GRAPHICS" << endl;
 	graphicsObtention();
 
 	return 0;

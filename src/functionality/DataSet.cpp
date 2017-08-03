@@ -211,8 +211,6 @@ vector<DataChunck *> DataSet::createDataSetDataChunckFormatFromFile(int idUser, 
 				dataChunckDataSet.push_back(chunck);
 
 				packageElements.clear();
-			}else{
-				cout << "Total elements in file: " + line << endl;
 			}
 		}
 		infile.close();
@@ -221,6 +219,6 @@ vector<DataChunck *> DataSet::createDataSetDataChunckFormatFromFile(int idUser, 
 		cout << "Path: " << filePath << endl;
 	}
 
-	cout << "Total elements processed: " << dataChunckDataSet.size() << endl;
+	//cout << "Total elements processed: " << dataChunckDataSet.size() << endl;
 	return dataChunckDataSet;
 }

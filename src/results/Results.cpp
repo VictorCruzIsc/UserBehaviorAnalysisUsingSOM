@@ -203,9 +203,7 @@ vector<ExperimentGeneric *> Results::processExperimentResults(int initialSamples
 		cout << "Finish running experiment: " << experimentId << endl;
 	}
 
-	if(experiments.size() == requestedExperiments){
-		cout << "Processing experiment results finishes correctly." << endl;
-	}else{
+	if(experiments.size() != requestedExperiments){
 		cout << "ERROR: Processing experiment results." << endl;
 	}
 
@@ -291,7 +289,8 @@ void Results::getBarGraphs(vector<double> positives,
 	callingCommand += " " + incorrect;
 	callingCommand += " " + idleString;
 
-	cout << "EXECUTED COMMAND: " << callingCommand << endl;
+	cout << "EXECUTED COMMAND: \n" << callingCommand << endl;
+	cout << "_________________________________________\n" << endl;
 
 	// Call python script
 	system(callingCommand.c_str());
@@ -299,101 +298,23 @@ void Results::getBarGraphs(vector<double> positives,
 
 void Results::getBarGraphsOnlyCommand(vector<double> positives,
 			vector<double> negative, vector<double> idle, vector<string> xAxis, string graphName){
-	string baseCommand = "";
 	string callingCommand = "";
-	string xAxisLabels = "";
 	string correct = "";
 	string incorrect = "";
 	string idleString = "";
 
-	baseCommand = "python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py";
-
 	int totalReceivedData = positives.size();
 
-	for(int i=1; i<=(totalReceivedData - 1); i++){
-		xAxisLabels += xAxis[i - 1] + ",";
+	for(int i=0; i<totalReceivedData; i++){
+		correct += to_string(positives[i]) + "  ";
+		incorrect += to_string(negative[i]) + "  ";
+		idleString += to_string(idle[i]) + "  ";
 	}
-	xAxisLabels += xAxis[totalReceivedData - 1];
 
-	for(int i=1; i<=(totalReceivedData - 1); i++){
-		correct += to_string(positives[i]) + ",";
-		incorrect += to_string(negative[i]) + ",";
-		idleString += to_string(idle[i]) + ",";
-	}
-	correct += to_string(positives[totalReceivedData - 1]);
-	incorrect += to_string(negative[totalReceivedData - 1]);
-	idleString += to_string(idle[totalReceivedData - 1]);
+	callingCommand += graphName + "\n";
+	callingCommand += "C " + correct + "\n";
+	callingCommand += "N " + incorrect + "\n";
+	callingCommand += "I " + idleString + "\n";
 
-	callingCommand += baseCommand;
-	callingCommand += " " + graphName;
-	callingCommand += " " + xAxisLabels;
-	callingCommand += " " + correct;
-	callingCommand += " " + incorrect;
-	callingCommand += " " + idleString;
-
-	cout << "THEORICAL COMMAND: " << callingCommand << endl;
-
-	// Call python script
-	// system(callingCommand.c_str());
+	cout << callingCommand << endl;
 }
-
-/*
-* Executes a python script that shows the information, correct vs incorrect percentages among all the
-* experiments
-
-void getBarGraphs(vector<UserGraph *> &graphics, int totalExperiments, vector<int> &userIds){
-	int totalNeededGraphics = graphics.size();
-	int totalAverages = 0;
-	string baseCommand = "";
-	string xAxis = "";
-	string correct = "";
-	string incorrect = "";
-	string callingCommand = "";
-	string name = "";
-
-#ifdef MAC
-	baseCommand = "python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py";
-#else
-	baseCommand = "python ~/Desktop/som/userBehaviorAnalysisUsingSom/python/Graphics.py";
-#endif
-
-	// Creating X-Axis labels
-	for(int i=1; i<totalExperiments; i++){
-		xAxis += "E" + to_string(i) + ',';
-	}
-	xAxis += "E" + to_string(totalExperiments);
-
-	// Get correct and incorrect percentages for each user
-	for(int i=0; i<totalNeededGraphics; i++){
-		UserGraph *currentUserGraph = graphics[i];
-		vector<ExperimentAverageAnalysis *> averages = currentUserGraph->getUserResults();
-		totalAverages = averages.size();
-		for(int j=0; j<(totalAverages - 1); j++){
-			correct += to_string(averages[j]->getCorrectPercentage()) + ',';
-			incorrect += to_string(averages[j]->getIncorrectPercentage()) + ',';
-		}
-		correct += to_string(averages[totalAverages - 1]->getCorrectPercentage());
-		incorrect += to_string(averages[totalAverages - 1]->getIncorrectPercentage());
-
-		name = "User"+to_string(userIds[i]);
-
-		callingCommand += baseCommand;
-		callingCommand += " " + name;
-		callingCommand += " " + xAxis;
-		callingCommand += " " + correct;
-		callingCommand += " " + incorrect;
-
-		cout << "Calling command: " << callingCommand << endl;
-
-		// Call python script
-		system(callingCommand.c_str());
-
-		// Reset values for the next user
-		callingCommand = "";
-		correct = "";
-		incorrect = "";
-		name = "";
-		totalAverages = 0;
-	}
-}
-*/

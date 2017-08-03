@@ -19,23 +19,17 @@ int main(){
 
 	cout << "MAIN THREAD START" << endl;
 
-	//for(int i=50; i<160; i+=25){
-	for(int i=50; i<80; i+=25){
-		//cout << i << " " << currentExecution << " " << totalRunningOptions <<endl;
-
-		//*
+	for(int i=50; i<160; i+=25){
 		for(int currentRunningOption=0; currentRunningOption<totalRunningOptions;
 			currentRunningOption++){
 			currentExecution += " " + to_string(i)
 								+ " " + runningOptions[currentRunningOption];
-			//cout << currentExecution << endl;
 
 			system(currentExecution.c_str());
 			system(killExecution.c_str());
 
 			currentExecution = "./scripts/setup.sh";
 		}
-		//*/
 	}
 
 	cout << "MAIN THREAD FINISH" << endl;
