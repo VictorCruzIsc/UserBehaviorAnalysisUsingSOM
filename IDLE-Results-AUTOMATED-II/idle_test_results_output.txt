@@ -1,0 +1,1202 @@
+MAIN THREAD START
+50 200 2500 700 10 R/r_trained_som/trained_lattice_6_50_25.txt 6 R/r_trained_som/trained_lattice_4_50_25.txt 4 R/r_trained_som/trained_lattice_5_50_25.txt 5 R/r_trained_som/trained_lattice_9_50_25.txt 9
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+50_6459
+C 11.300000  1.066667  8.375000  2.839130  
+N 88.700000  98.933333  91.625000  97.160870  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_6_samples_avgs_50 Samples_results_avgs 5.895199 94.104801 0.000000
+_________________________________________
+
+50_6459
+C 58.600000  47.277778  61.262500  55.278261  
+N 41.400000  46.955556  30.412500  37.421739  
+I 0.000000  5.766667  8.325000  7.300000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_4_samples_avgs_50 Samples_results_avgs 55.604635 39.047449 5.347917
+_________________________________________
+
+50_6459
+C 33.200000  41.822222  31.143750  38.756522  
+N 49.050000  36.800000  49.512500  34.943478  
+I 17.750000  21.377778  19.343750  26.300000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_5_samples_avgs_50 Samples_results_avgs 36.230623 42.576495 21.192882
+_________________________________________
+
+50_6459
+C 59.200000  60.877778  54.381250  57.356522  
+N 40.750000  39.122222  40.550000  36.769565  
+I 0.050000  0.000000  5.068750  5.873913  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_9_samples_avgs_50 Samples_results_avgs 57.953887 39.297947 2.748166
+_________________________________________
+
+50 200 2500 700 10 R/r_trained_som/trained_lattice_6_50_25.txt 6 R/r_trained_som/trained_lattice_4_50_25.txt 4 R/r_trained_som/trained_lattice_5_50_25.txt 5 R/r_trained_som/trained_lattice_10_50_25.txt 10
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+50_64510
+C 10.000000  4.644444  6.218750  3.673913  
+N 90.000000  95.355556  93.781250  96.326087  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_6_samples_avgs_50 Samples_results_avgs 6.134277 93.865723 0.000000
+_________________________________________
+
+50_64510
+C 73.150000  80.588889  60.818750  74.582609  
+N 21.850000  19.411111  29.006250  20.430435  
+I 5.000000  0.000000  10.175000  4.986957  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_4_samples_avgs_50 Samples_results_avgs 72.285062 22.674449 5.040489
+_________________________________________
+
+50_64510
+C 22.200000  53.577778  32.056250  30.443478  
+N 37.850000  29.555556  21.437500  21.421739  
+I 39.950000  16.866667  46.506250  48.134783  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_5_samples_avgs_50 Samples_results_avgs 34.569377 27.566199 37.864425
+_________________________________________
+
+50_64510
+C 0.000000  16.066667  4.681250  6.304348  
+N 92.000000  76.877778  89.293750  84.678261  
+I 8.000000  7.055556  6.025000  9.017391  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_10_samples_avgs_50 Samples_results_avgs 6.763066 85.712447 7.524487
+_________________________________________
+
+50 200 2500 700 10 R/r_trained_som/trained_lattice_6_50_25.txt 6 R/r_trained_som/trained_lattice_4_50_25.txt 4 R/r_trained_som/trained_lattice_9_50_25.txt 9 R/r_trained_som/trained_lattice_10_50_25.txt 10
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+50_64910
+C 0.050000  5.955556  10.937500  13.830435  
+N 99.950000  94.044444  89.062500  86.169565  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_6_samples_avgs_50 Samples_results_avgs 7.693373 92.306627 0.000000
+_________________________________________
+
+50_64910
+C 27.750000  47.377778  31.100000  56.343478  
+N 72.250000  34.700000  50.518750  35.852174  
+I 0.000000  17.922222  18.381250  7.804348  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_4_samples_avgs_50 Samples_results_avgs 40.642814 48.330231 11.026955
+_________________________________________
+
+50_64910
+C 41.600000  59.011111  41.012500  60.434783  
+N 36.050000  40.966667  47.712500  28.495652  
+I 22.350000  0.022222  11.275000  11.069565  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_9_samples_avgs_50 Samples_results_avgs 50.514598 38.306205 11.179197
+_________________________________________
+
+50_64910
+C 19.400000  11.633333  7.662500  9.417391  
+N 65.800000  62.555556  72.643750  80.604348  
+I 14.800000  25.811111  19.693750  9.978261  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_10_samples_avgs_50 Samples_results_avgs 12.028306 70.400913 17.570780
+_________________________________________
+
+50 200 2500 700 10 R/r_trained_som/trained_lattice_6_50_25.txt 6 R/r_trained_som/trained_lattice_5_50_25.txt 5 R/r_trained_som/trained_lattice_9_50_25.txt 9 R/r_trained_som/trained_lattice_10_50_25.txt 10
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+50_65910
+C 0.000000  1.111111  5.412500  4.156522  
+N 100.000000  98.888889  94.587500  95.843478  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_6_samples_avgs_50 Samples_results_avgs 2.670033 97.329967 0.000000
+_________________________________________
+
+50_65910
+C 26.200000  32.011111  35.450000  32.878261  
+N 27.350000  30.522222  31.687500  38.465217  
+I 46.450000  37.466667  32.862500  28.656522  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_5_samples_avgs_50 Samples_results_avgs 31.634843 32.006235 36.358922
+_________________________________________
+
+50_65910
+C 69.600000  85.055556  84.787500  71.226087  
+N 30.400000  14.944444  15.206250  24.334783  
+I 0.000000  0.000000  0.006250  4.439130  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_9_samples_avgs_50 Samples_results_avgs 77.667286 21.221369 1.111345
+_________________________________________
+
+50_65910
+C 0.050000  19.477778  12.893750  17.065217  
+N 80.050000  72.833333  67.425000  71.578261  
+I 19.900000  7.688889  19.681250  11.356522  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_10_samples_avgs_50 Samples_results_avgs 12.371686 72.971649 14.656665
+_________________________________________
+
+75 200 2500 700 10 R/r_trained_som/trained_lattice_6_75_25.txt 6 R/r_trained_som/trained_lattice_4_75_25.txt 4 R/r_trained_som/trained_lattice_5_75_25.txt 5 R/r_trained_som/trained_lattice_9_75_25.txt 9
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+75_6459
+C 40.200000  22.744444  23.843750  26.139130  
+N 59.800000  77.255556  76.156250  73.860870  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_6_samples_avgs_75 Samples_results_avgs 28.231831 71.768169 0.000000
+_________________________________________
+
+75_6459
+C 34.950000  50.822222  38.506250  29.630435  
+N 33.500000  28.344444  31.975000  39.717391  
+I 31.550000  20.833333  29.518750  30.652174  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_4_samples_avgs_75 Samples_results_avgs 38.477227 33.384209 28.138564
+_________________________________________
+
+75_6459
+C 29.700000  42.222222  44.812500  53.013043  
+N 50.850000  29.622222  29.450000  23.873913  
+I 19.450000  28.155556  25.737500  23.113043  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_5_samples_avgs_75 Samples_results_avgs 42.436941 33.449034 24.114025
+_________________________________________
+
+75_6459
+C 2.950000  2.577778  1.443750  0.869565  
+N 87.100000  84.766667  82.037500  86.478261  
+I 9.950000  12.655556  16.518750  12.652174  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_9_samples_avgs_75 Samples_results_avgs 1.960273 85.095607 12.944120
+_________________________________________
+
+75 200 2500 700 10 R/r_trained_som/trained_lattice_6_75_25.txt 6 R/r_trained_som/trained_lattice_4_75_25.txt 4 R/r_trained_som/trained_lattice_5_75_25.txt 5 R/r_trained_som/trained_lattice_10_75_25.txt 10
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+75_64510
+C 31.450000  19.566667  26.275000  23.778261  
+N 68.550000  80.433333  73.725000  76.221739  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_6_samples_avgs_75 Samples_results_avgs 25.267482 74.732518 0.000000
+_________________________________________
+
+75_64510
+C 73.000000  35.966667  43.006250  30.130435  
+N 20.900000  43.411111  37.706250  47.860870  
+I 6.100000  20.622222  19.287500  22.008696  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_4_samples_avgs_75 Samples_results_avgs 45.525838 37.469558 17.004604
+_________________________________________
+
+75_64510
+C 51.450000  44.177778  48.493750  51.056522  
+N 39.350000  31.366667  34.918750  21.030435  
+I 9.200000  24.455556  16.587500  27.913043  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_5_samples_avgs_75 Samples_results_avgs 48.794512 31.666463 19.539025
+_________________________________________
+
+75_64510
+C 0.050000  4.588889  1.456250  1.791304  
+N 67.200000  65.566667  54.300000  61.495652  
+I 32.750000  29.844444  44.243750  36.713043  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_10_samples_avgs_75 Samples_results_avgs 1.971611 62.140580 35.887809
+_________________________________________
+
+75 200 2500 700 10 R/r_trained_som/trained_lattice_6_75_25.txt 6 R/r_trained_som/trained_lattice_4_75_25.txt 4 R/r_trained_som/trained_lattice_9_75_25.txt 9 R/r_trained_som/trained_lattice_10_75_25.txt 10
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+75_64910
+C 6.750000  26.700000  20.025000  19.921739  
+N 93.250000  73.300000  79.975000  80.078261  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_6_samples_avgs_75 Samples_results_avgs 18.349185 81.650815 0.000000
+_________________________________________
+
+75_64910
+C 30.750000  33.055556  39.756250  33.300000  
+N 52.300000  36.066667  29.018750  38.934783  
+I 16.950000  30.877778  31.225000  27.765217  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_4_samples_avgs_75 Samples_results_avgs 34.215451 39.080050 26.704499
+_________________________________________
+
+75_64910
+C 0.000000  0.000000  0.050000  0.000000  
+N 87.200000  70.433333  78.062500  80.352174  
+I 12.800000  29.566667  21.887500  19.647826  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_9_samples_avgs_75 Samples_results_avgs 0.012500 79.012002 20.975498
+_________________________________________
+
+75_64910
+C 17.450000  21.422222  16.312500  10.413043  
+N 49.500000  45.466667  48.562500  42.491304  
+I 33.050000  33.111111  35.125000  47.095652  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_10_samples_avgs_75 Samples_results_avgs 16.399441 46.505118 37.095441
+_________________________________________
+
+75 200 2500 700 10 R/r_trained_som/trained_lattice_6_75_25.txt 6 R/r_trained_som/trained_lattice_5_75_25.txt 5 R/r_trained_som/trained_lattice_9_75_25.txt 9 R/r_trained_som/trained_lattice_10_75_25.txt 10
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+75_65910
+C 47.200000  44.644444  49.331250  45.773913  
+N 52.800000  55.355556  50.668750  54.226087  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_6_samples_avgs_75 Samples_results_avgs 46.737402 53.262598 0.000000
+_________________________________________
+
+75_65910
+C 62.000000  54.066667  48.018750  50.243478  
+N 26.200000  28.866667  27.462500  19.291304  
+I 11.800000  17.066667  24.518750  30.465217  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_5_samples_avgs_75 Samples_results_avgs 53.582224 25.455118 20.962659
+_________________________________________
+
+75_65910
+C 39.550000  40.111111  29.393750  29.591304  
+N 11.950000  16.566667  19.818750  28.782609  
+I 48.500000  43.322222  50.787500  41.626087  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_9_samples_avgs_75 Samples_results_avgs 34.661541 19.279506 46.058952
+_________________________________________
+
+75_65910
+C 0.900000  3.755556  3.568750  1.739130  
+N 32.250000  31.400000  25.812500  29.804348  
+I 66.850000  64.844444  70.618750  68.456522  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_10_samples_avgs_75 Samples_results_avgs 2.490859 29.816712 67.692429
+_________________________________________
+
+100 200 2500 700 10 R/r_trained_som/trained_lattice_6_100_25.txt 6 R/r_trained_som/trained_lattice_4_100_25.txt 4 R/r_trained_som/trained_lattice_5_100_25.txt 5 R/r_trained_som/trained_lattice_9_100_25.txt 9
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+100_6459
+C 22.500000  15.600000  18.362500  15.386957  
+N 77.500000  84.400000  81.637500  84.613043  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_6_samples_avgs_100 Samples_results_avgs 17.962364 82.037636 0.000000
+_________________________________________
+
+100_6459
+C 33.450000  29.177778  27.356250  31.373913  
+N 51.100000  58.355556  56.218750  54.208696  
+I 15.450000  12.466667  16.425000  14.417391  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_4_samples_avgs_100 Samples_results_avgs 30.339485 54.970750 14.689764
+_________________________________________
+
+100_6459
+C 34.100000  32.911111  29.393750  31.239130  
+N 48.800000  56.277778  56.306250  55.239130  
+I 17.100000  10.811111  14.300000  13.521739  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_5_samples_avgs_100 Samples_results_avgs 31.910998 54.155790 13.933213
+_________________________________________
+
+100_6459
+C 41.200000  60.222222  54.387500  53.121739  
+N 52.200000  32.444444  35.200000  38.243478  
+I 6.600000  7.333333  10.412500  8.634783  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_9_samples_avgs_100 Samples_results_avgs 52.232865 39.521981 8.245154
+_________________________________________
+
+100 200 2500 700 10 R/r_trained_som/trained_lattice_6_100_25.txt 6 R/r_trained_som/trained_lattice_4_100_25.txt 4 R/r_trained_som/trained_lattice_5_100_25.txt 5 R/r_trained_som/trained_lattice_10_100_25.txt 10
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+100_64510
+C 27.350000  39.044444  38.562500  36.595652  
+N 72.650000  60.955556  61.437500  63.404348  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_6_samples_avgs_100 Samples_results_avgs 35.388149 64.611851 0.000000
+_________________________________________
+
+100_64510
+C 76.850000  52.111111  57.850000  58.352174  
+N 9.450000  21.911111  18.137500  20.756522  
+I 13.700000  25.977778  24.012500  20.891304  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_4_samples_avgs_100 Samples_results_avgs 61.290821 17.563783 21.145396
+_________________________________________
+
+100_64510
+C 3.050000  7.677778  10.137500  13.334783  
+N 80.500000  70.444444  78.475000  72.726087  
+I 16.450000  21.877778  11.387500  13.939130  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_5_samples_avgs_100 Samples_results_avgs 8.550015 75.536383 15.913602
+_________________________________________
+
+100_64510
+C 25.250000  16.688889  14.731250  15.960870  
+N 16.400000  30.600000  27.856250  31.873913  
+I 58.350000  52.711111  57.412500  52.165217  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_10_samples_avgs_100 Samples_results_avgs 18.157752 26.682541 55.159707
+_________________________________________
+
+100 200 2500 700 10 R/r_trained_som/trained_lattice_6_100_25.txt 6 R/r_trained_som/trained_lattice_4_100_25.txt 4 R/r_trained_som/trained_lattice_9_100_25.txt 9 R/r_trained_som/trained_lattice_10_100_25.txt 10
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+100_64910
+C 23.750000  9.466667  7.718750  12.182609  
+N 76.250000  90.533333  92.281250  87.817391  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_6_samples_avgs_100 Samples_results_avgs 13.279506 86.720494 0.000000
+_________________________________________
+
+100_64910
+C 29.000000  30.555556  21.750000  25.495652  
+N 61.700000  56.711111  67.000000  63.834783  
+I 9.300000  12.733333  11.250000  10.669565  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_4_samples_avgs_100 Samples_results_avgs 26.700302 62.311473 10.988225
+_________________________________________
+
+100_64910
+C 60.850000  50.755556  53.412500  62.130435  
+N 37.100000  43.400000  39.525000  29.534783  
+I 2.050000  5.844444  7.062500  8.334783  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_9_samples_avgs_100 Samples_results_avgs 56.787123 37.389946 5.822932
+_________________________________________
+
+100_64910
+C 20.800000  19.133333  20.743750  25.773913  
+N 65.550000  67.388889  67.681250  67.382609  
+I 13.650000  13.477778  11.575000  6.843478  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_10_samples_avgs_100 Samples_results_avgs 21.612749 67.000687 11.386564
+_________________________________________
+
+100 200 2500 700 10 R/r_trained_som/trained_lattice_6_100_25.txt 6 R/r_trained_som/trained_lattice_5_100_25.txt 5 R/r_trained_som/trained_lattice_9_100_25.txt 9 R/r_trained_som/trained_lattice_10_100_25.txt 10
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+100_65910
+C 11.700000  7.455556  8.231250  6.456522  
+N 88.300000  92.544444  91.768750  93.543478  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_6_samples_avgs_100 Samples_results_avgs 8.460832 91.539168 0.000000
+_________________________________________
+
+100_65910
+C 0.050000  7.522222  7.693750  5.747826  
+N 85.050000  86.088889  81.243750  80.991304  
+I 14.900000  6.388889  11.062500  13.260870  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_5_samples_avgs_100 Samples_results_avgs 5.253450 83.343486 11.403065
+_________________________________________
+
+100_65910
+C 74.600000  76.455556  79.031250  77.491304  
+N 13.450000  16.800000  16.231250  15.204348  
+I 11.950000  6.744444  4.737500  7.304348  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_9_samples_avgs_100 Samples_results_avgs 76.894527 15.421399 7.684073
+_________________________________________
+
+100_65910
+C 32.150000  33.955556  26.043750  21.595652  
+N 62.700000  59.344444  67.493750  68.139130  
+I 5.150000  6.700000  6.462500  10.265217  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_10_samples_avgs_100 Samples_results_avgs 28.436239 64.419331 7.144429
+_________________________________________
+
+125 200 2500 700 10 R/r_trained_som/trained_lattice_6_125_25.txt 6 R/r_trained_som/trained_lattice_4_125_25.txt 4 R/r_trained_som/trained_lattice_5_125_25.txt 5 R/r_trained_som/trained_lattice_9_125_25.txt 9
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+125_6459
+C 16.250000  17.344444  20.018750  18.834783  
+N 83.750000  82.655556  79.981250  81.165217  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_6_samples_avgs_125 Samples_results_avgs 18.111994 81.888006 0.000000
+_________________________________________
+
+125_6459
+C 41.200000  42.933333  40.900000  41.552174  
+N 40.600000  40.300000  43.906250  41.208696  
+I 18.200000  16.766667  15.193750  17.239130  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_4_samples_avgs_125 Samples_results_avgs 41.646377 41.503736 16.849887
+_________________________________________
+
+125_6459
+C 45.000000  47.500000  53.987500  46.969565  
+N 38.250000  39.011111  31.050000  30.108696  
+I 16.750000  13.488889  14.962500  22.921739  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_5_samples_avgs_125 Samples_results_avgs 48.364266 34.604952 17.030782
+_________________________________________
+
+125_6459
+C 0.000000  2.755556  3.775000  2.300000  
+N 80.200000  87.611111  86.131250  86.495652  
+I 19.800000  9.633333  10.093750  11.204348  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_9_samples_avgs_125 Samples_results_avgs 2.207639 85.109503 12.682858
+_________________________________________
+
+125 200 2500 700 10 R/r_trained_som/trained_lattice_6_125_25.txt 6 R/r_trained_som/trained_lattice_4_125_25.txt 4 R/r_trained_som/trained_lattice_5_125_25.txt 5 R/r_trained_som/trained_lattice_10_125_25.txt 10
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+125_64510
+C 11.500000  20.244444  22.918750  23.639130  
+N 88.500000  79.755556  77.081250  76.360870  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_6_samples_avgs_125 Samples_results_avgs 19.575581 80.424419 0.000000
+_________________________________________
+
+125_64510
+C 32.200000  39.588889  40.818750  40.813043  
+N 45.350000  38.555556  40.168750  38.926087  
+I 22.450000  21.855556  19.012500  20.260870  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_4_samples_avgs_125 Samples_results_avgs 38.355171 40.750098 20.894731
+_________________________________________
+
+125_64510
+C 22.100000  16.177778  18.581250  19.643478  
+N 60.350000  67.655556  60.650000  59.460870  
+I 17.550000  16.166667  20.768750  20.895652  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_5_samples_avgs_125 Samples_results_avgs 19.125627 62.029106 18.845267
+_________________________________________
+
+125_64510
+C 17.750000  8.588889  8.162500  11.639130  
+N 57.950000  59.922222  64.543750  56.773913  
+I 24.300000  31.488889  27.293750  31.586957  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_10_samples_avgs_125 Samples_results_avgs 11.535130 59.797471 28.667399
+_________________________________________
+
+125 200 2500 700 10 R/r_trained_som/trained_lattice_6_125_25.txt 6 R/r_trained_som/trained_lattice_4_125_25.txt 4 R/r_trained_som/trained_lattice_9_125_25.txt 9 R/r_trained_som/trained_lattice_10_125_25.txt 10
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+125_64910
+C 56.100000  51.277778  52.168750  50.421739  
+N 43.900000  48.722222  47.831250  49.578261  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_6_samples_avgs_125 Samples_results_avgs 52.492067 47.507933 0.000000
+_________________________________________
+
+125_64910
+C 35.000000  40.344444  37.450000  41.960870  
+N 14.750000  13.633333  12.375000  14.165217  
+I 50.250000  46.022222  50.175000  43.873913  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_4_samples_avgs_125 Samples_results_avgs 38.688829 13.730888 47.580284
+_________________________________________
+
+125_64910
+C 0.050000  2.266667  5.893750  4.900000  
+N 74.600000  80.488889  74.768750  74.421739  
+I 25.350000  17.244444  19.337500  20.678261  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_9_samples_avgs_125 Samples_results_avgs 3.277604 76.069845 20.652551
+_________________________________________
+
+125_64910
+C 8.600000  16.755556  12.743750  12.208696  
+N 46.850000  56.477778  59.131250  59.447826  
+I 44.550000  26.766667  28.125000  28.343478  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_10_samples_avgs_125 Samples_results_avgs 12.577000 55.476713 31.946286
+_________________________________________
+
+125 200 2500 700 10 R/r_trained_som/trained_lattice_6_125_25.txt 6 R/r_trained_som/trained_lattice_5_125_25.txt 5 R/r_trained_som/trained_lattice_9_125_25.txt 9 R/r_trained_som/trained_lattice_10_125_25.txt 10
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+125_65910
+C 12.800000  18.477778  19.375000  16.234783  
+N 87.200000  81.522222  80.625000  83.765217  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_6_samples_avgs_125 Samples_results_avgs 16.721890 83.278110 0.000000
+_________________________________________
+
+125_65910
+C 32.000000  25.300000  21.762500  23.182609  
+N 54.800000  55.044444  54.137500  61.669565  
+I 13.200000  19.655556  24.100000  15.147826  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_5_samples_avgs_125 Samples_results_avgs 25.561277 56.412877 18.025845
+_________________________________________
+
+125_65910
+C 60.450000  63.211111  66.793750  67.152174  
+N 27.350000  22.911111  23.987500  25.282609  
+I 12.200000  13.877778  9.218750  7.565217  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_9_samples_avgs_125 Samples_results_avgs 64.401759 24.882805 10.715436
+_________________________________________
+
+125_65910
+C 19.000000  10.888889  10.200000  11.773913  
+N 67.600000  62.088889  66.906250  69.521739  
+I 13.400000  27.022222  22.893750  18.704348  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_10_samples_avgs_125 Samples_results_avgs 12.965700 66.529220 20.505080
+_________________________________________
+
+150 200 2500 700 10 R/r_trained_som/trained_lattice_6_150_25.txt 6 R/r_trained_som/trained_lattice_4_150_25.txt 4 R/r_trained_som/trained_lattice_5_150_25.txt 5 R/r_trained_som/trained_lattice_9_150_25.txt 9
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+150_6459
+C 23.000000  31.222222  25.762500  25.204348  
+N 77.000000  68.777778  74.237500  74.795652  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_6_samples_avgs_150 Samples_results_avgs 26.297268 73.702732 0.000000
+_________________________________________
+
+150_6459
+C 46.050000  37.088889  36.350000  36.560870  
+N 26.750000  39.211111  39.818750  40.126087  
+I 27.200000  23.700000  23.831250  23.313043  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_4_samples_avgs_150 Samples_results_avgs 39.012440 36.476487 24.511073
+_________________________________________
+
+150_6459
+C 50.900000  46.577778  52.193750  49.413043  
+N 33.850000  37.133333  30.962500  30.921739  
+I 15.250000  16.288889  16.843750  19.665217  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_5_samples_avgs_150 Samples_results_avgs 49.771143 33.216893 17.011964
+_________________________________________
+
+150_6459
+C 10.200000  14.066667  11.287500  11.652174  
+N 76.450000  71.677778  73.475000  75.891304  
+I 13.350000  14.255556  15.237500  12.456522  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 6459_User_9_samples_avgs_150 Samples_results_avgs 11.801585 74.373521 13.824894
+_________________________________________
+
+150 200 2500 700 10 R/r_trained_som/trained_lattice_6_150_25.txt 6 R/r_trained_som/trained_lattice_4_150_25.txt 4 R/r_trained_som/trained_lattice_5_150_25.txt 5 R/r_trained_som/trained_lattice_10_150_25.txt 10
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+150_64510
+C 16.050000  14.344444  18.631250  14.300000  
+N 83.950000  85.655556  81.368750  85.700000  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_6_samples_avgs_150 Samples_results_avgs 15.831424 84.168576 0.000000
+_________________________________________
+
+150_64510
+C 37.650000  35.555556  41.100000  39.517391  
+N 52.100000  47.300000  42.118750  44.721739  
+I 10.250000  17.144444  16.781250  15.760870  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_4_samples_avgs_150 Samples_results_avgs 38.455737 46.560122 14.984141
+_________________________________________
+
+150_64510
+C 34.900000  39.344444  41.612500  44.869565  
+N 40.450000  40.888889  40.562500  37.904348  
+I 24.650000  19.766667  17.825000  17.226087  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_5_samples_avgs_150 Samples_results_avgs 40.181627 39.951434 19.866938
+_________________________________________
+
+150_64510
+C 15.650000  15.255556  12.637500  12.234783  
+N 55.200000  56.955556  59.700000  64.326087  
+I 29.150000  27.788889  27.662500  23.439130  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64510_User_10_samples_avgs_150 Samples_results_avgs 13.944460 59.045411 27.010130
+_________________________________________
+
+150 200 2500 700 10 R/r_trained_som/trained_lattice_6_150_25.txt 6 R/r_trained_som/trained_lattice_4_150_25.txt 4 R/r_trained_som/trained_lattice_9_150_25.txt 9 R/r_trained_som/trained_lattice_10_150_25.txt 10
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+150_64910
+C 15.600000  13.911111  18.637500  18.439130  
+N 84.400000  86.088889  81.362500  81.560870  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_6_samples_avgs_150 Samples_results_avgs 16.646935 83.353065 0.000000
+_________________________________________
+
+150_64910
+C 42.700000  36.522222  42.068750  42.230435  
+N 44.600000  41.811111  39.750000  38.552174  
+I 12.700000  21.666667  18.181250  19.217391  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_4_samples_avgs_150 Samples_results_avgs 40.880352 41.178321 17.941327
+_________________________________________
+
+150_64910
+C 14.950000  6.222222  9.681250  11.178261  
+N 71.050000  80.033333  79.981250  72.934783  
+I 14.000000  13.744444  10.337500  15.886957  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_9_samples_avgs_150 Samples_results_avgs 10.507933 75.999841 13.492225
+_________________________________________
+
+150_64910
+C 16.000000  18.600000  17.306250  19.100000  
+N 53.700000  56.744444  59.550000  59.578261  
+I 30.300000  24.655556  23.143750  21.321739  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 64910_User_10_samples_avgs_150 Samples_results_avgs 17.751562 57.393176 24.855261
+_________________________________________
+
+150 200 2500 700 10 R/r_trained_som/trained_lattice_6_150_25.txt 6 R/r_trained_som/trained_lattice_5_150_25.txt 5 R/r_trained_som/trained_lattice_9_150_25.txt 9 R/r_trained_som/trained_lattice_10_150_25.txt 10
+OBTAINING RESULTS
+Running experiment: 1
+Finish running experiment: 1
+Running experiment: 2
+Finish running experiment: 2
+Running experiment: 3
+Finish running experiment: 3
+Running experiment: 4
+Finish running experiment: 4
+Running experiment: 5
+Finish running experiment: 5
+Running experiment: 6
+Finish running experiment: 6
+Running experiment: 7
+Finish running experiment: 7
+Running experiment: 8
+Finish running experiment: 8
+Running experiment: 9
+Finish running experiment: 9
+Running experiment: 10
+Finish running experiment: 10
+
+OBTAINING GRAPHICS
+150_65910
+C 9.650000  12.300000  15.750000  13.391304  
+N 90.350000  87.700000  84.250000  86.608696  
+I 0.000000  0.000000  0.000000  0.000000  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_6_samples_avgs_150 Samples_results_avgs 12.772826 87.227174 0.000000
+_________________________________________
+
+150_65910
+C 33.650000  44.655556  46.156250  47.830435  
+N 44.200000  36.800000  33.625000  33.721739  
+I 22.150000  18.544444  20.218750  18.447826  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_5_samples_avgs_150 Samples_results_avgs 43.073060 37.086685 19.840255
+_________________________________________
+
+150_65910
+C 65.950000  72.411111  77.437500  74.382609  
+N 26.450000  17.311111  15.325000  16.791304  
+I 7.600000  10.277778  7.237500  8.826087  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_9_samples_avgs_150 Samples_results_avgs 72.545305 18.969354 8.485341
+_________________________________________
+
+150_65910
+C 12.850000  13.711111  12.037500  14.778261  
+N 63.950000  68.200000  69.068750  65.782609  
+I 23.200000  18.088889  18.893750  19.439130  
+
+EXECUTED COMMAND: 
+python ~/Documents/git/UserBehaviorAnalysisUsingSOM/python/GraphicsMAC.py 65910_User_10_samples_avgs_150 Samples_results_avgs 13.344218 66.750340 19.905442
+_________________________________________
+
+MAIN THREAD FINISH
